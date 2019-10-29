@@ -1,0 +1,41 @@
+/* 
+    Created on : 29-oct-2019, 0:45:28
+    Author     : jtabo_000
+*/
+
+*{
+    -fx-primary : #2a2e37;
+    -fx-secondary : #ff5b13;
+    -fx-primarytext : #b2b2b2; 
+}
+
+.root{
+    -fx-background-color : -fx-primary;
+}
+
+.glyph-icon{
+    -fx-fill : -fx-primarytext;
+}
+
+.button{
+    -fx-text-fill : -fx-primarytext;
+}
+
+.login-buttons{
+    -fx-border-color : -fx-secondary;
+    -fx-border-radius : 20px;
+    -fx-background-radius: 20px;
+    -fx-font-size : 9pt;
+}
+
+.login-buttons:hover{
+    -fx-border-color : -fx-secondary;
+    -fx-background-color : -fx-secondary;
+    -fx-text-fill : -fx-primary;
+}
+
+.login-textfields{
+    -fx-text-fill : -fx-primarytext;
+    -fx-font-size : 10pt;
+    -jfx-focus-color : -fx-secondary;
+}
