@@ -24,6 +24,7 @@ public class Main extends Application {
         stage.show();
         stage.setTitle("Safe Journey Login");
 
+        Stage userStage = stage;
     }
 
     public static void main(String[] args) {

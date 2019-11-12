@@ -36,6 +36,7 @@ public class LoginController implements Initializable {
         userStage.setScene(new Scene(root, 300, 275));
         userStage.show();
     }
+    */
 
     @FXML
     private void handleLoginButtonAction(ActionEvent event) {
@@ -44,8 +45,8 @@ public class LoginController implements Initializable {
         if (user.iniciarSesion(username.getText(),password.getText())) handleUserLogin();
         else{
             System.err.println("Wrong credentials.");
-        }
-    }*/
+        }*/
+    }
 
     @FXML
     private void handleCancelButtonAction(ActionEvent event) {
