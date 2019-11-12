@@ -5,11 +5,13 @@
  */
 package pkg2ingproyi.DriverView;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+
+import javax.swing.*;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * FXML Controller class
@@ -18,6 +20,9 @@ import javafx.fxml.Initializable;
  */
 public class DriverViewController implements Initializable {
 
+
+    @FXML
+    private JMenuBar menuBar;
     /**
      * Initializes the controller class.
      */

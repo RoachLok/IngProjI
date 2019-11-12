@@ -21,6 +21,13 @@
     -fx-text-fill : -fx-primarytext;
 }
 
+.title-label{
+    -fx-text-fill: -fx-secondary;
+    -fx-font-size: 25px;
+    -fx-
+}
+
+/* Login Exclusive */
 .login-buttons{
     -fx-border-color : -fx-secondary;
     -fx-border-radius : 20px;
@@ -39,3 +46,24 @@
     -fx-font-size : 10pt;
     -jfx-focus-color : -fx-secondary;
 }
+
+/* Driver Exclusive */
+.tool-bar{
+    -fx-alignment: CENTER;
+}
+
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}
+.scroll-pane{
+    -fx-background-color: -fx-primary;
+}
+
+/*.text-area   {
+    -fx-text-fill: -fx-secondary;
+    -fx-font-size: 25px;
+}*/
+
+
+
+
