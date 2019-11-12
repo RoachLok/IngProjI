@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.TextFlow?>
+<SplitPane dividerPositions="0.25576923076923075" orientation="VERTICAL" prefHeight="522.0" prefWidth="332.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+  <items>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+         <children>
+            <FontAwesomeIconView glyphName="USER_CIRCLE_ALT" layoutX="220.0" layoutY="98.0" size="95" text="" />
+            <Label layoutX="9.0" layoutY="1.0" styleClass="title-label-small" text="Bienvenido">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Line endX="-12.0" layoutX="110.0" layoutY="25.0" startX="-100.0" stroke="#b2b2b2" strokeWidth="0.7" />
+            <Label layoutX="105.0" layoutY="5.0" styleClass="login-textfields" text="Fulanito" />
+            <Label layoutX="20.0" layoutY="42.0" styleClass="login-textfields" text="Servicios Asignados: " />
+            <Label layoutX="20.0" layoutY="62.0" styleClass="login-textfields" text="ETC." />
+         </children>
+      </AnchorPane>
+      <ScrollPane hbarPolicy="NEVER" stylesheets="@../../resources/main-theme.css">
+         <content>
+            <AnchorPane prefHeight="479.0" prefWidth="330.0">
+               <children>
+                  <Label layoutX="7.0" layoutY="5.0" styleClass="title-label" text="Servicio Próximo / Actual" />
+                  <Line endX="100.0" layoutX="114.0" layoutY="35.0" startX="-100.0" stroke="#b2b2b2" />
+                  <TextFlow layoutX="7.0" layoutY="87.0" prefHeight="384.0" prefWidth="312.0" />
+                  <Label layoutX="14.0" layoutY="67.0" styleClass="login-textfields" text="Hora Inicio: " />
+                  <Label layoutX="14.0" layoutY="47.0" styleClass="login-textfields" text="Nombre del Servicio" />
+               </children>
+            </AnchorPane>
+         </content>
+      </ScrollPane>
+  </items>
+</SplitPane>
