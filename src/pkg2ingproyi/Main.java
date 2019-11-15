@@ -7,11 +7,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- *
-    * @author jtabo_000
+ * @author jtabo_000
  */
 public class Main extends Application {
-    
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader();
@@ -23,12 +22,10 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
         stage.setTitle("Safe Journey Login");
-
-        Stage userStage = stage;
     }
 
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }
