@@ -6,7 +6,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 
-public class Administrador {
+public class Administrador extends Usuario{
 
 	private String nombre;
 	private String nombreUsuario;
@@ -15,11 +15,7 @@ public class Administrador {
 	private ArrayList<String> mensajes;
 	
 	public Administrador(String nombre, String apellido, String nombreUsuario, String dni, ArrayList<String> mensajes) {
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.dni = dni;
-		this.nombreUsuario = nombreUsuario;
-		this.mensajes = mensajes;
+		
 	}
 	
 	public String getNombre() {
@@ -53,26 +49,6 @@ public class Administrador {
 		return contrasena;
 	}
 	
-	/*Si devuelve true es que no esta en la base de datos
-	 * si devuelve false es que no existe*/
-	public Boolean ComprobarUsuario(String dni) {
-		File fichero = new File("usuario.txt");
-		String linea;
-		Scanner entrada = null;
-		try {
-			entrada = new Scanner(fichero);
-			while(entrada.hasNext()) {
-				linea = entrada.nextLine();
-				if(linea.contains(dni)) {
-					/*Esto quiere decir que el dni ya existe en la base de datos*/
-					return true;
-				}
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
 	
 	public void AnyadirUsuario(String nombre, String dni, String NombreUsuario, String Matricula) throws IOException {
 		File fichero = new File("usuario.txt");
@@ -89,7 +65,7 @@ public class Administrador {
 	
 	public Boolean CrearUsuario(String nombre, String dni, String NombreUsuario, String Matricula) throws IOException {
 		
-		if(ComprobarUsuario(dni) == false) {
+		if(comprobarUsuario(dni) == false) {
 			AnyadirUsuario(nombre,dni,NombreUsuario,Matricula);
 			return true; /*Se le ha dado de alta en la base de datos*/
 		}else {
@@ -103,7 +79,7 @@ public class Administrador {
 		String linea = null, retorno = null;
 		String[] partes = null;
 		File fichero = new File("camiones.txt");
-		if(ComprobarUsuario(dni) == false) {
+		if(comprobarUsuario(dni) == false) {
 			return "Error el dni no existe en la base de datos";
 		}else {
 			try {
@@ -122,6 +98,116 @@ public class Administrador {
 			}
 		}
 		return retorno;
+	}
+	
+	
+	public String ConductordelCamion(String matricula) {
+				
+		File fichero = new File("camiones.txt");
+		String dni = null;
+		String linea;
+		Scanner entrada = null;
+		String[] partes = null;
+		if(matricula == null) return "La entrada es nula";
+		try {
+			entrada = new Scanner(fichero);
+			while(entrada.hasNext()) {
+				linea = entrada.nextLine();
+				if(linea.contains(matricula)) {
+					partes = linea.split(",");
+					dni = partes[2];
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return dni;
+	}
+	
+	public boolean ModificarDatosUsuario(String campo, String nuevo, String dni) throws FileNotFoundException {
+		String[] cambios;
+		String retorno;
+		File fichero = new File("usuario.txt");
+		BufferedWriter bw = null;
+	    FileWriter fw = null;
+	    FileReader fr = new FileReader("usuario.txt");
+	    BufferedReader br = new BufferedReader(fr);
+	    String linea;
+		/*Buscamos si existe el dni, vemos que parte quiere, si es nombre campo 1 etc
+		 * sustituimos el dato y reescribimos*/
+		if(comprobarUsuario(dni) == true) {
+			if(campo == "nombre") {
+				try {
+				    while((linea = br.readLine()) != null) {
+				    	if(linea.contains(dni)) {
+				    		cambios = linea.split(",");
+				    		retorno = nuevo + "," + cambios[1] + "," + cambios[2] + "," + cambios[3] + "," + cambios[4] + "," + cambios[6] + "," + cambios[7];
+				    		fw = new FileWriter(fichero.getAbsoluteFile(), true);
+				            bw = new BufferedWriter(fw);
+				            bw.write(retorno);
+				    	}
+				    	br.close();
+				    }
+				}
+				catch(Exception e) {
+				      System.out.println("Excepcion");
+				    }
+			
+			} else if(campo == "Apellido") {
+				try {
+				    while((linea = br.readLine()) != null) {
+				    	if(linea.contains(dni)) {
+				    		cambios = linea.split(",");
+				    		retorno = cambios[0] + "," + nuevo + "," + cambios[2] + "," + cambios[3] + "," + cambios[4] + "," + cambios[6] + "," + cambios[7];
+				    		fw = new FileWriter(fichero.getAbsoluteFile(), true);
+				            bw = new BufferedWriter(fw);
+				            bw.write(retorno);
+				    	}
+				    	br.close();
+				    }
+				}
+				catch(Exception e) {
+				      System.out.println("Excepcion");
+				    }
+				
+			} else if(campo == "NombreUsuario") {
+				
+			} else if(campo == "DNI") {
+				
+			} else if(campo == "Matricula") {
+				
+			} else if(campo == "Contrasena") {
+			
+			}
+		}
+			
+			return true;
+	}
+	
+	
+	
+	public boolean isAdmin(String nombreUsuario) throws FileNotFoundException {
+		FileReader fr = new FileReader("usuario.txt");
+	    BufferedReader br = new BufferedReader(fr);
+	    String linea;
+		String[] campos;
+		if(this.comprobarUsuario(nombreUsuario) == true) {
+			try {
+			    while((linea = br.readLine()) != null) {
+			    	if(linea.contains(nombreUsuario)) {
+			    		campos = linea.split(",");
+			    		if(campos[6] == "true")
+			    			br.close();
+			    			return true;
+			    	}
+			    }
+			}
+			catch(Exception e) {
+			      System.out.println("Excepcion");
+			    }
+		}
+		return false;
 	}
 }
 
