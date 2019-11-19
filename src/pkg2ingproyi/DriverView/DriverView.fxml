@@ -7,10 +7,10 @@
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
-        <Menu mnemonicParsing="false" onAction="#handleDriverShowHomeAction" text="Inicio       " />
-        <Menu mnemonicParsing="false" onAction="#handleDriverShowServicesAction" text="Servicios        " />
-            <Menu mnemonicParsing="false" onAction="#handleDriverShowMesagesAction" text="Mensajes          " />
-        <Menu mnemonicParsing="false" text="Ayuda">
+        <Menu fx:id="menuInicio" mnemonicParsing="false" onAction="#handleDriverShowHomeAction" text="Inicio       " />
+        <Menu fx:id="menuServicios" mnemonicParsing="false" onAction="#handleDriverShowServicesAction" text="Servicios        " />
+            <Menu fx:id="menuMensajes" mnemonicParsing="false" onAction="#handleDriverShowMesagesAction" text="Mensajes          " />
+        <Menu fx:id="menuAyuda" mnemonicParsing="false" text="Ayuda">
           <items>
             <MenuItem mnemonicParsing="false" text="About SafeJourney" />
           </items>

@@ -3,6 +3,7 @@ package pkg2ingproyi.LoginView;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,31 +37,33 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        username.requestFocus();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                username.requestFocus();
+            }
+        });
     }
 
-    public void handleAdminLogin() throws IOException {
+    public void handleUserLogin(char userType, Stage stageDriver) throws IOException {
+        String fxmlPath, windowTitle;
+        if(userType=='C'){  //Conductor Login
+            fxmlPath = "../DriverView/DriverView.fxml";
+            windowTitle = "Safe Journey: Conductor";
+        }else{  //Supervisor Login
+            fxmlPath = "../SupervisorView/SupervisorMasterView.fxml";
+            windowTitle = "Safe Journey: Supervisor";
+        }
+
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("SupervisorView/SupervisorMasterView.fxml"));
+        loader.setLocation(getClass().getResource(fxmlPath));
         Parent root = loader.load();
 
         Scene sceneDriver = new Scene(root);
-        Stage stageDriver = new Stage();
         stageDriver.setScene(sceneDriver);
+        stageDriver.setTitle(windowTitle);
         stageDriver.show();
-        stageDriver.setTitle("Safe Journey: Supervisor");
-    }
 
-    public void handleDriverLogin() throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("DriverView/DriverView.fxml"));
-        Parent root = loader.load();
-
-        Scene sceneDriver = new Scene(root);
-        Stage stageDriver = new Stage();
-        stageDriver.setScene(sceneDriver);
-        stageDriver.show();
-        stageDriver.setTitle("Safe Journey: Conductor");
     }
 
     @FXML
@@ -68,18 +71,13 @@ public class LoginController implements Initializable {
         /*     LOGIN ACTION     */
         if (user.iniciarSesion(username.getText(), password.getText())) {
             Stage stage = (Stage) loginButton.getScene().getWindow();
-            stage.close();
-            if (username.getText().charAt(0) == 'C')
-                handleDriverLogin();
-            else //meter por argumento charAt(0) a handleLogin.
-                handleAdminLogin();
+            handleUserLogin(username.getText().charAt(0), stage);
+          //  handleUserLogin('C', stage);
         } else
             System.err.println("Wrong Credentials.");
     }
 
     @FXML
-    private void handleCancelButtonAction(ActionEvent event) {
-        System.exit(0);
-    }
+    private void handleCancelButtonAction(ActionEvent event) {  System.exit(0); }
 
 }

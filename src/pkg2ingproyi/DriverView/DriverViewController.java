@@ -7,10 +7,13 @@ package pkg2ingproyi.DriverView;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -27,24 +30,39 @@ public class DriverViewController implements Initializable {
     @FXML
     private AnchorPane driverSVHolder;
 
+    private Node newLoadedPane = null;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        try {
+            newLoadedPane = (Node)FXMLLoader.load(getClass().getResource("visorConductorHome.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        driverSVHolder.getChildren().setAll(newLoadedPane);
     }
 
     @FXML
     private void handleDriverShowHomeAction(ActionEvent event) {
-        //jp.add(visorConductorHome.fxml);
-        /* Invoke visorConductorHome.fxml
-           Add visorConductorHome root to anchorpane of parent Root??
-         */
+        try {
+            newLoadedPane = (Node)FXMLLoader.load(getClass().getResource("visorConductorHome.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        driverSVHolder.getChildren().setAll(newLoadedPane);
     }
 
     @FXML
     private void handleDriverShowServicesAction(ActionEvent event) {
+        try {
+            newLoadedPane = (Node)FXMLLoader.load(getClass().getResource("visorConductorServices.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        driverSVHolder.getChildren().setAll(newLoadedPane);
     }
 
     @FXML

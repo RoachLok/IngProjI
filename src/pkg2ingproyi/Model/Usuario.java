@@ -60,7 +60,7 @@ public class Usuario {
         FileReader f;
         boolean permiso = false;
         try {
-            File archivo = new File("resources/usuario.txt");
+            File archivo = new File("C:\\Users\\jtabo_000\\IdeaProjects\\IngProjI\\src\\resources\\usuario.txt");
 
             f = new FileReader(archivo);
             BufferedReader b = new BufferedReader(f);
