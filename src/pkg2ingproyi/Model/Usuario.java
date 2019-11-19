@@ -105,4 +105,28 @@ public class Usuario {
 		}
 		return false;
 	}
+	
+	
+	public boolean isAdmin(String nombreUsuario) throws FileNotFoundException {
+		FileReader fr = new FileReader("usuario.txt");
+	    BufferedReader br = new BufferedReader(fr);
+	    String linea;
+		String[] campos;
+		if(this.comprobarUsuario(nombreUsuario) == true) {
+			try {
+			    while((linea = br.readLine()) != null) {
+			    	if(linea.contains(nombreUsuario)) {
+			    		campos = linea.split(",");
+			    		if(campos[6] == "true")
+			    			br.close();
+			    			return true;
+			    	}
+			    }
+			}
+			catch(Exception e) {
+			      System.out.println("Excepcion");
+			    }
+		}
+		return false;
+	}
 }
