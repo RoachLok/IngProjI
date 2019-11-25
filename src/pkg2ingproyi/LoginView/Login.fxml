@@ -8,23 +8,18 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="292.0" prefWidth="279.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.LoginView.LoginController">
+<AnchorPane fx:id="canvas" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="292.0" prefWidth="279.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.LoginView.LoginController">
    <children>
-      <ImageView fitHeight="38.0" fitWidth="100.0" layoutX="181.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../resources/icons/testlogo.png" />
-         </image>
-      </ImageView>
-      <JFXPasswordField fx:id="password" labelFloat="true" layoutX="73.0" layoutY="159.0" prefHeight="30.0" prefWidth="177.0" promptText="Contraseña" styleClass="login-textfields">
-         <font>
-            <Font size="13.0" />
-         </font>
-      </JFXPasswordField>
       <JFXTextField fx:id="username" labelFloat="true" layoutX="73.0" layoutY="88.0" prefHeight="30.0" prefWidth="177.0" promptText="Usuario" styleClass="login-textfields">
          <font>
             <Font size="13.0" />
          </font>
       </JFXTextField>
+      <JFXPasswordField fx:id="password" labelFloat="true" layoutX="73.0" layoutY="159.0" prefHeight="30.0" prefWidth="177.0" promptText="Contraseña" styleClass="login-textfields">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </JFXPasswordField>
       <JFXButton fx:id="loginButton" layoutX="52.0" layoutY="229.0" onAction="#handleLoginButtonAction" prefHeight="30.0" prefWidth="70.0" styleClass="login-buttons" text="Iniciar">
          <font>
             <Font size="13.0" />
@@ -33,6 +28,11 @@
          <font>
             <Font size="13.0" />
          </font></JFXButton>
+      <ImageView fitHeight="38.0" fitWidth="100.0" layoutX="181.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/icons/testlogo.png" />
+         </image>
+      </ImageView>
       <FontAwesomeIconView glyphName="LOCK" layoutX="125.0" layoutY="66.0" size="45" />
       <FontAwesomeIconView glyphName="USER" layoutX="27.0" layoutY="120.0" size="27" />
       <FontAwesomeIconView glyphName="KEY" layoutX="24.0" layoutY="190.0" size="27" text="" />
