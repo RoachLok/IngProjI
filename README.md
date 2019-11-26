@@ -35,9 +35,11 @@ Server and Client branches will merge here.
 
 #### Client
 - Supervisor
+
 WORK IN PROGRESS
 
 - Driver
+
 ![Driverchatss](driverchatss.png)
 
 # Changelog
