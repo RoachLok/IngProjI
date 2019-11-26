@@ -30,7 +30,15 @@ Server and Client branches will merge here.
 
 ## UID Information
 
-Currently under development.
+#### Server
+![Server ScreenShot][serverss.png]
+
+#### Client
+- Supervisor
+WORK IN PROGRESS
+
+- Driver
+![Driver's chat ScreenShot][driverchatss.png]
 
 # Changelog
 
