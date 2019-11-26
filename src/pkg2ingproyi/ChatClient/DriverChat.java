@@ -1,5 +1,6 @@
 package pkg2ingproyi.ChatClient;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -9,6 +10,7 @@ import javafx.scene.control.TextField;
 
 import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ResourceBundle;
 
 public class DriverChat implements Initializable {
@@ -37,11 +39,21 @@ public class DriverChat implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //label.setText("Chat con: "+supervisorUsername); //TODO: Style title. Picture, last connect/online, etc. Add setting for port.
+        try {
+            inetAddress = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        DriverChat me = this;
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                messageHandler = new MessageHandler(inetAddress.getHostAddress(), port, "Nachocalvo", driverGETADMINNAME, me);  //DEBUGGING PORPOISES:
 
-        messageHandler = new MessageHandler(inetAddress.getHostAddress(), port, "Nachocalvo", driverGETADMINNAME, this);  //DEBUGGING PORPOISES:
-                                                                                                                         //Driver username getter.
-        //Server Handshake//
-        messageHandler.connectToServer();
+                //Server Handshake//
+                messageHandler.connectToServer();
+            }
+        });
 
         sentMessage.setOnAction((event) -> {
             messageHandler.sendMessage("MSG><"+driverUsernameGETUSERNAME+"><"+driverGETADMINNAME+"><"+messageField.getText());

@@ -24,6 +24,6 @@ public class SupervisorChat implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        driverListView.getItems().add("Hello there");
+        //driverListView.getItems().add("Hello there");
     }
 }

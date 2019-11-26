@@ -14,7 +14,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("SupervisorView/visorSupervisorChat.fxml"));
+        loader.setLocation(getClass().getResource("LoginView/Login.fxml"));
         Parent root = loader.load();
 
         Scene scene = new Scene(root);

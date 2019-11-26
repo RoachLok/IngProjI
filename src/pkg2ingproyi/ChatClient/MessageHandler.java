@@ -9,7 +9,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 
 public class MessageHandler implements Runnable{
     private Socket socket;
@@ -42,15 +41,8 @@ public class MessageHandler implements Runnable{
             thread = new Thread(this);
             thread.start();
 
-            //Server Handshake
-            int timeoutServer = 0;
-            while (timeoutServer < 4) {
-                sendMessage("SYN><Hello Server!");
-                if (dataIn.readLine().equals("SYN-ACK><Hey There!")) {
-                    sendMessage("ACK><"+username+"><"+adminUsername);
-                } else
-                    timeoutServer++;
-            }
+            //Server Hello
+            sendMessage(" Hello Server!");
 
         } catch (UnknownHostException e) {
             Platform.runLater(() -> {
@@ -65,7 +57,6 @@ public class MessageHandler implements Runnable{
             return false;
         }
         return true;
-
     }
 
     public void sendMessage(String message) {
@@ -101,24 +92,30 @@ public class MessageHandler implements Runnable{
     private String textIn;
     @Override
     public void run() {
-        while (thread != null) {
-            try {
-                textIn = dataIn.readLine();
-                if (textIn.startsWith("MSG")) {
-                    String[] parsedField = textIn.substring(5).split("><");
-                    chatWindow.addText(parsedField[1]);
+            while (thread != null) {
+                try {
+                    textIn = dataIn.readLine();
 
-                } else if (textIn.startsWith("FIN")) {
-                    disconnectFromServer();
-                } else if (textIn.startsWith("ACKMSG")){  //Diferenciar entre sueprvisor y conductor
-                    String[] parsedField = textIn.substring(8).split("><");
-                    // MARK MESSAGE AS READ
+                    if (textIn.equals("SYN-ACK><Hey there!")) {
+                        sendMessage("ACK><"+username+"><"+adminUsername);
+                        System.out.println("Connected to server.");
+                        //TODO Mark server as online. Is my admin online? / are my users online? / disablebutton.
 
+                    } else if (textIn.startsWith("MSG")) {
+                        String[] parsedField = textIn.substring(5).split("><");
+                        chatWindow.addText(parsedField[1]);
+
+                    } else if (textIn.startsWith("FIN")) {
+                        disconnectFromServer();
+
+                    } else if (textIn.startsWith("ACKMSG")) {  //Diferenciar entre sueprvisor y conductor
+                        String[] parsedField = textIn.substring(8).split("><");
+                        //TODO MARK MESSAGE AS READ
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    thread = null;
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-                thread = null;
             }
-        }
     }
 }

@@ -39,7 +39,7 @@ public class Usuario {
     }
 
     public boolean comprobarUsuario(String dni) {
-        File fichero = new File("E:\\Users\\jtabo\\IdeaProjects\\IngProjI\\src\\resources\\usuario.txt");
+        File fichero = new File("C:\\Users\\jtabo_000\\IdeaProjects\\IngProjI\\src\\resources\\usuario.txt");
         String linea;
         Scanner entrada = null;
         try {
@@ -62,7 +62,7 @@ public class Usuario {
         Scanner entrada = null;
         String linea = null;
         String[] partes = null;
-        File fichero = new File("E:\\Users\\jtabo\\IdeaProjects\\IngProjI\\src\\resources\\usuario.txt");
+        File fichero = new File("C:\\Users\\jtabo_000\\IdeaProjects\\IngProjI\\src\\resources\\usuario.txt");
 
         if(comprobarUsuario(dni)) {
             entrada = new Scanner(fichero);
@@ -83,7 +83,7 @@ public class Usuario {
         Scanner entrada = null;
         String linea = null;
         String[] partes = null;
-        File fichero = new File("E:\\Users\\jtabo\\IdeaProjects\\IngProjI\\src\\resources\\usuario.txt");
+        File fichero = new File("C:\\Users\\jtabo_000\\IdeaProjects\\IngProjI\\src\\resources\\usuario.txt");
         if(usuario == null || password == null) {
             return false;
         }
@@ -111,7 +111,7 @@ public class Usuario {
 
 
     public boolean isAdmin(String nombreUsuario) throws FileNotFoundException {
-        FileReader fr = new FileReader("E:\\Users\\jtabo\\IdeaProjects\\IngProjI\\src\\resources\\usuario.txt");
+        FileReader fr = new FileReader("C:\\Users\\jtabo_000\\IdeaProjects\\IngProjI\\src\\resources\\usuario.txt");
         BufferedReader br = new BufferedReader(fr);
         String linea;
         String[] campos;
