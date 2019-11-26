@@ -31,14 +31,14 @@ Server and Client branches will merge here.
 ## UID Information
 
 #### Server
-![Server ScreenShot][serverss.png]
+![ServerScreenShot](serverss.png)
 
 #### Client
 - Supervisor
 WORK IN PROGRESS
 
 - Driver
-![Driver's chat ScreenShot][driverchatss.png]
+![Driverchatss](driverchatss.png)
 
 # Changelog
 
