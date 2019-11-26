@@ -6,10 +6,13 @@
 package pkg2ingproyi.DriverView;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 
 import javax.swing.*;
@@ -46,7 +49,8 @@ public class DriverViewController implements Initializable {
     }
 
     @FXML
-    private void handleDriverShowHomeAction(ActionEvent event) {
+    private void handleDriverShowHomeAction(Event event) {
+        System.out.println("HI");
         try {
             newLoadedPane = (Node)FXMLLoader.load(getClass().getResource("visorConductorHome.fxml"));
         } catch (IOException e) {
@@ -56,7 +60,8 @@ public class DriverViewController implements Initializable {
     }
 
     @FXML
-    private void handleDriverShowServicesAction(ActionEvent event) {
+    private void handleDriverShowServicesAction(Event event) {
+        System.out.println("HI");
         try {
             newLoadedPane = (Node)FXMLLoader.load(getClass().getResource("visorConductorServices.fxml"));
         } catch (IOException e) {
@@ -66,7 +71,12 @@ public class DriverViewController implements Initializable {
     }
 
     @FXML
-    private void handleDriverShowMesagesAction(ActionEvent event) {
+    private void handleDriverShowMesagesAction(Event event) {
+        try {
+            newLoadedPane = (Node)FXMLLoader.load(getClass().getResource("visorConductorMessages.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        driverSVHolder.getChildren().setAll(newLoadedPane);
     }
-
 }

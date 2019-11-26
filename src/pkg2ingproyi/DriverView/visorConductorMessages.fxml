@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="522.0" prefWidth="332.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.ChatClient.DriverChat">
+   <children>
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="522.0" prefWidth="332.0">
+         <center>
+            <TextArea fx:id="messagesArea" editable="false" focusTraversable="false" prefHeight="317.0" prefWidth="332.0" promptText="No hay mensajes que mostrar.                             SafeJourney_Chat_v0.2." BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </TextArea>
+         </center>
+         <bottom>
+            <GridPane BorderPane.alignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="225.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <TextField fx:id="messageField" promptText="Escribe un mensaje aquí." />
+                  <Button fx:id="sentMessage" mnemonicParsing="false" prefHeight="25.0" prefWidth="92.0" text="Enviar" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets left="5.0" />
+                     </GridPane.margin>
+                  </Button>
+               </children>
+            </GridPane>
+         </bottom>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+         <top>
+            <Label fx:id="label" alignment="CENTER" focusTraversable="false" prefHeight="19.0" prefWidth="668.0" styleClass="title-label-small" text="Chat con: JefeTráfico" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+         </top>
+      </BorderPane>
+   </children>
+</AnchorPane>

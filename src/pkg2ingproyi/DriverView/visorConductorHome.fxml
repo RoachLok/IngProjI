@@ -6,6 +6,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
+
 <SplitPane dividerPositions="0.25576923076923075" orientation="VERTICAL" prefHeight="522.0" prefWidth="332.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
