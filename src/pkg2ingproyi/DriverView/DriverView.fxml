@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.VBox?>
 <VBox prefHeight="547.0" prefWidth="332.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.DriverView.DriverViewController">
   <children>
@@ -20,7 +19,7 @@
         </Menu>
         <Menu>
           <graphic>
-            <Label text="Mensajes          " onMouseClicked="#handleDriverShowMesagesAction"/>
+            <Label text="Mensajes          " onMouseClicked="#handleDriverShowMessagesAction"/>
           </graphic>
         </Menu>
         <Menu mnemonicParsing="false" text="Ayuda">
