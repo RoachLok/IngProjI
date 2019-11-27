@@ -18,19 +18,19 @@ public class MessageHandler implements Runnable{
     private String username;
     private String host;
     private String adminUsername;
-    private DriverChat chatWindow;
     private int port;
+    private DriverChat driverChat;
 
 
-    MessageHandler(String host, int port, String username, String adminUsername, DriverChat chatWindow) {
+    MessageHandler(String host, int port, String username, String adminUsername, DriverChat driverChat) { //DriverChat constructor
         this.host = host;
         this.port = port;
         this.username = username;
         this.adminUsername = adminUsername;
-        this.chatWindow = chatWindow;
+        this.driverChat = driverChat;
     }
 
-    public boolean connectToServer() { //TODO HANDSHAKE
+    boolean connectToServer() { //TODO HANDSHAKE
         try {
             //Init socket and data interfaces.
             socket = new Socket(host, port);
@@ -42,7 +42,7 @@ public class MessageHandler implements Runnable{
             thread.start();
 
             //Server Hello
-            sendMessage(" Hello Server!");
+            sendMessage("SYN><Hello Server!");
 
         } catch (UnknownHostException e) {
             Platform.runLater(() -> {
@@ -59,7 +59,7 @@ public class MessageHandler implements Runnable{
         return true;
     }
 
-    public void sendMessage(String message) {
+    void sendMessage(String message) {
         dataOut.println(message);
     }
 
@@ -101,9 +101,10 @@ public class MessageHandler implements Runnable{
                         System.out.println("Connected to server.");
                         //TODO Mark server as online. Is my admin online? / are my users online? / disablebutton.
 
+
                     } else if (textIn.startsWith("MSG")) {
                         String[] parsedField = textIn.substring(5).split("><");
-                        chatWindow.addText(parsedField[1]);
+                        driverChat.addText(parsedField[1], false);
 
                     } else if (textIn.startsWith("FIN")) {
                         disconnectFromServer();
