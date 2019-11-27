@@ -1,11 +1,15 @@
-# SafeJourney's Chat Client will be developed here.
+# SafeJourney's Chat Client Development
 
-Chat client development.
+Chat's Server will be developed here.
 
-## Clients
+## Server
 
-- SupervisorChatClient: Able to message between multiple Drivers.
-- DriverChatClient: Can only chat with his supervisor.
+- Operates independently.
+- It is meant to be running indefinetly.
+- Authenticates clients.
+- Stores messages sent to unreachable destinations.
+- Hosted locally.
+- Allows for parallel servers running on different ports under the same ip.
 
 
 ## Additonal Info
@@ -21,19 +25,13 @@ Chat client development.
 
 ## UID Information
 
-#### Client
-
-- Supervisor
-
-WORK IN PROGRESS
-
-- Driver
-
-![Driverchatss](driverchatss.png)
+Currently under development.
 
 # Changelog
 
 - Basic server created.
 - Basic client created.
+
+
 
 
