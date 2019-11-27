@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<BorderPane prefHeight="401.0" prefWidth="438.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chat_server.Main">
+    <center>
+        <TextArea fx:id="textArea" editable="false" focusTraversable="false" prefHeight="200.0" prefWidth="442.0" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </BorderPane.margin>
+        </TextArea>
+    </center>
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+    </padding>
+   <bottom>
+      <FlowPane prefHeight="27.0" prefWidth="428.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="   " />
+                <Label prefHeight="25.0" prefWidth="93.0" text="Server Port:">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="portField" alignment="CENTER" focusTraversable="false" prefHeight="25.0" prefWidth="80.0" text="56789" />
+            <Label text="        " />
+            <Label text="          " />
+                <Button fx:id="startServer" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Start Server">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+            <Label prefHeight="17.0" prefWidth="14.0" text="  " />
+                <Button fx:id="stopServer" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Stop Server">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+         </children>
+      </FlowPane>
+   </bottom>
+</BorderPane>
