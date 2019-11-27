@@ -1,30 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
-<AnchorPane prefHeight="522.0" prefWidth="332.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.ChatClient.DriverChat">
+<AnchorPane fx:id="parentAnchorPane" prefHeight="522.0" prefWidth="332.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.ChatClient.DriverChat">
    <children>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="522.0" prefWidth="332.0">
-         <center>
-            <TextArea fx:id="messagesArea" editable="false" focusTraversable="false" prefHeight="317.0" prefWidth="332.0" promptText="No hay mensajes que mostrar.                             SafeJourney_Chat_v0.2." BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets />
-               </BorderPane.margin>
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </TextArea>
-         </center>
          <bottom>
             <GridPane BorderPane.alignment="CENTER">
               <columnConstraints>
@@ -36,11 +20,11 @@
               </rowConstraints>
                <children>
                   <TextField fx:id="messageField" promptText="Escribe un mensaje aquí." />
-                  <Button fx:id="sentMessage" mnemonicParsing="false" prefHeight="25.0" prefWidth="92.0" text="Enviar" GridPane.columnIndex="1">
-                     <GridPane.margin>
-                        <Insets left="5.0" />
-                     </GridPane.margin>
-                  </Button>
+                  <JFXButton fx:id="sendMessage" prefHeight="25.0" prefWidth="114.0" styleClass="button-glyph" text="Enviar" GridPane.columnIndex="1">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="SEND_ALT" />
+                     </graphic>
+                  </JFXButton>
                </children>
             </GridPane>
          </bottom>
@@ -48,12 +32,56 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
          <top>
-            <Label fx:id="label" alignment="CENTER" focusTraversable="false" prefHeight="19.0" prefWidth="668.0" styleClass="title-label-small" text="Chat con: JefeTráfico" BorderPane.alignment="CENTER">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
+            <HBox BorderPane.alignment="CENTER">
+               <children>
+                  <Pane prefHeight="48.0" prefWidth="8.0" />
+                  <Pane prefHeight="44.0" prefWidth="52.0">
+                     <children>
+                        <FontAwesomeIconView glyphName="USER_CIRCLE_ALT" layoutX="5.0" layoutY="38.0" size="43" wrappingWidth="52.0" />
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="44.0" prefWidth="10.0" />
+                  <VBox maxWidth="82.0" prefHeight="48.0" prefWidth="82.0">
+                     <children>
+                        <Label fx:id="label" alignment="CENTER" prefHeight="15.0" prefWidth="45.0" styleClass="title-label" text="Joset" textFill="#ff5b13">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="15.0" prefWidth="45.0" text=" En Línea" textFill="#b2b2b2">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Label>
+                        <Label text="Label">
+                           <font>
+                              <Font size="1.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Pane prefHeight="48.0" prefWidth="166.0">
+                     <children>
+                        <FontAwesomeIconView fx:id="isConnectedIcon" glyphName="WIFI" layoutX="147.0" layoutY="16.0" size="15" />
+                        <JFXButton fx:id="queryOldMessage" layoutX="66.0" layoutY="9.0">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="REPEAT" size="27" />
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="settingsButton" layoutX="99.0" layoutY="-2.0">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="GEAR" size="40" />
+                           </graphic>
+                        </JFXButton>
+                        <FontAwesomeIconView fx:id="downloadingIcon" glyphName="DOWNLOAD" layoutX="149.0" layoutY="39.0" size="15" />
+                     </children>
+                  </Pane>
+               </children>
+            </HBox>
          </top>
+         <center>
+            <TextArea fx:id="messagesArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+         </center>
       </BorderPane>
    </children>
 </AnchorPane>
