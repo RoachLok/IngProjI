@@ -87,7 +87,7 @@ public class LoginController implements Initializable {
         if (user.iniciarSesion(uName, password.getText())) {
             Stage stage = (Stage) loginButton.getScene().getWindow();
             handleUserLogin(user.isAdmin(uName), stage);
-        } else
+        } else //TODO ANIMATION FOR WRONG CREDENTIALS
             System.err.println("Wrong Credentials.");
     }
 
