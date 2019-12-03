@@ -14,7 +14,7 @@ public class Usuario {
     private String apellido;
     private String contrasena;
     private String dni;
-    ArrayList<String> mensajes = new ArrayList<>();
+    private ArrayList<String> mensajes = new ArrayList<>();
 
     public Usuario(String nombre, String apellido, String dni, String contrasena, String nombreUsuario){
         this.nombre = nombre;
@@ -38,23 +38,19 @@ public class Usuario {
         return dni;
     }
 
-    public boolean comprobarUsuario(String dni) {
-        File fichero = new File("C:\\Users\\jtabo_000\\IdeaProjects\\IngProjI\\src\\resources\\usuario.txt");
+    private File file = new File ("src/resources/usuario.txt").getAbsoluteFile();
+
+    private boolean comprobarUsuario(String dni) throws FileNotFoundException {
+        Scanner entrada = new Scanner(file);
         String linea;
-        Scanner entrada = null;
-        try {
-            entrada = new Scanner(fichero);
             while(entrada.hasNext()) {
                 linea = entrada.nextLine();
                 if(linea.contains(dni)) {
-                    /*Esto quiere decir que el dni ya existe en la base de datos*/
+                    /*Esto quiere decir que el dni ya existe en l   a base de datos*/
                     entrada.close();
                     return true;
                 }
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
         return false;
     }
 
@@ -62,10 +58,9 @@ public class Usuario {
         Scanner entrada = null;
         String linea = null;
         String[] partes = null;
-        File fichero = new File("C:\\Users\\jtabo_000\\IdeaProjects\\IngProjI\\src\\resources\\usuario.txt");
 
         if(comprobarUsuario(dni)) {
-            entrada = new Scanner(fichero);
+            entrada = new Scanner(file);
             while(entrada.hasNext()) {
                 linea = entrada.nextLine();
                 if(linea.contains(this.contrasena)) {
@@ -79,18 +74,18 @@ public class Usuario {
     }
 
 
-    public boolean iniciarSesion(String usuario, String password) {
-        Scanner entrada = null;
-        String linea = null;
-        String[] partes = null;
-        File fichero = new File("C:\\Users\\jtabo_000\\IdeaProjects\\IngProjI\\src\\resources\\usuario.txt");
+    public boolean iniciarSesion(String usuario, String password) throws FileNotFoundException {
+        Scanner entrada;
+        String linea;
+        String[] partes;
+
         if(usuario == null || password == null) {
             return false;
         }
 
         if(comprobarUsuario(usuario)) {
             try {
-                entrada = new Scanner(fichero);
+                entrada = new Scanner(file);
                 while(entrada.hasNext()) {
                     linea = entrada.nextLine();
                     if(linea.contains(usuario)) {
@@ -111,7 +106,7 @@ public class Usuario {
 
 
     public boolean isAdmin(String nombreUsuario) throws FileNotFoundException {
-        FileReader fr = new FileReader("C:\\Users\\jtabo_000\\IdeaProjects\\IngProjI\\src\\resources\\usuario.txt");
+        FileReader fr = new FileReader(file);
         BufferedReader br = new BufferedReader(fr);
         String linea;
         String[] campos;
@@ -128,7 +123,7 @@ public class Usuario {
                 }
             }
             catch(Exception e) {
-                System.out.println("Excepcion");
+                e.printStackTrace();
             }
         }
         return false;
