@@ -1,1 +1,7 @@
-Matricula,DNI,Estado,Parado,Moviendose,PresionRuedas
+Matricula,DNI,Estado,Velocidad,Parado,Moviendose,PresionRuedas
+05450270Y,3747FYY,
+05450355Z,9141KDK,
+05250398L,2557GXM,
+12345678G,1024PST,
+77642686H,8888HHS,
+14253678,9876JJJ,
