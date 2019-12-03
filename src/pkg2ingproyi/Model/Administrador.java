@@ -89,7 +89,7 @@ public class Administrador extends Usuario{
 					if(linea.contains(dni)) {
 						/*Ahora cogemos la linea y seleccionamos la matricula asignada al dni*/
 						partes = linea.split(",");
-						retorno = "El camion es: " + partes[5] + "y el conductor es: " + "Nombre: " + partes[1] + "Apellido: " + partes[2];
+						retorno = "El camion es: " + partes[5] + "y el conductor es: " + "Nombre: " + partes[0] + "Apellido: " + partes[1];
 						}
 				}
 	
@@ -187,28 +187,7 @@ public class Administrador extends Usuario{
 	
 	
 	
-	public boolean isAdmin(String nombreUsuario) throws FileNotFoundException {
-		FileReader fr = new FileReader("usuario.txt");
-	    BufferedReader br = new BufferedReader(fr);
-	    String linea;
-		String[] campos;
-		if(this.comprobarUsuario(nombreUsuario) == true) {
-			try {
-			    while((linea = br.readLine()) != null) {
-			    	if(linea.contains(nombreUsuario)) {
-			    		campos = linea.split(",");
-			    		if(campos[6] == "true")
-			    			br.close();
-			    			return true;
-			    	}
-			    }
-			}
-			catch(Exception e) {
-			      System.out.println("Excepcion");
-			    }
-		}
-		return false;
-	}
+	
 }
 
 

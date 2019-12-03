@@ -3,6 +3,17 @@ package pkg2ingproyi.Model;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import java.io.FileWriter;
+import java.util.Date;
+import java.util.Iterator;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 
 public class Usuario {
 
@@ -10,16 +21,17 @@ public class Usuario {
 	private String nombreUsuario;
 	private String apellido;
 	private String contrasena;
-	private String dni;	    
-	 ArrayList<String> mensajes = new ArrayList<>();
+	private String dni;
+	private Usuario Admin;
+	 ArrayList<Mensaje> mensajes = new ArrayList<>();
 	    
-	 public Usuario(String nombre, String apellido, String dni, String contrasena, String nombreUsuario, ArrayList<String> mensajes){
+	 public Usuario(String nombre, String apellido, String dni, String contrasena, String nombreUsuario){
 		 this.nombre = nombre;
 		 this.apellido = apellido;
 		 this.dni = dni;
 		 this.contrasena = contrasena;
 		 this.nombreUsuario = nombreUsuario;
-		 this.mensajes = mensajes;
+		 this.mensajes = new ArrayList<Mensaje>();
 		 }
 	    
 	 public String getnombreUsuario(){
@@ -31,9 +43,15 @@ public class Usuario {
 	 public String getnombre(){
 		 return nombre;
 	    }
+	 public String getApellido() {
+		 return this.apellido;
+	 }
 	 public String getdni(){
 		 return dni;
 	    }
+	 public ArrayList<Mensaje> getMensajes() {
+		 return mensajes;
+	 }
 	 
 	 public boolean comprobarUsuario(String dni) {
 			File fichero = new File("usuario.txt");
@@ -129,4 +147,61 @@ public class Usuario {
 		}
 		return false;
 	}
+	
+	public boolean enviarMensaje(Usuario receptor, String mensaje) {
+		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+		Date date = new Date();
+		JSONObject obj = new JSONObject();
+		Mensaje men = new Mensaje(this, receptor, mensaje);
+		if(mensaje == null)
+			return false;
+		if(this.comprobarUsuario(receptor.getdni()) == true) {
+			/*Existe ese usuario entonces se puede enviar*/
+			receptor.getMensajes().add(men);
+			/*Ahora se añade al fichero global que contiene todos los mensajes con JSON*/
+			obj.put("Emisor", this.getdni());
+			obj.put("Receptor", receptor.getdni());
+			obj.put("Mensaje", mensaje);
+			obj.put("Leido", false);
+			obj.put("TimeStamp", dateFormat.format(date));
+			try {
+				FileWriter file = new FileWriter("mensajes.txt");
+				file.write(obj.toJSONString());
+				file.flush();
+				file.close();
+			} catch (IOException e) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	
+	public boolean mensajeLeido(Usuario envia, Usuario recibe, String cadena) {
+		/*Cuando el usuario lo lea se pasa el campo leido del json a true y ya*/
+		 try (Reader reader = new FileReader("mensajes.json")) {
+
+	            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+	       
+	            String emisor = (String) jsonObject.get("Emisor");
+	            String receptor= (String) jsonObject.get("Receptor");
+	            String mensaje = (String) jsonObject.get("Mensaje");
+	            boolean leido = (boolean) jsonObject.get("leido");
+	            String horaenviado = (String) jsonObject.get("TimeStamp");
+	            // loop array
+	            JSONArray msg = (JSONArray) jsonObject.get("messages");
+	            Iterator<String> iterator = msg.iterator();
+	            while (iterator.hasNext()) {
+	                System.out.println(iterator.next());
+	            }
+
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        } catch (ParseException e) {
+	            e.printStackTrace();
+	        }
+		
+		return false;
+	}
+	
 }
