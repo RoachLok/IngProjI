@@ -1,29 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
 <?import de.jensd.fx.glyphs.fontawesome.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <AnchorPane fx:id="parentAnchorPane" prefHeight="522.0" prefWidth="332.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.ChatClient.DriverChat">
    <children>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="522.0" prefWidth="332.0">
          <bottom>
-            <GridPane BorderPane.alignment="CENTER">
+            <GridPane prefHeight="32.0" prefWidth="322.0" BorderPane.alignment="BOTTOM_CENTER">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="225.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <TextField fx:id="messageField" promptText="Escribe un mensaje aquí." />
-                  <JFXButton fx:id="sendMessage" prefHeight="25.0" prefWidth="114.0" styleClass="button-glyph" text="Enviar" GridPane.columnIndex="1">
+                  <JFXButton fx:id="sendMessage" graphicTextGap="6.0" prefHeight="0.0" prefWidth="94.0" styleClass="button-glyph" text="Enviar" GridPane.columnIndex="1">
                      <graphic>
-                        <FontAwesomeIconView glyphName="SEND_ALT" />
+                        <FontAwesomeIconView glyphName="SEND_ALT" size="13.5" />
                      </graphic>
+                     <font>
+                        <Font size="13.0" />
+                     </font>
                   </JFXButton>
                </children>
             </GridPane>
@@ -32,7 +39,7 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
          <top>
-            <HBox BorderPane.alignment="CENTER">
+            <HBox prefHeight="27.0" prefWidth="322.0" BorderPane.alignment="CENTER">
                <children>
                   <Pane prefHeight="48.0" prefWidth="8.0" />
                   <Pane prefHeight="44.0" prefWidth="52.0">
@@ -43,12 +50,12 @@
                   <Pane prefHeight="44.0" prefWidth="10.0" />
                   <VBox maxWidth="82.0" prefHeight="48.0" prefWidth="82.0">
                      <children>
-                        <Label fx:id="label" alignment="CENTER" prefHeight="15.0" prefWidth="45.0" styleClass="title-label" text="Joset" textFill="#ff5b13">
+                        <Label fx:id="recieverName" alignment="CENTER" prefHeight="15.0" prefWidth="45.0" styleClass="title-label" text="Joset" textFill="#ff5b13">
                            <font>
                               <Font size="19.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="15.0" prefWidth="45.0" text=" En Línea" textFill="#b2b2b2">
+                        <Label fx:id="statusLabel" prefHeight="15.0" prefWidth="45.0" text=" En Línea" textFill="#b2b2b2">
                            <font>
                               <Font size="10.0" />
                            </font>
@@ -62,25 +69,40 @@
                   </VBox>
                   <Pane prefHeight="48.0" prefWidth="166.0">
                      <children>
-                        <FontAwesomeIconView fx:id="isConnectedIcon" glyphName="WIFI" layoutX="147.0" layoutY="16.0" size="15" />
-                        <JFXButton fx:id="queryOldMessage" layoutX="66.0" layoutY="9.0">
+                        <FontAwesomeIconView fx:id="isConnectedIcon" glyphName="WIFI" layoutX="152.0" layoutY="14.0" size="17" />
+                        <JFXButton fx:id="queryOldMessage" alignment="BASELINE_LEFT" contentDisplay="GRAPHIC_ONLY" layoutX="117.0" layoutY="21.0" onAction="#handleQueryButtonAction" prefWidth="24.0">
                            <graphic>
-                              <FontAwesomeIconView glyphName="REPEAT" size="27" />
+                              <FontAwesomeIconView glyphName="REPEAT" size="22" />
                            </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="settingsButton" layoutX="99.0" layoutY="-2.0">
+                        <JFXButton fx:id="settingsButton" contentDisplay="GRAPHIC_ONLY" layoutX="117.0" layoutY="-6.0">
                            <graphic>
-                              <FontAwesomeIconView glyphName="GEAR" size="40" />
+                              <FontAwesomeIconView glyphName="GEAR" size="24" />
                            </graphic>
+                           <effect>
+                              <BoxBlur />
+                           </effect>
                         </JFXButton>
-                        <FontAwesomeIconView fx:id="downloadingIcon" glyphName="DOWNLOAD" layoutX="149.0" layoutY="39.0" size="15" />
+                        <FontAwesomeIconView fx:id="downloadingIcon" glyphName="DOWNLOAD" layoutX="152.0" layoutY="44.0" size="17" />
+                        <FontAwesomeIconView fx:id="isNotConnectedIcon" glyphName="UNLINK" layoutX="152.0" layoutY="14.0" size="17" />
                      </children>
                   </Pane>
                </children>
             </HBox>
          </top>
          <center>
-            <TextArea fx:id="messagesArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+            <JFXTextArea fx:id="messagesArea" labelFloat="true" styleClass="jfx-text-field" BorderPane.alignment="CENTER">
+               <effect>
+                  <Lighting>
+                     <bumpInput>
+                        <Shadow />
+                     </bumpInput>
+                     <light>
+                        <Light.Distant/>
+                     </light>
+                  </Lighting>
+               </effect>
+            </JFXTextArea>
          </center>
       </BorderPane>
    </children>

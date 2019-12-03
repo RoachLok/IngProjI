@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import pkg2ingproyi.Model.Usuario;
 
@@ -29,22 +30,20 @@ import java.util.ResourceBundle;
 public class LoginController implements Initializable {
 
     @FXML
-    private JFXPasswordField password;
+    private JFXPasswordField passwordField;
     @FXML
-    private JFXTextField username;
+    private JFXTextField usernameField;
     @FXML
     private JFXButton loginButton;
     @FXML
     private AnchorPane canvas;
-
-    Usuario user = new Usuario("tas", "String apellido", "String dni", "String contrasena", "String nombreUsuario");
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                username.requestFocus();
+                usernameField.requestFocus();
                 canvas.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
                     @Override
                     public void handle(KeyEvent event) {
@@ -59,20 +58,27 @@ public class LoginController implements Initializable {
                 });
             }
         });
+        usernameField.focusedProperty().addListener((ov, oldV, newV) -> {
+            usernameField.setUnFocusColor(Color.valueOf("ff5b13"));
+            usernameField.setFocusColor(Color.valueOf("ff5b13"));
+        });
+        passwordField.focusedProperty().addListener((observable) -> {
+            passwordField.setUnFocusColor(Color.valueOf("ff5b13"));
+            passwordField.setFocusColor(Color.valueOf("ff5b13"));
+        });
     }
 
-    public void handleUserLogin(boolean isAdmin, Stage stageUser) throws IOException {
+    private void handleUserLogin(boolean isAdmin, Stage stageUser) throws IOException {
         String fxmlPath, windowTitle;
         if(!isAdmin){                                                   //Conductor Login
-            fxmlPath = "../DriverView/DriverView.fxml";
+            fxmlPath = "/pkg2ingproyi/DriverView/DriverView.fxml";
             windowTitle = "Safe Journey: Conductor";
         }else{                                                          //Supervisor Login
-            fxmlPath = "../SupervisorView/SupervisorMasterView.fxml";
+            fxmlPath = "/pkg2ingproyi/SupervisorView/visorSupervisorChat.fxml";
             windowTitle = "Safe Journey: Supervisor";
         }
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(fxmlPath));
-        Parent root = loader.load();
+
+        Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
 
         Scene sceneDriver = new Scene(root);
         stageUser.setScene(sceneDriver);
@@ -83,12 +89,19 @@ public class LoginController implements Initializable {
     @FXML
     private void handleLoginButtonAction(ActionEvent event) throws IOException {
         /*     LOGIN ACTION     */
-        String uName = username.getText();
-        if (user.iniciarSesion(uName, password.getText())) {
+        String uName = usernameField.getText();
+        Usuario user = new Usuario("","","","","");
+        if (user.iniciarSesion(uName, passwordField.getText())) {
             Stage stage = (Stage) loginButton.getScene().getWindow();
             handleUserLogin(user.isAdmin(uName), stage);
-        } else //TODO ANIMATION FOR WRONG CREDENTIALS
+        } else {
+            passwordField.setText("");
+            passwordField.setUnFocusColor(Color.DARKRED);
+            passwordField.setFocusColor(Color.DARKRED);
+            usernameField.setUnFocusColor(Color.DARKRED);
+            usernameField.setFocusColor(Color.DARKRED);
             System.err.println("Wrong Credentials.");
+        }
     }
 
     @FXML

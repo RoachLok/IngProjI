@@ -37,6 +37,13 @@
     -fx-font-family: 'Rubik';
 }
 
+.jfx-text-field {
+    -fx-text-inner-color: white;
+  /*  -fx-prompt-text-fill: WHITE;
+    -jfx-focus-color: WHITE;
+    -jfx-unfocus-color: WHITE;*/
+}
+
 .title-label-small{
     -fx-text-fill: -fx-secondary;
     -fx-font-size: 18px;

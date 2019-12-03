@@ -10,12 +10,12 @@
 <?import javafx.scene.text.Font?>
 <AnchorPane fx:id="canvas" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="292.0" prefWidth="279.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.LoginView.LoginController">
    <children>
-      <JFXTextField fx:id="username" labelFloat="true" layoutX="73.0" layoutY="88.0" prefHeight="30.0" prefWidth="177.0" promptText="Usuario" styleClass="login-textfields">
+      <JFXTextField fx:id="usernameField" labelFloat="true" layoutX="73.0" layoutY="88.0" prefHeight="30.0" prefWidth="177.0" promptText="Usuario" styleClass="login-textfields">
          <font>
             <Font size="13.0" />
          </font>
       </JFXTextField>
-      <JFXPasswordField fx:id="password" labelFloat="true" layoutX="73.0" layoutY="159.0" prefHeight="30.0" prefWidth="177.0" promptText="Contraseña" styleClass="login-textfields">
+      <JFXPasswordField fx:id="passwordField" labelFloat="true" layoutX="73.0" layoutY="159.0" prefHeight="30.0" prefWidth="177.0" promptText="Contraseña" styleClass="login-textfields">
          <font>
             <Font size="13.0" />
          </font>
