@@ -5,7 +5,7 @@
  */
 package pkg2ingproyi.DriverView;
 
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -46,7 +46,7 @@ public class DriverViewController implements Initializable {
     }
 
     @FXML
-    private void handleDriverShowHomeAction(ActionEvent event) {
+    private void handleDriverShowHomeAction(Event event) {
         try {
             newLoadedPane = (Node)FXMLLoader.load(getClass().getResource("visorConductorHome.fxml"));
         } catch (IOException e) {
@@ -56,7 +56,7 @@ public class DriverViewController implements Initializable {
     }
 
     @FXML
-    private void handleDriverShowServicesAction(ActionEvent event) {
+    private void handleDriverShowServicesAction(Event event) {
         try {
             newLoadedPane = (Node)FXMLLoader.load(getClass().getResource("visorConductorServices.fxml"));
         } catch (IOException e) {
@@ -66,7 +66,12 @@ public class DriverViewController implements Initializable {
     }
 
     @FXML
-    private void handleDriverShowMesagesAction(ActionEvent event) {
+    private void handleDriverShowMessagesAction(Event event) {
+        try {
+            newLoadedPane = (Node)FXMLLoader.load(getClass().getResource("visorConductorMessages.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        driverSVHolder.getChildren().setAll(newLoadedPane);
     }
-
 }

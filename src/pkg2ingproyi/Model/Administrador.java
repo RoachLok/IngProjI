@@ -13,13 +13,15 @@ public class Administrador {
     private String apellido;
     private String dni;
     private ArrayList<String> mensajes;
+    private ArrayList<Usuario> conductores;
 
-    public Administrador(String nombre, String apellido, String nombreUsuario, String dni, ArrayList<String> mensajes) {
+    public Administrador(String nombre, String apellido, String nombreUsuario, String dni, ArrayList<String> mensajes, ArrayList<Usuario> conductores) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
         this.nombreUsuario = nombreUsuario;
         this.mensajes = mensajes;
+        this.conductores=conductores;
     }
 
     public String getNombre() {
@@ -42,7 +44,14 @@ public class Administrador {
         return this.mensajes;
     }
 
-    /*Esta funcion crea una contrase�a random de 6 caracteres*/
+
+    public ArrayList<Usuario> getConductores() {
+        return conductores;
+    }
+
+
+
+    /*Esta funcion crea una contraseï¿½a random de 6 caracteres*/
     private String contrasena() {
         String contrasena = "";
         Random rnd = new Random();
@@ -98,6 +107,29 @@ public class Administrador {
         }
     }
 
+    public void addConductor(Usuario conductor) {
+        conductores.add(conductor);
+    }
+
+    public boolean removeConductor(int indice){
+        if(indice>conductores.size()){
+            return false;
+        }
+        conductores.remove(indice);
+        return true;
+    }
+
+    public int numConductores() {
+        return conductores.size();
+    }
+
+    public Usuario getConductor(int indice) {
+        if(indice>conductores.size()){
+            return null;
+        }
+        return conductores.get(indice);
+    }
+
     public String CamiondelConductor(String dni) {
         Scanner entrada;
         String linea, retorno = null;
@@ -124,6 +156,4 @@ public class Administrador {
         return retorno;
     }
 }
-
-
 
