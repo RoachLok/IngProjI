@@ -16,7 +16,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import pkg2ingproyi.Model.Usuario;
+import pkg2ingproyi.Model.UserUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -90,10 +90,9 @@ public class LoginController implements Initializable {
     private void handleLoginButtonAction(ActionEvent event) throws IOException {
         /*     LOGIN ACTION     */
         String uName = usernameField.getText();
-        Usuario user = new Usuario("","","","","");
-        if (user.iniciarSesion(uName, passwordField.getText())) {
+        if (UserUtils.iniciarSesion(uName, passwordField.getText())) {
             Stage stage = (Stage) loginButton.getScene().getWindow();
-            handleUserLogin(user.isAdmin(uName), stage);
+            handleUserLogin(UserUtils.isAdmin(uName), stage);
         } else {
             passwordField.setText("");
             passwordField.setUnFocusColor(Color.DARKRED);

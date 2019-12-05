@@ -1,4 +1,4 @@
-Nombre,Apellido,NombreUsuario,Contraseña,DNI,Matricula,Admin
+Nombre,Apellido,NombreUsuario,Contrasenya,DNI,Matricula,Admin
 Jose,Taborda,Joset,holabb,05450270Y,3747FYY,true
 Nacho,Marica,Nachocalvo,quetal,05450355Z,9141KDK,false
 Sergio,Perro,Sergiobarbas,nomese,05250398L,2557GXM,true

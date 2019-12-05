@@ -8,7 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import pkg2ingproyi.Model.Administrador;
-import pkg2ingproyi.Model.Usuario;
+import pkg2ingproyi.Model.Driver;
 
 import java.net.InetAddress;
 import java.net.URL;
@@ -87,7 +87,7 @@ public class SupervisorChat implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         //label.setText("Chat con: "+supervisorUsername); //TODO: Style title. Picture, last connect/online, etc. Add setting for port.
         ArrayList<String>mensajes= new ArrayList<>();
-        ArrayList<Usuario> conductores= new ArrayList<>();
+        ArrayList<Driver> conductores= new ArrayList<>();
         supervisor=new Administrador("Jose","Taborda","Joset","05450270Y",mensajes,conductores);
         ArrayList<String> nombreCond= new ArrayList<String>();
 
@@ -103,7 +103,7 @@ public class SupervisorChat implements Initializable {
 
         //lvConductores.setItems(listView);
 
-        supervisor.addConductor(new Usuario("Nacho", "Marica", "05450355Z", "abcdef", "Nachocalvo"));
+        supervisor.addConductor(new Driver("Nacho", "Marica", "05450355Z", "abcdef", "Nachocalvo"));
         try {
             inetAddress = InetAddress.getLocalHost();
         } catch (UnknownHostException e) {

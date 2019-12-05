@@ -13,15 +13,15 @@ public class Administrador {
     private String apellido;
     private String dni;
     private ArrayList<String> mensajes;
-    private ArrayList<Usuario> conductores;
+    private ArrayList<Driver> conductores;
 
-    public Administrador(String nombre, String apellido, String nombreUsuario, String dni, ArrayList<String> mensajes, ArrayList<Usuario> conductores) {
+    public Administrador(String nombre, String apellido, String nombreUsuario, String dni, ArrayList<String> mensajes, ArrayList<Driver> conductores) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
         this.nombreUsuario = nombreUsuario;
         this.mensajes = mensajes;
-        this.conductores=conductores;
+        this.conductores = conductores;
     }
 
     public String getNombre() {
@@ -45,10 +45,9 @@ public class Administrador {
     }
 
 
-    public ArrayList<Usuario> getConductores() {
+    public ArrayList<Driver> getConductores() {
         return conductores;
     }
-
 
 
     /*Esta funcion crea una contraseï¿½a random de 6 caracteres*/
@@ -107,12 +106,12 @@ public class Administrador {
         }
     }
 
-    public void addConductor(Usuario conductor) {
+    public void addConductor(Driver conductor) {
         conductores.add(conductor);
     }
 
-    public boolean removeConductor(int indice){
-        if(indice>conductores.size()){
+    public boolean removeConductor(int indice) {
+        if (indice > conductores.size()) {
             return false;
         }
         conductores.remove(indice);
@@ -123,8 +122,8 @@ public class Administrador {
         return conductores.size();
     }
 
-    public Usuario getConductor(int indice) {
-        if(indice>conductores.size()){
+    public Driver getConductor(int indice) {
+        if (indice > conductores.size()) {
             return null;
         }
         return conductores.get(indice);

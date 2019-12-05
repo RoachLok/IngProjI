@@ -2,29 +2,29 @@ package pkg2ingproyi.Model;
 
 public class Mensaje {
 
-	private Usuario receptor;
-	private Usuario emisario;
+	private Driver receptor;
+	private Driver emisario;
 	private String mensaje;
 	
-	public Mensaje(Usuario emisario, Usuario receptor, String mensaje) {
+	public Mensaje(Driver emisario, Driver receptor, String mensaje) {
 		this.emisario = emisario;
 		this.receptor = receptor;
 		this.mensaje = mensaje;
 	}
 
-	public Usuario getReceptor() {
+	public Driver getReceptor() {
 		return receptor;
 	}
 
-	public void setReceptor(Usuario receptor) {
+	public void setReceptor(Driver receptor) {
 		this.receptor = receptor;
 	}
 
-	public Usuario getEmisario() {
+	public Driver getEmisario() {
 		return emisario;
 	}
 
-	public void setEmisario(Usuario emisario) {
+	public void setEmisario(Driver emisario) {
 		this.emisario = emisario;
 	}
 
