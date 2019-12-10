@@ -2,38 +2,34 @@ package pkg2ingproyi.Model;
 
 abstract class User {
     private String username, password, dni, name, surname;
-    private boolean isAdmin;
 
-    User(String username, String password, String dni, String name, String surname, boolean isAdmin) {
+    User(String username, String password, String name, String surname, String dni) {
         this.username = username;
         this.password = password;
-        this.dni = dni;
         this.name = name;
         this.surname = surname;
-        this.isAdmin = isAdmin;
+        this.dni = dni;
     }
 
-    String getUsername() {
+    public String getUsername() {
         return username;
     }
 
-    String getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    String getDni() {
+    public String getDni() {
         return dni;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    String getSurname() {
+    public String getSurname() {
         return surname;
     }
 
-    boolean isAdmin() {
-        return isAdmin;
-    }
+    abstract boolean isAdmin();
 }

@@ -95,7 +95,7 @@ public class SupervisorChat implements Initializable {
 
 
         for (int i = 0; i < supervisor.numConductores(); i++) {
-            nombreCond.add(supervisor.getConductor(i).getnombreUsuario());
+            nombreCond.add(supervisor.getConductor(i).getUsername());
 
         }
         ObservableList<String> options =FXCollections.observableArrayList(nombreCond);
@@ -103,7 +103,7 @@ public class SupervisorChat implements Initializable {
 
         //lvConductores.setItems(listView);
 
-        supervisor.addConductor(new Driver("Nacho", "Marica", "05450355Z", "abcdef", "Nachocalvo"));
+        supervisor.addConductor(new Driver("Nachocalvo", "abcdef", "12345678C", "Nacho", "Calvo", "Joset"));
         try {
             inetAddress = InetAddress.getLocalHost();
         } catch (UnknownHostException e) {

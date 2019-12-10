@@ -5,32 +5,41 @@ import java.util.ArrayList;
 class Admin extends User {
     private ArrayList<Driver> drivers;
 
-    Admin(String username, String password, String dni, String name, String surname, boolean isAdmin) {
-        super(username, password, dni, name, surname, isAdmin);
-    }
-    
-    public void addConductor(Driver conductor) {
-        drivers.add(conductor);
+    public Admin(String username, String password, String name, String surname, String dni, ArrayList<Driver> drivers) {
+        super(username, password, name, surname, dni);
+        this.drivers = drivers;
     }
 
-    public boolean removeConductor(int indice) {
-        if (indice > drivers.size()) {
+    public Admin(String[] parsed, ArrayList<Driver> drivers) {
+        super(parsed[0], parsed[1], parsed[2], parsed[3], parsed[4]);
+        this.drivers = drivers;
+    }
+    
+    public void addDriver(Driver driver) {
+        drivers.add(driver);
+    }
+
+    public boolean removeDriver(int index) {
+        if (index > drivers.size())
             return false;
-        }
-        drivers.remove(indice);
+
+        drivers.remove(index);
         return true;
     }
 
-    public int numConductores() {
+    public int driversCount() {
         return drivers.size();
     }
 
-    public Driver getConductor(int indice) {
-        if (indice > drivers.size()) {
+    public Driver getDriver(int index) {
+        if (index > drivers.size())
             return null;
-        }
-        return drivers.get(indice);
+
+        return drivers.get(index);
     }
 
-
+    @Override
+    boolean isAdmin() {
+        return true;
+    }
 }

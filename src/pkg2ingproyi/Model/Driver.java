@@ -1,23 +1,50 @@
 package pkg2ingproyi.Model;
 
+import java.util.ArrayList;
+
 public class Driver extends User{
     private String adminNick;
-    private Vehicle vehicle;
+    private ArrayList<Service> services;
 
-    Driver(String username, String password, String dni, String name, String surname, boolean isAdmin, String adminNick) {
-        super(username, password, dni, name, surname, isAdmin);
+    public Driver(String username, String password, String name, String surname, String dni, String adminNick) {
+        super(username, password, name, surname, dni);
         this.adminNick = adminNick;
     }
 
-    private void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
+    public Driver(String[] parsed){
+        super(parsed[0], parsed[1], parsed[2], parsed[3], parsed[4]);
+        this.adminNick = parsed[5];
+    }
+
+    public void addService(Service service) {
+        services.add(service);
+    }
+
+    public boolean removeService(int index) {
+        if (index > services.size())
+            return false;
+
+        services.remove(index);
+        return true;
+    }
+
+    public int servicesCount() {
+        return services.size();
+    }
+
+    public Service getService(int index) {
+        if (index > services.size())
+            return null;
+
+        return services.get(index);
     }
 
     private String getAdminNick() {
         return adminNick;
     }
 
-    private Vehicle getVehicle() {
-        return vehicle;
+    @Override
+    boolean isAdmin() {
+        return false;
     }
 }
