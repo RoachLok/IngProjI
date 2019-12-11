@@ -16,6 +16,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.controlsfx.control.Notifications;
 import pkg2ingproyi.Model.UserUtils;
 
 import java.io.IOException;
@@ -100,6 +101,7 @@ public class LoginController implements Initializable {
             usernameField.setUnFocusColor(Color.DARKRED);
             usernameField.setFocusColor(Color.DARKRED);
             System.err.println("Wrong Credentials.");
+            Notifications.create().title("Wrong Credentials").text("El usuario o contraseña introducidos no existen.").showError();
         }
     }
 

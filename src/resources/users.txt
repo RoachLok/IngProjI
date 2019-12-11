@@ -1,6 +1,10 @@
 admin,admin,TestAdmin,Testing,12345678A,
 driver,driver,TestDriver,Test,12345678D,admin
+driver2,driver2,TestDriver2,Test2,32165487A,admin
+Joset,pabloo,Jose,Tiburcio,05450270Y,
 Nachocalvo,abcdef,Nacho,Calvo,05450355Z,Joset
 JCarlos,12345,Juan Carlos,Hernández,87654321Z,Joset
-Joset,pabloo,Jose,Tiburcio,05450270Y,
+CRamirez,admin,Carlos,Ramirez,85741236F,
+Jtabo,user,Javier,Taborda,45876321P,CRamirez
+Msalvador,user,Manuel,Salvador,45863271D,CRamirez
 username,password,nombre,apellido,dni,adminName

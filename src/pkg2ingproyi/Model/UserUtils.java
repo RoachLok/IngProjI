@@ -29,7 +29,7 @@ public class UserUtils {
 
         Scanner entrada = new Scanner(readUsersFile());
         while(entrada.hasNext())
-            if(entrada.nextLine().startsWith(usuario+','+password)){
+            if(entrada.nextLine().startsWith(usuario+','+password)) {
                 entrada.close();
                 return true;
             }
@@ -90,7 +90,6 @@ public class UserUtils {
             if((holder = scInput.nextLine()).endsWith(username))
                 drivers.add(new Driver(holder.split(",")));
 
-        Admin newAdmin = new Admin(line.split(","), drivers);
-        return newAdmin;
+        return new Admin(line.split(","), drivers);
     }
 }
