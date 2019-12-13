@@ -1,5 +1,8 @@
 package pkg2ingproyi.Model;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -73,6 +76,26 @@ public class UserUtils {
         }
         return null;
     }
+
+    public static Object readJson(String filename) throws Exception {
+        FileReader reader = new FileReader(filename);
+        JSONParser jsonParser = new JSONParser();
+        return jsonParser.parse(reader);
+    }
+
+    private static Service initService() throws Exception {
+        JSONObject jsonObject = (JSONObject) readJson("services.json");
+        return new Service(
+                (String) jsonObject.get("title"),
+                (String) jsonObject.get("startTime"),
+                (String) jsonObject.get("endTime"),
+                (String) jsonObject.get("pickup"),
+                (String) jsonObject.get("transit"),
+                (String) jsonObject.get("arrival"),
+                (String) jsonObject.get("driverName"),
+                (String) jsonObject.get("vehicleID"));
+    }
+
 
     private static Driver initDriver(String line, String username) {
         ArrayList<Service> services;

@@ -10,16 +10,16 @@ public class Service {
     private String driverName;
     private String vehicleName;
 
-    public Service(String name, String startT, String endT, String pickup, String transit, String arrival,
-                   String driverName, String vehicleName) {
-        this.name = name;
-        this.startT = startT;
-        this.endT = endT;
+    public Service(String title, String startTime, String endTime, String pickup, String transit, String arrival,
+                   String driverName, String vehicleID) {
+        this.name = title;
+        this.startT = startTime;
+        this.endT = endTime;
         this.pickup = pickup;
         this.transit = transit;
         this.arrival = arrival;
         this.driverName = driverName;
-        this.vehicleName = vehicleName;
+        this.vehicleName = vehicleID;
     }
 
     public String getName() {
