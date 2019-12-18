@@ -1,5 +1,6 @@
 package pkg2ingproyi.Model;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -8,6 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class UserUtils {
@@ -64,9 +66,9 @@ public class UserUtils {
         String line;
         try {
             while((line = bufferedReader.readLine()) != null)
-                if(line.contains(username))
+                if(line.startsWith(username))
                     if (!isAdmin)
-                        return new Driver(line.split(","));
+                        return initDriver(line, username);
                     else
                         return initAdmin(line, username);
             bufferedReader.close();
@@ -77,41 +79,53 @@ public class UserUtils {
         return null;
     }
 
-    public static Object readJson(String filename) throws Exception {
-        FileReader reader = new FileReader(filename);
+    private static JSONArray readJson(String filepath) throws Exception {
+        FileReader reader = new FileReader(filepath);
         JSONParser jsonParser = new JSONParser();
-        return jsonParser.parse(reader);
+        return (JSONArray) jsonParser.parse(reader);
     }
 
-    private static Service initService() throws Exception {
-        JSONObject jsonObject = (JSONObject) readJson("services.json");
+    private static Service parseJsonObject(JSONObject object) {
         return new Service(
-                (String) jsonObject.get("title"),
-                (String) jsonObject.get("startTime"),
-                (String) jsonObject.get("endTime"),
-                (String) jsonObject.get("pickup"),
-                (String) jsonObject.get("transit"),
-                (String) jsonObject.get("arrival"),
-                (String) jsonObject.get("driverName"),
-                (String) jsonObject.get("vehicleID"));
+                (String) object.get("title"),
+                (String) object.get("startTime"),
+                (String) object.get("endTime"),
+                (String) object.get("pickup"),
+                (String) object.get("transit"),
+                (String) object.get("arrival"),
+                (String) object.get("driverName"),
+                (String) object.get("vehicleID"),
+                (String) object.get("identifier"),
+                (String) object.get("author"));
     }
 
-
-    private static Driver initDriver(String line, String username) {
-        ArrayList<Service> services;
-
-        
-        return new Driver (line.split(","));
+    private static List<Service> initServices() throws Exception {
+        List<Service> services = new ArrayList<>();
+        JSONArray jsonArray = readJson("src/resources/services.json");
+        for (Object o : jsonArray)
+            services.add(parseJsonObject((JSONObject) o));
+        return services;
     }
 
-    private static Admin initAdmin(String line, String username) throws FileNotFoundException {
+    private static Driver initDriver(String line, String username) throws Exception {
+        Driver driver = new Driver(line.split(","));
+        for (Service service : initServices())
+            if (service.getDriverName().equals(username))
+                driver.addService(service);
+
+        return driver;
+    }
+
+    private static Admin initAdmin(String line, String username) throws Exception {
         String holder;
         ArrayList<Driver> drivers = null;
 
         Scanner scInput = new Scanner(readUsersFile());
         while(scInput.hasNext())
-            if((holder = scInput.nextLine()).endsWith(username))
-                drivers.add(new Driver(holder.split(",")));
+            if((holder = scInput.nextLine()).endsWith(username)) {
+                assert false;
+                drivers.add(initDriver(holder, holder.split(",")[0]));
+            }
 
         return new Admin(line.split(","), drivers);
     }

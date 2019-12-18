@@ -9,6 +9,7 @@ public class Driver extends User{
     public Driver(String username, String password, String name, String surname, String dni, String adminNick) {
         super(username, password, name, surname, dni);
         this.adminNick = adminNick;
+        this.services = new ArrayList<>();
     }
 
     public Driver(String[] parsed){

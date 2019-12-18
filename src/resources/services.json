@@ -1,5 +1,4 @@
-{
-  "S0001A": {
+[{
       "title": "TOLEDO-ATOCHA",
       "startTime": "[10/12/2019 19:55]",
       "endTime": "[11/12/2019 01:30]",
@@ -8,10 +7,10 @@
       "arrival": "ESTACION ATOCHA, MADRID",
       "driverName": "driver",
       "vehicleID": "0000BBB",
-      "code": "",
+      "identifier": "S0001A",
       "author": "admin"
   },
-  "S0002A": {
+{
       "title": "ATOCHA TRANSFER IN PUERTA DEL SOL",
       "startTime": "[13/12/2019 19:10]",
       "endTime": "",
@@ -20,22 +19,21 @@
       "arrival": "PUERTA DEL SOL, MADRID",
       "driverName": "driver2",
       "vehicleID": "0002BBB",
-      "code": "",
+      "identifier": "S0002A",
       "author": "admin"
   },
-  "S0003A": {
+   {
       "title": "PUERTA DEL SOL TRANSFER OUT ATOCHA",
-      "startTime": "[14/12/2019][19:00]",
+      "startTime": "[14/12/2019 19:00:00]",
       "endTime": "",
       "pickup": "PUERTAL DEL SOL, MADRID",
       "transit": "",
       "arrival": "ESTACION ATOCHA, MADRID",
       "driverName": "driver",
       "vehicleID": "0001BBB",
-      "code": "",
-      "author": ""
-  },
-  "S0004A": {
+      "identifier": "S0003A",
+      "author": "admin"
+  }, {
       "title": "BARAJAS TRANSFER IN HOTEL NH MADRID CHAMBERÍ",
       "startTime": "[10/12/2019 19:30:00]",
       "endTime": "[10/12/2019 20:30:00]",
@@ -44,10 +42,9 @@
       "arrival": "HOTEL NH MADRID CHAMBERÍ",
       "driverName": "Jtabo",
       "vehicleID": "9453HKK",
-      "code": "",
-      "author": ""
-  },
-  "S0005A": {
+      "identifier": "S0004A",
+      "author": "CRamirez"
+  }, {
       "title": "DISPOSICIÓN. UEMA-PLAZA CASTILLA-UEMA",
       "startTime": "[10/12/2019 19:30:00]",
       "endTime": "[10/12/2019 20:30:00]",
@@ -56,10 +53,10 @@
       "arrival": "UEM CAMPUS ALCOBENDAS",
       "driverName": "Nachocalvo",
       "vehicleID": "4583FDK",
-      "code": "",
-      "author": ""
+      "identifier": "S0005A",
+      "author": "Joset"
   },
-  "S0006A": {
+    {
       "title": "UEM ALCOBENDAS TRANSFER MI CASA",
       "startTime": "[28/12/2019 19:30:00]",
       "endTime": "[28/12/2019 20:30:00]",
@@ -68,7 +65,7 @@
       "arrival": "MI CASA",
       "driverName": "JCarlos",
       "vehicleID": "5129HKY",
-      "code": "",
-      "author": ""
+      "identifier": "S0006A",
+      "author": "Joset"
   }
-}
+]

@@ -1,6 +1,6 @@
 package pkg2ingproyi.Model;
 
-abstract class User {
+public abstract class User {
     private String username, password, dni, name, surname;
 
     User(String username, String password, String name, String surname, String dni) {

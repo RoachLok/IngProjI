@@ -9,9 +9,11 @@ public class Service {
     private String arrival;
     private String driverName;
     private String vehicleName;
+    private String identifier;
+    private String author;
 
     public Service(String title, String startTime, String endTime, String pickup, String transit, String arrival,
-                   String driverName, String vehicleID) {
+                   String driverName, String vehicleID, String identifier, String author) {
         this.name = title;
         this.startT = startTime;
         this.endT = endTime;
@@ -20,6 +22,8 @@ public class Service {
         this.arrival = arrival;
         this.driverName = driverName;
         this.vehicleName = vehicleID;
+        this.identifier = identifier;
+        this.author = author;
     }
 
     public String getName() {
