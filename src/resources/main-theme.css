@@ -6,7 +6,10 @@
 *{
     -fx-primary : #2a2e37;
     -fx-secondary : #ff5b13;
-    -fx-primarytext : #b2b2b2; 
+    -fx-primarytext : #b2b2b2;
+    -fx-superbuttonhover : #5c6579;
+    -fx-superbuttontext : #d0caca;
+    -fx-supermaincolor : #49e8bc;
 }
 
 @font-face {
@@ -82,10 +85,20 @@
     -fx-alignment: CENTER;
 }
 
-/*.text-area   {
-    -fx-text-fill: -fx-secondary;
-    -fx-font-size: 25px;
-}*/
+.supervisor-buttons{
+    -fx-text-fill : -fx-superbuttontext;
+    -fx-fill : -fx-superbuttontext;
+}
+
+.supervisor-buttons:hover{
+    -fx-background-color : -fx-superbuttonhover;
+    -icons-color : -fx-supermaincolor;
+    -fx-fill : -fx-supermaincolor;
+    -fx-text-fill : -fx-supermaincolor;
+    color : -fx-supermaincolor;
+}
+
+
 
 
 

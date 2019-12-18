@@ -17,6 +17,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.controlsfx.control.Notifications;
+import pkg2ingproyi.Main;
 import pkg2ingproyi.Model.UserUtils;
 
 import java.io.IOException;
@@ -75,7 +76,7 @@ public class LoginController implements Initializable {
             fxmlPath = "/pkg2ingproyi/DriverView/DriverView.fxml";
             windowTitle = "Safe Journey: Conductor";
         }else{                                                          //Supervisor Login
-            fxmlPath = "/pkg2ingproyi/SupervisorView/visorSupervisorChat.fxml";
+            fxmlPath = "/pkg2ingproyi/SupervisorView/SupervisorView.fxml";
             windowTitle = "Safe Journey: Supervisor";
         }
 
@@ -92,8 +93,10 @@ public class LoginController implements Initializable {
         /*     LOGIN ACTION     */
         String uName = usernameField.getText();
         if (UserUtils.iniciarSesion(uName, passwordField.getText())) {
+            boolean isAdmin = UserUtils.isAdmin(uName);
+            Main.appUser = UserUtils.createUser(uName, isAdmin);
             Stage stage = (Stage) loginButton.getScene().getWindow();
-            handleUserLogin(UserUtils.isAdmin(uName), stage);
+            handleUserLogin(isAdmin, stage);
         } else {
             passwordField.setText("");
             passwordField.setUnFocusColor(Color.DARKRED);
