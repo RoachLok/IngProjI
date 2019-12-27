@@ -4,43 +4,42 @@
 <?import de.jensd.fx.glyphs.fontawesome.*?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
-<?import javafx.scene.effect.Lighting?>
-<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1109.0" stylesheets="@../IdeaProjects/IngProjI/src/resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1109.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.SupervisorView.SupervisorViewController">
    <top>
       <BorderPane BorderPane.alignment="CENTER">
          <center>
             <HBox prefHeight="28.0" prefWidth="600.0">
                <children>
-                  <JFXButton styleClass="supervisor-buttons" text="Conductores">
+                  <JFXButton onAction="#handleConductoresButton" styleClass="supervisor-buttons" text="Conductores">
                      <graphic>
                         <FontAwesomeIconView glyphName="DRIVERS_LICENSE_ALT" size="22" styleClass="supervisor-buttons" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton styleClass="supervisor-buttons" text="Vehículos">
+                  <JFXButton onAction="#handleVehiculosButton" styleClass="supervisor-buttons" text="Vehículos">
                      <graphic>
                         <FontAwesomeIconView glyphName="BUS" size="22" styleClass="supervisor-buttons" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton styleClass="supervisor-buttons" text="Reservas">
+                  <JFXButton onAction="#handleReservasButton" styleClass="supervisor-buttons" text="Reservas">
                      <graphic>
                         <FontAwesomeIconView glyphName="STICKY_NOTE_ALT" size="22" styleClass="supervisor-buttons" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton styleClass="supervisor-buttons" text="Servicios">
+                  <JFXButton onAction="#handleServiciosButton" styleClass="supervisor-buttons" text="Servicios">
                      <graphic>
                         <FontAwesomeIconView glyphName="STICKY_NOTE" size="22" styleClass="supervisor-buttons" text="" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton styleClass="supervisor-buttons" text="Montaje">
+                  <JFXButton onAction="#handleMontajeButton" styleClass="supervisor-buttons" text="Montaje">
                      <graphic>
                         <FontAwesomeIconView glyphName="CALENDAR" size="22" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton styleClass="supervisor-buttons" text="Chat">
+                  <JFXButton onAction="#handleChatButton" styleClass="supervisor-buttons" text="Chat">
                      <graphic>
                         <FontAwesomeIconView glyphName="OPTIN_MONSTER" size="22" styleClass="supervisor-buttons" text="" />
                      </graphic>
@@ -49,7 +48,7 @@
             </HBox>
          </center>
          <right>
-            <JFXButton text="  " BorderPane.alignment="CENTER">
+            <JFXButton onAction="#handleSettingsButton" text="  " BorderPane.alignment="CENTER">
                <graphic>
                   <FontAwesomeIconView glyphName="GEARS" size="27" styleClass="supervisor-buttons" text="" />
                </graphic>
@@ -71,7 +70,7 @@
       </BorderPane>
    </top>
    <center>
-      <JFXTabPane side="BOTTOM" styleClass="root" tabDragPolicy="REORDER" BorderPane.alignment="CENTER">
+      <JFXTabPane fx:id="tabPane" side="BOTTOM" styleClass="root" BorderPane.alignment="CENTER">
          <tabs>
             <Tab text="Welcome Tab">
                <content>

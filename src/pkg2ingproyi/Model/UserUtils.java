@@ -118,7 +118,7 @@ public class UserUtils {
 
     private static Admin initAdmin(String line, String username) throws Exception {
         String holder;
-        ArrayList<Driver> drivers = null;
+        ArrayList<Driver> drivers = new ArrayList<>();
 
         Scanner scInput = new Scanner(readUsersFile());
         while(scInput.hasNext())
