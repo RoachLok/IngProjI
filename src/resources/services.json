@@ -8,6 +8,7 @@
       "driverName": "driver",
       "vehicleID": "0000BBB",
       "identifier": "S0001A",
+      "contractor": "UEM",
       "author": "admin"
   },
 {
@@ -20,6 +21,7 @@
       "driverName": "driver2",
       "vehicleID": "0002BBB",
       "identifier": "S0002A",
+      "contractor": "UEM",
       "author": "admin"
   },
    {
@@ -32,6 +34,7 @@
       "driverName": "driver",
       "vehicleID": "0001BBB",
       "identifier": "S0003A",
+      "contractor": "UEM",
       "author": "admin"
   }, {
       "title": "BARAJAS TRANSFER IN HOTEL NH MADRID CHAMBERÍ",
@@ -43,6 +46,7 @@
       "driverName": "Jtabo",
       "vehicleID": "9453HKK",
       "identifier": "S0004A",
+      "contractor": "UEM",
       "author": "CRamirez"
   }, {
       "title": "DISPOSICIÓN. UEMA-PLAZA CASTILLA-UEMA",
@@ -54,6 +58,7 @@
       "driverName": "Nachocalvo",
       "vehicleID": "4583FDK",
       "identifier": "S0005A",
+      "contractor": "UEM",
       "author": "Joset"
   },
     {
@@ -66,6 +71,7 @@
       "driverName": "JCarlos",
       "vehicleID": "5129HKY",
       "identifier": "S0006A",
+      "contractor": "UEM",
       "author": "Joset"
   }
 ]

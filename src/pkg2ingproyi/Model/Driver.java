@@ -41,12 +41,12 @@ public class Driver extends User{
         return services.get(index);
     }
 
-    private String getAdminNick() {
+    public String getAdminNick() {
         return adminNick;
     }
 
     @Override
-    boolean isAdmin() {
+    public boolean isAdmin() {
         return false;
     }
 }

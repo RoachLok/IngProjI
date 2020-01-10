@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
+
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1109.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.SupervisorView.SupervisorViewController">
    <top>
       <BorderPane BorderPane.alignment="CENTER">
@@ -72,20 +79,32 @@
    <center>
       <JFXTabPane fx:id="tabPane" side="BOTTOM" styleClass="root" BorderPane.alignment="CENTER">
          <tabs>
-            <Tab text="Welcome Tab">
+            <Tab closable="false" text="Welcome Tab">
                <content>
-                  <Pane prefHeight="200.0" prefWidth="200.0">
-                     <effect>
-                        <Lighting>
-                           <bumpInput>
-                              <Shadow />
-                           </bumpInput>
-                           <light>
-                              <Light.Distant />
-                           </light>
-                        </Lighting>
-                     </effect>
-                  </Pane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Label layoutX="206.0" layoutY="97.0" styleClass="supervisor-welcome-title" text="Safe Journey">
+                                 <font>
+                                    <Font size="34.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="207.0" layoutY="143.0" styleClass="supervisor-welcome-subtitle" text="Control de flotas a tiempo real" />
+                              <VBox layoutX="207.0" layoutY="325.0" prefHeight="139.0" prefWidth="433.0">
+                                 <children>
+                                    <Label styleClass="supervisor-welcome-texttitle" text="Help:" />
+                                    <Label styleClass="supervisor-welcome-text" text="- Utiliza los botones para abrir una nueva pestaña." />
+                                    <Label styleClass="supervisor-welcome-text" text="- Navega entre pestañas utilizando la barra de navegación." />
+                                    <Label styleClass="supervisor-welcome-text" text="- Cierra las pestañas desde la barra de navegación." />
+                                    <Label styleClass="supervisor-welcome-text" text="- Configura ajustes desde el botón situado arriba a la derecha." />
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="771.0" layoutY="150.0" prefHeight="200.0" prefWidth="100.0" />
+                           </children>
+                        </AnchorPane>
+                     </center>
+                  </BorderPane>
                </content>
             </Tab>
          </tabs>

@@ -30,7 +30,7 @@ public class MessageHandler implements Runnable{
         this.driverChat = driverChat;
     }
 
-    MessageHandler(String host, int port, String username, String adminUsername, SupervisorChat supChat) { //DriverChat constructor
+    MessageHandler(String host, int port, String username, SupervisorChat supChat) { //AdminChat constructor
         this.host = host;
         this.port = port;
         this.username = username;
@@ -38,10 +38,10 @@ public class MessageHandler implements Runnable{
         this.supChat = supChat;
     }
 
-    boolean connectToServer() { //TODO HANDSHAKE
+    boolean connectToServer() {
         try {
             //Init socket and data interfaces.
-            socket = new Socket(host, port);
+            socket = new Socket("192.168.1.11", port);
             dataOut = new PrintWriter(socket.getOutputStream(), true);
             dataIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 

@@ -3,7 +3,6 @@ package pkg2ingproyi.Model;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,7 +27,7 @@ public class UserUtils {
         return false;
     }
 
-    public static boolean iniciarSesion(String usuario, String password) throws FileNotFoundException {
+    public static boolean login(String usuario, String password) throws FileNotFoundException {
         if(usuario == null || password == null)
             return false;
 
@@ -96,6 +95,7 @@ public class UserUtils {
                 (String) object.get("driverName"),
                 (String) object.get("vehicleID"),
                 (String) object.get("identifier"),
+                (String) object.get("contractor"),
                 (String) object.get("author"));
     }
 
@@ -122,10 +122,8 @@ public class UserUtils {
 
         Scanner scInput = new Scanner(readUsersFile());
         while(scInput.hasNext())
-            if((holder = scInput.nextLine()).endsWith(username)) {
-                assert false;
+            if((holder = scInput.nextLine()).endsWith(username))
                 drivers.add(initDriver(holder, holder.split(",")[0]));
-            }
 
         return new Admin(line.split(","), drivers);
     }

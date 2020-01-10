@@ -31,5 +31,5 @@ public abstract class User {
         return surname;
     }
 
-    abstract boolean isAdmin();
+    public abstract boolean isAdmin();
 }

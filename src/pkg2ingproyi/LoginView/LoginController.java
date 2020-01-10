@@ -9,17 +9,18 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.controlsfx.control.Notifications;
 import pkg2ingproyi.Main;
 import pkg2ingproyi.Model.UserUtils;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -82,6 +83,10 @@ public class LoginController implements Initializable {
 
         Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
 
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        stageUser.setX((screenBounds.getWidth() - 1100) / 2);
+        stageUser.setY((screenBounds.getHeight() - 700) / 2);
+
         Scene sceneDriver = new Scene(root);
         stageUser.setScene(sceneDriver);
         stageUser.setTitle(windowTitle);
@@ -92,7 +97,7 @@ public class LoginController implements Initializable {
     private void handleLoginButtonAction(ActionEvent event) throws IOException {
         /*     LOGIN ACTION     */
         String uName = usernameField.getText();
-        if (UserUtils.iniciarSesion(uName, passwordField.getText())) {
+        if (UserUtils.login(uName, passwordField.getText())) {
             boolean isAdmin = UserUtils.isAdmin(uName);
             Main.appUser = UserUtils.createUser(uName, isAdmin);
             Stage stage = (Stage) loginButton.getScene().getWindow();

@@ -15,6 +15,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import pkg2ingproyi.Main;
+import pkg2ingproyi.Model.Driver;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -49,78 +51,75 @@ public class DriverChat implements Initializable {
 
     private JFXPopup jfxPopup;
 
-    private String driverUsername, supervisorUsername;
+    private Driver driver;
     private InetAddress inetAddress;
     private int port = 56789;
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
-    //TODO Get methods to be implemented in user classes
-    private String driverUsernameGETUSERNAME = "Nachocalvo";
-    private static String driverGETADMINNAME = "Joset";
-
     private MessageHandler messageHandler;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        //TODO: Style title. Picture, last connect/online, etc. Add setting for port.
-        downloadingIcon.setVisible(false);
-        isConnectedIcon.setVisible(false);
-        messagesArea.setEditable(false);
+    public void initialize(URL location, ResourceBundle resources) { //TODO: Style title. Picture, last connect/online, etc. Add setting for port.
+        driver = (Driver) Main.appUser;
 
-        jfxPopup = new JFXPopup(settingsButton);
-        settingsButton.setOnAction((event) -> {
-            // jfxPopup.show(mymenu?, PopupVPosition.TOP, PopupHPosition.LEFT)
-            System.err.println("To be implemented");
-        });
+        messagesArea    .setEditable (false);
+        downloadingIcon .setVisible  (false);
+        isConnectedIcon .setVisible  (false);
 
         try {
             inetAddress = InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
+
         DriverChat thisDriverChat = this;
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                messageHandler = new MessageHandler(inetAddress.getHostAddress(), port, "Nachocalvo", driverGETADMINNAME, thisDriverChat);  //DEBUGGING PORPOISES - User methods to be created.
+                messageHandler = new MessageHandler(inetAddress.getHostAddress(), port, driver.getUsername(), driver.getAdminNick(), thisDriverChat);  //DEBUGGING PORPOISES - User methods to be created.
                 //Server Handshake//
                 if (messageHandler.connectToServer()) {
-                    isNotConnectedIcon.setVisible(false);
-                    isConnectedIcon.setVisible(true);
-                    //sendMessage.setVisible(true);
+                    isNotConnectedIcon  .setVisible(false);
+                    isConnectedIcon     .setVisible(true );
                 }
 
+                //Handle ENTER_KEY presses.
                 parentAnchorPane.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
                     @Override
                     public void handle(KeyEvent event) {
                         if (event.getCode() == KeyCode.ENTER) {
                             try {
-                                handleLoginButtonAction(new ActionEvent());
+                                handleSendButtonAction(new ActionEvent());
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         }
                     }
                 });
-
             }
         });
 
         sendMessage.setOnAction((event) -> {
             try {
-                handleLoginButtonAction(new ActionEvent());
+                handleSendButtonAction(new ActionEvent());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
+
+        jfxPopup = new JFXPopup(settingsButton);
+        settingsButton.setOnAction((event) -> {
+            // jfxPopup.show(mymenu?, PopupVPosition.TOP, PopupHPosition.LEFT)
+            System.err.println("To be implemented");
+        });
     }
 
     @FXML
-    private void handleLoginButtonAction(ActionEvent event) throws IOException {
+    private void handleSendButtonAction(ActionEvent event) throws IOException {
         String text = messageField.getText();
         if (text == null)
             return;
-        messageHandler.sendMessage("MSG><" + driverUsernameGETUSERNAME + "><" + driverGETADMINNAME + "><" + text);
+        messageHandler.sendMessage("MSG><" + driver.getUsername() + "><" + driver.getAdminNick() + "><" + text);
         addText(messageField.getText(), true);
         messageField.clear();
     }
@@ -128,7 +127,7 @@ public class DriverChat implements Initializable {
     void addText(String text, boolean isSent) {
         LocalDateTime currentTime = LocalDateTime.now();
         if (!isSent) {
-            messagesArea.appendText("\n[" + dtf.format(currentTime) + ']' + ' ' + driverGETADMINNAME + " envió: " + text + '.');
+            messagesArea.appendText("\n[" + dtf.format(currentTime) + ']' + ' ' + driver.getAdminNick() + " envió: " + text + '.');
         } else {
             messagesArea.appendText("\n[" + dtf.format(currentTime) + ']' + " Has enviado: " + text + '.');
         }

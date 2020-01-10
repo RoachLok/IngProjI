@@ -1,53 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.effect.BoxBlur?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.ChatClient.SupervisorChat">
-    <top>
-        <Label fx:id="topLabel" alignment="CENTER" contentDisplay="TOP" maxWidth="1.7976931348623157E308" prefHeight="25.0" styleClass="title-label-small" text="Safe Journey Supervisor Chat" BorderPane.alignment="CENTER" />
-    </top>
-    <bottom>
-        <GridPane prefHeight="33.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="354.0" minWidth="10.0" prefWidth="329.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="10.0" prefWidth="94.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="0.0" />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-                <Button fx:id="sendMessage" mnemonicParsing="false" prefHeight="30.0" prefWidth="70.0" styleClass="login-buttons" text="Enviar" GridPane.columnIndex="2">
-                    <GridPane.margin>
-                        <Insets left="8.0" />
-                    </GridPane.margin>
-                    <cursor>
-                        <Cursor fx:constant="HAND" />
-                    </cursor></Button>
-                <TextField fx:id="messageField" prefHeight="31.0" prefWidth="333.0" promptText="Escribe aquí tu mensaje." style="-fx-font-weight: bold;">
-                    <font>
-                        <Font size="15.0" />
-                    </font></TextField>
-            </children>
-        </GridPane>
-    </bottom>
-    <padding>
-        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-    </padding>
-    <center>
-        <AnchorPane fx:id="chatAnchorPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <children>
-                <TextArea fx:id="messagesArea" prefHeight="332.0" prefWidth="346.0" />
-                <JFXComboBox fx:id="comboConductores" layoutX="358.0" layoutY="44.0" prefHeight="33.0" prefWidth="226.0" />
-            </children>
-        </AnchorPane>
-    </center>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="574.0" prefWidth="1109.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.ChatClient.SupervisorChat">
+   <top>
+      <GridPane prefHeight="53.0" prefWidth="1109.0" BorderPane.alignment="CENTER">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="78.0" minHeight="0.0" prefHeight="5.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="78.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <HBox prefHeight="53.0" prefWidth="1109.0" GridPane.rowIndex="1">
+               <children>
+                  <Region maxHeight="52.0" prefWidth="32.0" />
+                  <FontAwesomeIconView glyphName="USER_CIRCLE_ALT" size="43" text="" wrappingWidth="52.0" />
+                  <Region maxHeight="52.0" prefWidth="26.0" />
+                  <VBox maxHeight="52.0" maxWidth="88.0" prefHeight="48.0" prefWidth="88.0">
+                     <children>
+                        <Label fx:id="receiverNameLabel" prefHeight="30.0" prefWidth="89.0" styleClass="title-label" text="Joset" textFill="#ff5b13">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="statusLabel" prefHeight="15.0" prefWidth="45.0" text=" En Línea" textFill="#b2b2b2">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Label>
+                        <Label text="Label">
+                           <font>
+                              <Font size="1.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Region maxHeight="52.0" prefWidth="763.0" HBox.hgrow="ALWAYS" />
+                  <Pane maxHeight="52.0" prefWidth="161.0">
+                     <children>
+                        <FontAwesomeIconView fx:id="isConnectedIcon" glyphName="WIFI" layoutX="131.0" layoutY="19.0" size="17" />
+                        <JFXButton fx:id="settingsButton" alignment="BASELINE_LEFT" contentDisplay="GRAPHIC_ONLY" layoutX="50.0" layoutY="16.0" prefWidth="24.0" text="Button">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="GEAR" size="24" />
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="queryOldMessage" contentDisplay="GRAPHIC_ONLY" layoutX="87.0" layoutY="17.0" prefHeight="25.0" prefWidth="3.0" text="Button">
+                           <effect>
+                              <BoxBlur />
+                           </effect>
+                           <graphic>
+                              <FontAwesomeIconView glyphName="REPEAT" size="22" />
+                           </graphic>
+                        </JFXButton>
+                        <FontAwesomeIconView fx:id="downloadingIcon" glyphName="DOWNLOAD" layoutX="134.0" layoutY="44.0" size="17" />
+                        <FontAwesomeIconView fx:id="isNotConnectedIcon" glyphName="UNLINK" layoutX="133.0" layoutY="19.0" size="17" />
+                     </children>
+                  </Pane>
+               </children>
+            </HBox>
+         </children>
+      </GridPane>
+   </top>
+   <center>
+      <HBox alignment="BOTTOM_CENTER">
+         <children>
+            <JFXTextArea fx:id="messagesArea" labelFloat="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="492.0" prefWidth="885.0" styleClass="jfx-text-field" HBox.hgrow="ALWAYS">
+               <effect>
+                  <Lighting>
+                     <bumpInput>
+                        <Shadow />
+                     </bumpInput>
+                     <light>
+                        <Light.Distant />
+                     </light>
+                  </Lighting>
+               </effect>
+            </JFXTextArea>
+            <JFXListView fx:id="chatDriverList" onMouseClicked="#handleDriverListClick" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="488.0" prefWidth="255.0" HBox.hgrow="NEVER">
+               <effect>
+                  <Lighting>
+                     <bumpInput>
+                        <Shadow />
+                     </bumpInput>
+                     <light>
+                        <Light.Distant />
+                     </light>
+                  </Lighting>
+               </effect>
+            </JFXListView>
+         </children>
+      </HBox>
+   </center>
+   <bottom>
+      <HBox>
+         <children>
+            <TextField fx:id="messageField" prefHeight="25.0" prefWidth="651.0" promptText="Escribe un mensaje aquí." HBox.hgrow="ALWAYS" />
+            <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="68.0" HBox.hgrow="ALWAYS" />
+            <JFXButton fx:id="sendMessage" graphicTextGap="6.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="0.0" prefWidth="94.0" styleClass="button-glyph" text="Enviar">
+               <graphic>
+                  <FontAwesomeIconView glyphName="SEND_ALT" size="13.5" />
+               </graphic>
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </JFXButton>
+            <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="78.0" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+   </bottom>
 </BorderPane>

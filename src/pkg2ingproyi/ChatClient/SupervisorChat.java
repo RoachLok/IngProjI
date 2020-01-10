@@ -1,135 +1,155 @@
 package pkg2ingproyi.ChatClient;
 
-import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXTextArea;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import pkg2ingproyi.Model.Administrador;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import pkg2ingproyi.Main;
+import pkg2ingproyi.Model.Admin;
 import pkg2ingproyi.Model.Driver;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-
-
 
 public class SupervisorChat implements Initializable {
     @FXML
-    private TextArea messagesArea;
-
+    private Label               receiverNameLabel;
     @FXML
-    private TextField messageField;
-
+    private Label               statusLabel;
     @FXML
-    private Button sendMessage;
-
+    private JFXButton           settingsButton;
     @FXML
-    private Label label;
+    private JFXButton           queryOldMessage;
     @FXML
-    private JFXComboBox<String> comboConductores;
+    private JFXButton           sendMessage;
+    @FXML
+    private TextField           messageField;
+    @FXML
+    private JFXTextArea         messagesArea;
+    @FXML
+    private JFXListView<HBox>   chatDriverList;
+    @FXML
+    private FontAwesomeIconView downloadingIcon;
+    @FXML
+    private FontAwesomeIconView isConnectedIcon;
+    @FXML
+    private FontAwesomeIconView isNotConnectedIcon;
 
-
-
+    private Admin supervisor;
+    private int port = 56789;
+    String receiverName = "...";
+    private InetAddress inetAddress;
+    private MessageHandler messageHandler;
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
-
-    private String driverUsername, supervisorUsername;
-    private InetAddress inetAddress;
-    private int port = 56789;
-
-    private  String driverUsernameGETUSERNAME = "Nachocalvo";
-    private  String driverGETADMINNAME = "Joset";
-
-    private Administrador supervisor;
-
-    private MessageHandler messageHandler;
-
-
-
-
-    //TODO CONTINUAR CON cosas jfxlistview
-	    /*@FXML
-	    private JFXListView<Usuario> lvConductores;
-	    ObservableList<Usuario> listView=FXCollections.observableArrayList(supervisor.getConductores());
-	    Image profile= new Image("C:\\Users\\manpa\\Proyecto Ingenieria\\ProyectoIngenieria1\\src\\resources\\icons\\usericon.png");
-    	Label nombre= new Label("");
-    	Label estado= new Label("Conectado");
-    	ImageView imageView= new ImageView(profile);
-    	Button botonChat= new Button();
-	    static class Cell extends ListCell<String>{
-	    	HBox box= new HBox();
-	    	Image profile= new Image("C:\\Users\\manpa\\Proyecto Ingenieria\\ProyectoIngenieria1\\src\\resources\\icons\\usericon.png");
-	    	Label nombre= new Label("");
-	    	Label estado= new Label("Conectado");
-	    	ImageView imageView= new ImageView(profile);
-	    	Button botonChat= new Button();
-
-
-
-	    	public  Cell() {
-	    		super();
-	    		box.getChildren().addAll(imageView,nombre,estado,botonChat);
-	    		botonChat.setOnAction(e->System.out.println("chat cambiado"));
-	    		botonChat.setOnAction(e->addEventFilter();
-
-
-	    	}
-	    }
-	    */
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        //label.setText("Chat con: "+supervisorUsername); //TODO: Style title. Picture, last connect/online, etc. Add setting for port.
-        ArrayList<String>mensajes= new ArrayList<>();
-        ArrayList<Driver> conductores= new ArrayList<>();
-        supervisor=new Administrador("Jose","Taborda","Joset","05450270Y",mensajes,conductores);
-        ArrayList<String> nombreCond= new ArrayList<String>();
+    public void initialize(URL location, ResourceBundle resources) { //TODO: Style title. Picture, last connect/online, etc. Add setting for port.
+        supervisor = (Admin) Main.appUser;
 
-        messagesArea.setEditable(false);
+        messagesArea    .setEditable (false);
+        downloadingIcon .setVisible  (false);
+        isConnectedIcon .setVisible  (false);
 
+        /**  -------------- Drivers Chat List Initialization -------------- **/
 
-        for (int i = 0; i < supervisor.numConductores(); i++) {
-            nombreCond.add(supervisor.getConductor(i).getUsername());
+        for (int i = 0; i < supervisor.driversCount(); i++) { //Creates and fills an HBox containing the driver's info.
+            Driver driver = supervisor.getDriver(i);
+            Label label = new Label(" -  " + driver.getUsername() + "  - ");
+            FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.USER_CIRCLE);
+            icon.setGlyphSize(20);
+            Region region1 = new Region();
+            HBox.setHgrow(region1, Priority.ALWAYS);
 
+            HBox listItem = new HBox(icon, region1 , label);
+            chatDriverList.getItems().add(listItem);
         }
-        ObservableList<String> options =FXCollections.observableArrayList(nombreCond);
-        final ComboBox comboBox = new ComboBox(options);
+        //Select first driver as chat driver.
+        chatDriverList.getSelectionModel().select(0);
+        updateCurrentChatDriver(0);
 
-        //lvConductores.setItems(listView);
 
-        supervisor.addConductor(new Driver("Nachocalvo", "abcdef", "12345678C", "Nacho", "Calvo", "Joset"));
         try {
             inetAddress = InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        SupervisorChat me = this;
+
+        SupervisorChat thisSupervisorChat = this;
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                messageHandler = new MessageHandler(inetAddress.getHostAddress(), port, driverGETADMINNAME,".", me);  //DEBUGGING PORPOISES:
-
+                messageHandler = new MessageHandler(inetAddress.getHostAddress(), port,".", thisSupervisorChat);  //DEBUGGING PORPOISES:
                 //Server Handshake//
-                messageHandler.connectToServer();
+                if (messageHandler.connectToServer()) {
+                    isNotConnectedIcon  .setVisible(false);
+                    isConnectedIcon     .setVisible(true );
+                }
 
-                sendMessage.setOnAction((event) -> {
-                    messageHandler.sendMessage("MSG><"+driverGETADMINNAME+"><"+driverUsernameGETUSERNAME+"><"+messageField.getText());
-                    addText(messageField.getText(), true);
-                    messageField.clear();
+                //Handle ENTER_KEY presses.
+                sendMessage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+                    @Override
+                    public void handle(KeyEvent event) {
+                        if (event.getCode() == KeyCode.ENTER) {
+                            try {
+                                handleSendButtonAction(new ActionEvent());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
                 });
             }
         });
 
-
+        sendMessage.setOnAction((event) -> {
+            try {
+                handleSendButtonAction(new ActionEvent());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
-    void addText(String text, boolean isSent){
+    @FXML
+    private void handleSendButtonAction(ActionEvent event) throws IOException {
+        String text = messageField.getText();
+        if (text == null)
+            return;
+        messageHandler.sendMessage("MSG><" + supervisor.getUsername() + "><" + receiverName + "><" + text);
+        addText(messageField.getText(), true);
+        messageField.clear();
+    }
+
+    private void updateCurrentChatDriver(int driverIndex) {
+        Driver displayDriver = supervisor.getDriver(driverIndex);
+
+        receiverNameLabel.setText(receiverName = displayDriver.getUsername());
+    }
+
+    public void handleDriverListClick(MouseEvent mouseEvent) {
+        updateCurrentChatDriver(chatDriverList.getSelectionModel().getSelectedIndex());
+    }
+
+
+    void addText(String text, boolean isSent) {
         LocalDateTime currentTime = LocalDateTime.now();
         if (!isSent){
             messagesArea.appendText("\n["+dtf.format(currentTime)+']'+' '+"Nachocalvo"+" envió: "+text+'.');
@@ -138,6 +158,8 @@ public class SupervisorChat implements Initializable {
         }
     }
 
-
+    public void handleQueryButtonAction(ActionEvent actionEvent) {
+        System.err.println("Previous message query to be implemented");
+    }
 }
 

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="574.0" prefWidth="1109.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.SupervisorView.SupervisorViewController">
+   <top>
+      <HBox alignment="BOTTOM_LEFT" prefHeight="32.0" prefWidth="1109.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="26.0" prefWidth="5.0" />
+            <JFXButton graphicTextGap="5.0" onAction="#handleNewUserRequest" prefHeight="26.0" prefWidth="144.0" styleClass="supervisor-buttons" text="Nuevo Conductor">
+               <graphic>
+                  <FontAwesomeIconView glyphName="USER_PLUS" size="18" text="" />
+               </graphic>
+            </JFXButton>
+            <JFXButton graphicTextGap="5.0" onAction="#handleRemoveUserRequest" prefHeight="26.0" prefWidth="144.0" styleClass="supervisor-buttons" text="Eliminar Conductor">
+               <graphic>
+                  <FontAwesomeIconView glyphName="TRASH_ALT" size="18" />
+               </graphic>
+            </JFXButton>
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXListView fx:id="driverList" onMouseClicked="#handleDriverListClick" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="542.0" prefWidth="622.0" styleClass="supervisor-driver-cell" stylesheets="@../../resources/main-theme.css" HBox.hgrow="ALWAYS" />
+            <ScrollPane hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="542.0" prefWidth="494.0" HBox.hgrow="NEVER">
+               <content>
+                  <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                     <children>
+                        <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="121.0" prefWidth="500.0" styleClass="colorPane" HBox.hgrow="ALWAYS">
+                           <children>
+                              <VBox layoutX="249.0" layoutY="22.0" prefHeight="85.0" prefWidth="234.0">
+                                 <children>
+                                    <HBox prefHeight="30.0" prefWidth="246.0">
+                                       <children>
+                                          <Label prefWidth="67.0" styleClass="orange-text" text="Nombre  :">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                             <effect>
+                                                <Blend />
+                                             </effect>
+                                          </Label>
+                                          <Label fx:id="driverNameLabel" text="       driver.getName()">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="30.0" prefWidth="200.0">
+                                       <children>
+                                          <Label styleClass="orange-text" text="Apellido  :">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                             <effect>
+                                                <Blend />
+                                             </effect>
+                                          </Label>
+                                          <Label fx:id="driverUsernameLabel" text="       driver.getName()">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="30.0" prefWidth="200.0">
+                                       <children>
+                                          <Label styleClass="orange-text" text="DNI         :">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                             <effect>
+                                                <Blend />
+                                             </effect>
+                                          </Label>
+                                          <Label fx:id="driverDNILabel" text="       driver.getName()">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <Line endX="-16.0" endY="91.0" layoutX="228.0" layoutY="22.0" startX="-16.0" startY="-7.0" />
+                              <FontAwesomeIconView glyphName="USER_CIRCLE_ALT" layoutX="25.0" layoutY="143.0" size="150" styleClass="black-glyph" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </HBox>
+               </content>
+            </ScrollPane>
+         </children>
+      </HBox>
+   </center>
+</BorderPane>

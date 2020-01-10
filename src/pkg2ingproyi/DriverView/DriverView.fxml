@@ -7,10 +7,10 @@
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
-        <Menu fx:id="menuInicio" mnemonicParsing="false" onHiding="#handleDriverShowHomeAction" onShowing="#handleDriverShowHomeAction" text="Inicio       " >
-          <items>
-            <MenuItem mnemonicParsing="false" text="FASTEYES" />
-          </items>
+        <Menu>
+          <graphic>
+            <Label text="Inicio       " onMouseClicked="#handleDriverShowHomeAction"/>
+          </graphic>
         </Menu>
         <Menu>
           <graphic>

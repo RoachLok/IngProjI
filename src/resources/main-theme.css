@@ -4,99 +4,168 @@
 */
 
 *{
-    -fx-primary : #2a2e37;
-    -fx-secondary : #ff5b13;
-    -fx-primarytext : #b2b2b2;
-    -fx-superbuttonhover : #5c6579;
-    -fx-superbuttontext : #d0caca;
-    -fx-supermaincolor : #49e8bc;
+    -fx-primary             : #2a2e37;
+    -fx-secondary           : #ff5b13;
+    -fx-primarytext         : #b2b2b2;
+    -fx-secondarytext       : #ff8324;
+    -fx-darkorange          : #e36a00;
+    -fx-superbuttonhover    : #5c6579;
+    -fx-superbuttontext     : #d0caca;
+    -fx-supermaincolor      : #49e8bc;
 }
 
 @font-face {
-    font-family: Rubik;
-    src: url('/resources/rubik.otf');
+    font-family             : Rubik;
+    src                     : url('/resources/rubik.otf');
 }
 
-.root{
-    -fx-background-color : -fx-primary;
+.root {
+    -fx-background-color    : -fx-primary;
 }
 
-.glyph-icon{
-    -fx-fill : -fx-primarytext;
+.glyph-icon {
+    -fx-fill                : -fx-primarytext;
 }
 
-.button{
-    -fx-text-fill : -fx-primarytext;
+.button {
+    -fx-text-fill           : -fx-primarytext;
 }
 
-.button-glyph:hover{
-    -fx-background-color : -fx-secondary;
-    -fx-text-fill : -fx-primary;
+.button-glyph:hover {
+    -fx-background-color    : -fx-secondary;
+    -fx-text-fill           : -fx-primary;
 }
 
-.title-label{
-    -fx-text-fill: -fx-secondary;
-    -fx-font-size: 20px;
-    -fx-font-family: 'Rubik';
+.title-label {
+    -fx-text-fill           : -fx-secondary;
+    -fx-font-size           : 20px;
+    -fx-font-family         : 'Rubik';
 }
 
 .jfx-text-field {
-    -fx-text-inner-color: white;
-  /*  -fx-prompt-text-fill: WHITE;
-    -jfx-focus-color: WHITE;
-    -jfx-unfocus-color: WHITE;*/
+    -fx-text-inner-color    : white;
 }
 
-.title-label-small{
-    -fx-text-fill: -fx-secondary;
-    -fx-font-size: 18px;
-    -fx-font-family: 'Rubik';
+.title-label-small {
+    -fx-text-fill           : -fx-secondary;
+    -fx-font-size           : 18px;
+    -fx-font-family         : 'Rubik';
 }
 
 .scroll-pane > .viewport {
-   -fx-background-color: transparent;
+   -fx-background-color     : transparent;
 }
-.scroll-pane{
-    -fx-background-color: -fx-primary;
+.scroll-pane {
+    -fx-background-color    : -fx-primary;
 }
 
 /* Login Exclusive */
 .login-buttons{
-    -fx-border-color : -fx-secondary;
-    -fx-border-radius : 20px;
-    -fx-background-radius: 20px;
-    -fx-font-size : 9pt;
+    -fx-border-color        : -fx-secondary;
+    -fx-border-radius       : 20px;
+    -fx-background-radius   : 20px;
+    -fx-font-size           : 9pt;
 }
 
-.login-buttons:hover{
-    -fx-border-color : -fx-secondary;
-    -fx-background-color : -fx-secondary;
-    -fx-text-fill : -fx-primary;
+.login-buttons:hover {
+    -fx-border-color        : -fx-secondary;
+    -fx-background-color    : -fx-secondary;
+    -fx-text-fill           : -fx-primary;
 }
 
-.login-textfields{
-    -fx-text-fill : -fx-primarytext;
-    -fx-font-size : 10pt;
-    -jfx-focus-color : -fx-secondary;
+.login-textfields {
+    -fx-text-fill           : -fx-primarytext;
+    -fx-font-size           : 10pt;
+    -jfx-focus-color        : -fx-secondary;
 }
 
 /* Driver Exclusive */
-.tool-bar{
-    -fx-alignment: CENTER;
+.tool-bar {
+    -fx-alignment           : CENTER;
 }
 
-.supervisor-buttons{
-    -fx-text-fill : -fx-superbuttontext;
-    -fx-fill : -fx-superbuttontext;
+/* Admin Exclusive */
+.supervisor-buttons {
+    -fx-text-fill           : -fx-superbuttontext;
+    -fx-fill                : -fx-superbuttontext;
 }
 
-.supervisor-buttons:hover{
-    -fx-background-color : -fx-superbuttonhover;
-    -icons-color : -fx-supermaincolor;
-    -fx-fill : -fx-supermaincolor;
-    -fx-text-fill : -fx-supermaincolor;
-    color : -fx-supermaincolor;
+.supervisor-buttons:hover {
+    -fx-background-color    : -fx-superbuttonhover;
+    -icons-color            : -fx-supermaincolor;
+    -fx-fill                : -fx-supermaincolor;
+    -fx-text-fill           : -fx-supermaincolor;
+    color                   : -fx-supermaincolor;
 }
+
+.supervisor-tabpane {
+	-fx-background-color    : -fx-primary;
+	-fx-fill                : -fx-supermaincolor;
+}
+
+.supervisor-welcome-title {
+    -fx-text-fill           : #e36a00;
+    -fx-font-weight         : bold;
+    -fx-font-size           : 28;
+}
+
+.supervisor-welcome-subtitle {
+    -fx-text-fill           : -fx-primarytext;
+    -fx-font-size           : 21;
+}
+
+.supervisor-welcome-texttitle {
+    -fx-text-fill           : -fx-darkorange;
+    -fx-font-size           : 17;
+    -fx-underline           : true;
+}
+
+.supervisor-welcome-text {
+    -fx-text-fill           : -fx-primarytext;
+    -fx-font-size           : 14;
+}
+
+.supervisor-textfield {
+    -fx-prompt-text-fill    : WHITE;
+    -jfx-focus-color        : -fx-supermaincolor;
+    -jfx-unfocus-color      : -fx-superbuttonhover;
+}
+
+/* General */
+.colorPane {
+    -fx-fill                : -fx-primarytext;
+    -fx-background-color    : -fx-primarytext;
+}
+
+.orange-text {
+    -fx-text-fill           : -fx-darkorange;
+}
+
+/* Black override */
+.black-glyph {
+    -fx-fill                : Black;
+}
+
+/* JFXListView styling */
+.jfx-list-cell:selected {
+    -fx-background-color    : -fx-superbuttonhover;
+}
+
+.jfx-list-cell .jfx-rippler {
+    -fx-background-color    : -fx-supermaincolor;
+}
+
+.jfx-list-cell:hover {
+    -fx-background-color    : -fx-darkorange;
+}
+
+.jfx-list-view {
+    -fx-background-insets   : 0;
+    -fx-cell-vertical-margin: 10;
+    -fx-vertical-gap        : 10;
+}
+
+
 
 
 

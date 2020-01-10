@@ -2,7 +2,7 @@ package pkg2ingproyi.Model;
 
 import java.util.ArrayList;
 
-class Admin extends User {
+public class Admin extends User {
     private ArrayList<Driver> drivers;
 
     public Admin(String username, String password, String name, String surname, String dni, ArrayList<Driver> drivers) {
@@ -39,7 +39,7 @@ class Admin extends User {
     }
 
     @Override
-    boolean isAdmin() {
+    public boolean isAdmin() {
         return true;
     }
 }

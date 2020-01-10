@@ -10,20 +10,34 @@ public class Service {
     private String driverName;
     private String vehicleName;
     private String identifier;
+    private String contractor;
     private String author;
 
+    public Service(String title, String startTime, String pickup, String arrival, String identifier,
+                    String author)
+    {
+        this.name           = title;
+        this.startT         = startTime;
+        this.pickup         = pickup;
+        this.arrival        = arrival;
+        this.identifier     = identifier;
+        this.author         = author;
+    }
+
     public Service(String title, String startTime, String endTime, String pickup, String transit, String arrival,
-                   String driverName, String vehicleID, String identifier, String author) {
-        this.name = title;
-        this.startT = startTime;
-        this.endT = endTime;
-        this.pickup = pickup;
-        this.transit = transit;
-        this.arrival = arrival;
-        this.driverName = driverName;
-        this.vehicleName = vehicleID;
-        this.identifier = identifier;
-        this.author = author;
+                    String driverName, String vehicleID, String identifier, String contractor, String author)
+    {
+        this.name           = title;
+        this.startT         = startTime;
+        this.endT           = endTime;
+        this.pickup         = pickup;
+        this.transit        = transit;
+        this.arrival        = arrival;
+        this.driverName     = driverName;
+        this.vehicleName    = vehicleID;
+        this.identifier     = identifier;
+        this.contractor     = contractor;
+        this.author         = author;
     }
 
     public String getName() {
@@ -88,5 +102,34 @@ public class Service {
 
     public void setVehicleName(String vehicleName) {
         this.vehicleName = vehicleName;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public String getContractor() {
+        return contractor;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    @Override
+    public String toString() {
+        return "Service{" +
+                "name='" + name + '\'' +
+                ", startT='" + startT + '\'' +
+                ", endT='" + endT + '\'' +
+                ", pickup='" + pickup + '\'' +
+                ", transit='" + transit + '\'' +
+                ", arrival='" + arrival + '\'' +
+                ", driverName='" + driverName + '\'' +
+                ", vehicleName='" + vehicleName + '\'' +
+                ", identifier='" + identifier + '\'' +
+                ", contractor='" + contractor + '\'' +
+                ", author='" + author + '\'' +
+                '}';
     }
 }

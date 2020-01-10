@@ -11,6 +11,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
+import org.controlsfx.control.Notifications;
+import pkg2ingproyi.Main;
+import pkg2ingproyi.Model.Driver;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -29,14 +32,26 @@ public class DriverViewController implements Initializable {
     private JMenuBar menuBar;
     @FXML
     private AnchorPane driverSVHolder;
-
+    @FXML
     private Node newLoadedPane = null;
+
+    Driver driver = (Driver) Main.appUser;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        if (Main.appUser.isAdmin()) {
+            Notifications.create().title("Autentication Error").text("Ha habido un problema al verificar tu usuario.").showError();
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                System.exit(0);
+            }
+            System.exit(0);
+        }
+
         try {
             newLoadedPane = (Node)FXMLLoader.load(getClass().getResource("visorConductorHome.fxml"));
         } catch (IOException e) {
