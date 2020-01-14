@@ -23,6 +23,8 @@ import org.controlsfx.control.Notifications;
 import pkg2ingproyi.Main;
 import pkg2ingproyi.Model.Admin;
 import pkg2ingproyi.Model.Driver;
+import pkg2ingproyi.Model.Service;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -30,7 +32,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SupervisorViewController implements Initializable {
-
 
     /**** MAIN CONTAINER VIEW ELEMENTS *****/
     @FXML
@@ -88,8 +89,18 @@ public class SupervisorViewController implements Initializable {
             driverList.getSelectionModel().select(0);
             updateDriverInfoPane(0);
         }
-}
 
+        /** SERVICES VIEW **/
+        //if (servicesList != null) {
+            for (int i = 0; i < admin.driversCount(); i++) {
+                Driver driver = admin.getDriver(i);
+                for (int j = 0; j < driver.servicesCount(); j++) {
+                    Service service = driver.getService(j);
+                    System.out.println(service.toString());
+                }
+            }
+      //  }
+    }
 
     /*****  ------------ MAIN CONTAINER METHODS IMPLEMENTATION ------------  *****/
     private void addTab(Pane pane, String tabTitle) {
@@ -162,6 +173,12 @@ public class SupervisorViewController implements Initializable {
 
     public void handleRemoveUserRequest(ActionEvent actionEvent) {
         Notifications.create().title("Feature to be implemented").text("Esta característica aun no ha sido implementada.").showError();
+    }
+
+    /*********  ------------ SERVICES VIEW METHODS IMPLEMENTATION ------------  *********/
+    public void updateServiceInfoPane() {
+        admin.getDriver(0).servicesCount();
+
     }
 
     /******************************************************************************************/

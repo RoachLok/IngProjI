@@ -41,7 +41,7 @@ public class MessageHandler implements Runnable{
     boolean connectToServer() {
         try {
             //Init socket and data interfaces.
-            socket = new Socket("192.168.1.11", port);
+            socket = new Socket(host, port);
             dataOut = new PrintWriter(socket.getOutputStream(), true);
             dataIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 

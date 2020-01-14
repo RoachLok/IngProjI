@@ -17,7 +17,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import pkg2ingproyi.Main;
 import pkg2ingproyi.Model.Driver;
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
@@ -30,8 +29,6 @@ public class DriverChat implements Initializable {
 
     @FXML
     public JFXTextArea messagesArea;
-    @FXML
-    private JFXListView messagesList;
     @FXML
     private JFXButton queryOldMessage;
     @FXML
