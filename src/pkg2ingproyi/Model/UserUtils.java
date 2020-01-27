@@ -86,17 +86,21 @@ public class UserUtils {
 
     private static Service parseJsonObject(JSONObject object) {
         return new Service(
-                (String) object.get("title"),
-                (String) object.get("startTime"),
-                (String) object.get("endTime"),
-                (String) object.get("pickup"),
-                (String) object.get("transit"),
-                (String) object.get("arrival"),
+                (String) object.get("title"     ),
+                (String) object.get("startTime" ),
+                (String) object.get("endTime"   ),
+                (String) object.get("pickup"    ),
+                (String) object.get("transit"   ),
+                (String) object.get("arrival"   ),
                 (String) object.get("driverName"),
-                (String) object.get("vehicleID"),
+                (String) object.get("vehicleID" ),
                 (String) object.get("identifier"),
                 (String) object.get("contractor"),
-                (String) object.get("author"));
+                (String) object.get("pricing"   ),
+                (String) object.get("author"    ),
+                (int) (long)   object.get("status"    ));
+
+                //TODO implement genre.
     }
 
     private static List<Service> initServices() throws Exception {

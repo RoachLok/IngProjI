@@ -1,6 +1,10 @@
 package pkg2ingproyi.Model;
 
-public class Service {
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
+public class Service extends RecursiveTreeObject<Service> {
     private String name;
     private String startT;
     private String endT;
@@ -11,21 +15,42 @@ public class Service {
     private String vehicleName;
     private String identifier;
     private String contractor;
+    private String pricing;
     private String author;
 
-    public Service(String title, String startTime, String pickup, String arrival, String identifier,
-                    String author)
+    private boolean isReserve;
+    private boolean isAccepted;
+    private boolean isMontaje;
+
+    public StringProperty observableName;
+    public StringProperty observableStartT;
+    public StringProperty observableEndT;
+    public StringProperty observablePickup;
+    public StringProperty observableTransit;
+    public StringProperty observableArrival;
+    public StringProperty observableDriverName;
+    public StringProperty observableVehicleName;
+    public StringProperty observableIdentifier;
+    public StringProperty observableContractor;
+    public StringProperty observablePricing;
+    public StringProperty observableAuthor;
+
+    public Service(String title, String startTime, String endT, String pickup, String transit, String arrival,
+                   String identifier, String author)
     {
         this.name           = title;
         this.startT         = startTime;
+        this.endT           = endT;
         this.pickup         = pickup;
         this.arrival        = arrival;
         this.identifier     = identifier;
         this.author         = author;
+        this.isReserve      = true;
     }
 
     public Service(String title, String startTime, String endTime, String pickup, String transit, String arrival,
-                    String driverName, String vehicleID, String identifier, String contractor, String author)
+                    String driverName, String vehicleID, String identifier, String contractor, String pricing,
+                        String author, int status)
     {
         this.name           = title;
         this.startT         = startTime;
@@ -37,7 +62,52 @@ public class Service {
         this.vehicleName    = vehicleID;
         this.identifier     = identifier;
         this.contractor     = contractor;
+        this.pricing        = pricing;
         this.author         = author;
+
+        switch (status) {
+            case 1:
+                isReserve = true;
+                break;
+            case 2:
+                isAccepted = true;
+                break;
+            case 3:
+                isMontaje = true;
+                break;
+            default:
+                isReserve = true;
+        }
+    }
+
+    public void setObservable() {
+        if  (name == null)
+            return;
+
+        if (isReserve) {
+            observableName          = new SimpleStringProperty( name        );
+            observableStartT        = new SimpleStringProperty( startT      );
+            observableEndT          = new SimpleStringProperty( endT        );
+            observablePickup        = new SimpleStringProperty( pickup      );
+            observableTransit       = new SimpleStringProperty( transit     );
+            observableArrival       = new SimpleStringProperty( arrival     );
+            observableIdentifier    = new SimpleStringProperty( identifier  );
+            observableAuthor        = new SimpleStringProperty( author      );
+            return;
+        }
+
+        observableName          = new SimpleStringProperty( name        );
+        observableStartT        = new SimpleStringProperty( startT      );
+        observableEndT          = new SimpleStringProperty( endT        );
+        observablePickup        = new SimpleStringProperty( pickup      );
+        observableTransit       = new SimpleStringProperty( transit     );
+        observableArrival       = new SimpleStringProperty( arrival     );
+        observableDriverName    = new SimpleStringProperty( driverName  );
+        observableVehicleName   = new SimpleStringProperty( vehicleName );
+        observableIdentifier    = new SimpleStringProperty( identifier  );
+        observableContractor    = new SimpleStringProperty( contractor  );
+        observablePricing       = new SimpleStringProperty( pricing     );
+        observableAuthor        = new SimpleStringProperty( author      );
     }
 
     public String getName() {
@@ -102,6 +172,38 @@ public class Service {
 
     public void setVehicleName(String vehicleName) {
         this.vehicleName = vehicleName;
+    }
+
+    public String getPricing() {
+        return pricing;
+    }
+
+    public void setPricing(String pricing) {
+        this.pricing = pricing;
+    }
+
+    public void setReserve(boolean isReserve) {
+        this.isReserve = isReserve;
+    }
+
+    public boolean isReserve() {
+        return this.isReserve;
+    }
+
+    public void setAccepted(boolean isService) {
+        this.isAccepted = isService;
+    }
+
+    public boolean isAccepted() {
+        return this.isAccepted;
+    }
+
+    public void setMontaje(boolean isMontaje) {
+        this.isMontaje = isMontaje;
+    }
+
+    public boolean isMontaje() {
+        return this.isMontaje;
     }
 
     public String getIdentifier() {

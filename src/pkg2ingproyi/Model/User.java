@@ -1,5 +1,7 @@
 package pkg2ingproyi.Model;
 
+import java.util.ArrayList;
+
 public abstract class User {
     private String username, password, dni, name, surname;
 
@@ -30,6 +32,12 @@ public abstract class User {
     public String getSurname() {
         return surname;
     }
+
+    public abstract ArrayList<Service> getReserves();
+
+    public abstract ArrayList<Service> getAccepted();
+
+    public abstract ArrayList<Service> getMontajes();
 
     public abstract boolean isAdmin();
 }

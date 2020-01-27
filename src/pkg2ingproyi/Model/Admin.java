@@ -39,6 +39,45 @@ public class Admin extends User {
     }
 
     @Override
+    public ArrayList<Service> getReserves() {
+        if (driversCount() == 0)
+            return null;
+
+        ArrayList<Service> reserves = new ArrayList<>();
+
+        for (Driver driver : drivers)
+            reserves.addAll(driver.getReserves());
+
+        return reserves;
+    }
+
+    @Override
+    public ArrayList<Service> getAccepted() {
+        if (driversCount() == 0)
+            return null;
+
+        ArrayList<Service> aceptados = new ArrayList<>();
+
+        for (Driver driver : drivers)
+            aceptados.addAll(driver.getAccepted());
+
+        return aceptados;
+    }
+
+    @Override
+    public ArrayList<Service> getMontajes() {
+        if (driversCount() == 0)
+            return null;
+
+        ArrayList<Service> montajes = new ArrayList<>();
+
+        for (Driver driver : drivers)
+            montajes.addAll(driver.getMontajes());
+
+        return montajes;
+    }
+
+    @Override
     public boolean isAdmin() {
         return true;
     }

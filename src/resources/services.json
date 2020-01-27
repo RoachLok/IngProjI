@@ -1,7 +1,7 @@
 [{
       "title": "TOLEDO-ATOCHA",
-      "startTime": "[10/12/2019 19:55]",
-      "endTime": "[11/12/2019 01:30]",
+      "startTime": "[2019/12/10 19:55]",
+      "endTime": "[2019/12/11 01:30]",
       "pickup": "TOLEDO",
       "transit": "",
       "arrival": "ESTACION ATOCHA, MADRID",
@@ -9,11 +9,13 @@
       "vehicleID": "0000BBB",
       "identifier": "S0001A",
       "contractor": "UEM",
-      "author": "admin"
+      "pricing": "890.00",
+      "author": "admin",
+      "status": 3
   },
-{
+  {
       "title": "ATOCHA TRANSFER IN PUERTA DEL SOL",
-      "startTime": "[13/12/2019 19:10]",
+      "startTime": "[2019/12/13 19:10]",
       "endTime": "",
       "pickup": "ESTACION ATOCHA, MADRID",
       "transit": "",
@@ -22,11 +24,13 @@
       "vehicleID": "0002BBB",
       "identifier": "S0002A",
       "contractor": "UEM",
-      "author": "admin"
+      "pricing": "1400.00",
+      "author": "admin",
+    "status": 3
   },
    {
       "title": "PUERTA DEL SOL TRANSFER OUT ATOCHA",
-      "startTime": "[14/12/2019 19:00:00]",
+      "startTime": "[2019/12/14 19:00:00]",
       "endTime": "",
       "pickup": "PUERTAL DEL SOL, MADRID",
       "transit": "",
@@ -35,11 +39,14 @@
       "vehicleID": "0001BBB",
       "identifier": "S0003A",
       "contractor": "UEM",
-      "author": "admin"
-  }, {
+      "pricing": "400.00",
+      "author": "admin",
+     "status": 3
+   },
+  {
       "title": "BARAJAS TRANSFER IN HOTEL NH MADRID CHAMBERÍ",
-      "startTime": "[10/12/2019 19:30:00]",
-      "endTime": "[10/12/2019 20:30:00]",
+      "startTime": "[2019/12/10 19:30:00]",
+      "endTime": "[2019/12/10 20:30:00]",
       "pickup": "APTO. BARAJAS, MADRID",
       "transit": "",
       "arrival": "HOTEL NH MADRID CHAMBERÍ",
@@ -47,11 +54,13 @@
       "vehicleID": "9453HKK",
       "identifier": "S0004A",
       "contractor": "UEM",
-      "author": "CRamirez"
+      "pricing": "400.00",
+      "author": "CRamirez",
+    "status": 3
   }, {
       "title": "DISPOSICIÓN. UEMA-PLAZA CASTILLA-UEMA",
-      "startTime": "[10/12/2019 19:30:00]",
-      "endTime": "[10/12/2019 20:30:00]",
+      "startTime": "[2019/12/10 19:30:00]",
+      "endTime": "[2019/12/10 20:30:00]",
       "pickup": "UEM CAMPUS ALCOBENDAS",
       "transit": "PLAZA CASTILLA, MADRID",
       "arrival": "UEM CAMPUS ALCOBENDAS",
@@ -59,12 +68,14 @@
       "vehicleID": "4583FDK",
       "identifier": "S0005A",
       "contractor": "UEM",
-      "author": "Joset"
+      "pricing": "1000.00",
+      "author": "Joset",
+  "status": 3
   },
-    {
+  {
       "title": "UEM ALCOBENDAS TRANSFER MI CASA",
-      "startTime": "[28/12/2019 19:30:00]",
-      "endTime": "[28/12/2019 20:30:00]",
+      "startTime": "[2019/12/28 19:30:00]",
+      "endTime": "[2019/12/28 20:30:00]",
       "pickup": "UEM CAMPUS ALCOBENDAS",
       "transit": "",
       "arrival": "MI CASA",
@@ -72,6 +83,8 @@
       "vehicleID": "5129HKY",
       "identifier": "S0006A",
       "contractor": "UEM",
-      "author": "Joset"
+      "pricing": "750.00",
+      "author": "Joset",
+    "status": 3
   }
 ]

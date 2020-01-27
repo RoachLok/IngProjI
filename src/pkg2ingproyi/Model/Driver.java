@@ -46,6 +46,48 @@ public class Driver extends User{
     }
 
     @Override
+    public ArrayList<Service> getReserves() {
+        if (servicesCount() == 0)
+            return null;
+
+        ArrayList<Service> reserves = new ArrayList<>();
+
+        for (Service service : services)
+            if (service.isReserve())
+                reserves.add(service);
+
+        return reserves;
+    }
+
+    @Override
+    public ArrayList<Service> getAccepted() {
+        if (servicesCount() == 0)
+            return null;
+
+        ArrayList<Service> accepteds = new ArrayList<>();
+
+        for (Service service : services)
+            if (service.isAccepted())
+                accepteds.add(service);
+
+        return accepteds;
+    }
+
+    @Override
+    public ArrayList<Service> getMontajes() {
+        if (servicesCount() == 0)
+            return null;
+
+        ArrayList<Service> montajes = new ArrayList<>();
+
+        for (Service service : services)
+            if (service.isMontaje())
+                montajes.add(service);
+
+        return montajes;
+    }
+
+    @Override
     public boolean isAdmin() {
         return false;
     }
