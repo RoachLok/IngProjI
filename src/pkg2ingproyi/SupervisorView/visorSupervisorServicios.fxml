@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
@@ -18,12 +19,13 @@
       <HBox alignment="BOTTOM_LEFT" prefHeight="32.0" prefWidth="1109.0" BorderPane.alignment="CENTER">
          <children>
             <Pane prefHeight="26.0" prefWidth="5.0" />
-            <JFXButton graphicTextGap="5.0" onAction="#handleNewUserRequest" prefHeight="26.0" prefWidth="144.0" styleClass="supervisor-buttons" text="Nuevo Conductor">
+            <JFXButton graphicTextGap="5.0" onAction="#handleNewUserRequest" prefHeight="26.0" styleClass="supervisor-buttons" text="Nuevo Conductor">
                <graphic>
                   <FontAwesomeIconView glyphName="USER_PLUS" size="18" text="" />
                </graphic>
             </JFXButton>
-            <JFXButton graphicTextGap="5.0" onAction="#handleRemoveUserRequest" prefHeight="26.0" prefWidth="144.0" styleClass="supervisor-buttons" text="Eliminar Conductor">
+            <Region prefHeight="32.0" prefWidth="3.0" />
+            <JFXButton graphicTextGap="5.0" onAction="#handleRemoveUserRequest" prefHeight="26.0" styleClass="supervisor-buttons" text="Eliminar Conductor">
                <graphic>
                   <FontAwesomeIconView glyphName="TRASH_ALT" size="18" />
                </graphic>
@@ -34,7 +36,7 @@
    <center>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <JFXListView fx:id="driverList" onMouseClicked="#handleDriverListClick" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="542.0" prefWidth="622.0" styleClass="supervisor-driver-cell" stylesheets="@../../resources/main-theme.css" HBox.hgrow="ALWAYS" />
+            <JFXTreeTableView fx:id="servicesTreeTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="240.0" minWidth="240.0" prefHeight="542.0" prefWidth="622.0" HBox.hgrow="ALWAYS" />
             <ScrollPane hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="542.0" prefWidth="494.0" HBox.hgrow="NEVER">
                <content>
                   <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">

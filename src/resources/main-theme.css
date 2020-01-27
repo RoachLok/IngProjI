@@ -165,10 +165,40 @@
     -fx-vertical-gap        : 10;
 }
 
+/* JFXTreeTableView Styling */
 
+.jfx-tree-table-view > .virtual-flow > .clipped-container > .sheet > .tree-table-row-cell:filled:selected {
+    -fx-background-color    : -fx-superbuttonhover;
+}
 
+.jfx-tree-table-cell:selected {
+    -fx-background-color    : -fx-superbuttonhover;
+}
 
+.tree-table-row-cell:hover {
+    -fx-background-color    : -fx-darkorange;
+}
 
+.tree-table-row-cell:odd:hover {
+    -fx-background-color    : -fx-darkorange;
+}
+
+.jfx-tree-table-view .column-header {
+    -fx-border-width        : 0 1 0 1;
+    -fx-background-color    : -fx-primary;
+    -fx-text-fill           : -fx-primarytext;
+}
+
+.tree-table-row-cell:odd {
+    -fx-background-color    : #f9f9f9;
+    -fx-background-insets   : 0, 0 0 1 0;
+}
+
+.jfx-tree-table-view {
+    -fx-background-insets   : 0;
+    -fx-cell-vertical-margin: 5;
+    -fx-vertical-gap        : 10;
+}
 
 
 
