@@ -23,7 +23,7 @@ public class Main extends Application {
         loader.setLocation(getClass().getResource("LoginView/Login.fxml"));
         Parent root = loader.load();
 
-        Scene scene = new Scene(root, Color.RED);
+        Scene scene = new Scene(root);
         primaryStage = new Stage();
         primaryStage.setScene(scene);
         primaryStage.show();
