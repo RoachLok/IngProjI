@@ -148,7 +148,7 @@
                                        <children>
                                           <ImageView fitHeight="378.0" fitWidth="157.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
                                              <image>
-                                                <Image url="@../../resources/img/topview.png" />
+                                                <Image url="@../../resources/img/busTopView.png" />
                                              </image>
                                           </ImageView>
                                           <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0">
