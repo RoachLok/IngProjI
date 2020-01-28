@@ -96,7 +96,7 @@ public class SupervisorChat implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                messageHandler = new MessageHandler(inetAddress.getHostAddress(), port,".", thisSupervisorChat);  //DEBUGGING PORPOISES:
+                messageHandler = new MessageHandler(inetAddress.getHostAddress(), port,supervisor.getUsername(), thisSupervisorChat);
                 //Server Handshake//
                 if (messageHandler.connectToServer()) {
                     isNotConnectedIcon  .setVisible(false);
@@ -152,7 +152,9 @@ public class SupervisorChat implements Initializable {
     void addText(String text, boolean isSent) {
         LocalDateTime currentTime = LocalDateTime.now();
         if (!isSent){
-            messagesArea.appendText("\n["+dtf.format(currentTime)+']'+' '+"Nachocalvo"+" envió: "+text+'.');
+            messagesArea.appendText("\n["+dtf.format(currentTime)+']'+' '
+                        +supervisor.getDriver(chatDriverList.getSelectionModel().getSelectedIndex()).getUsername()
+                        +" envió: "+text+'.');
         }else{
             messagesArea.appendText("\n["+dtf.format(currentTime)+']'+" Has enviado: "+text+'.');
         }

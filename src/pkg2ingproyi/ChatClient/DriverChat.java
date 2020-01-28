@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -30,6 +31,8 @@ public class DriverChat implements Initializable {
     @FXML
     public JFXTextArea messagesArea;
     @FXML
+    public Label receiverName;
+    @FXML
     private JFXButton queryOldMessage;
     @FXML
     private FontAwesomeIconView isConnectedIcon;
@@ -46,8 +49,6 @@ public class DriverChat implements Initializable {
     @FXML
     private Button sendMessage;
 
-    private JFXPopup jfxPopup;
-
     private Driver driver;
     private InetAddress inetAddress;
     private int port = 56789;
@@ -59,6 +60,7 @@ public class DriverChat implements Initializable {
     public void initialize(URL location, ResourceBundle resources) { //TODO: Style title. Picture, last connect/online, etc. Add setting for port.
         driver = (Driver) Main.appUser;
 
+        receiverName    .setText     (driver.getAdminNick());
         messagesArea    .setEditable (false);
         downloadingIcon .setVisible  (false);
         isConnectedIcon .setVisible  (false);
@@ -73,7 +75,7 @@ public class DriverChat implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                messageHandler = new MessageHandler(inetAddress.getHostAddress(), port, driver.getUsername(), driver.getAdminNick(), thisDriverChat);  //DEBUGGING PORPOISES - User methods to be created.
+                messageHandler = new MessageHandler(inetAddress.getHostAddress(), port, driver.getUsername(), driver.getAdminNick(), thisDriverChat);
                 //Server Handshake//
                 if (messageHandler.connectToServer()) {
                     isNotConnectedIcon  .setVisible(false);
@@ -102,12 +104,6 @@ public class DriverChat implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
-
-        jfxPopup = new JFXPopup(settingsButton);
-        settingsButton.setOnAction((event) -> {
-            // jfxPopup.show(mymenu?, PopupVPosition.TOP, PopupHPosition.LEFT)
-            System.err.println("To be implemented");
         });
     }
 

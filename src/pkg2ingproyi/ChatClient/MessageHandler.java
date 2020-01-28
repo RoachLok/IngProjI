@@ -104,7 +104,7 @@ public class MessageHandler implements Runnable{
                     String textIn = dataIn.readLine();
 
                     if (textIn.equals("SYN-ACK><Hey there!")) {
-                        sendMessage("ACK><"+username+"><"+adminUsername);
+                        sendMessage("ACK><"+"><"+adminUsername);
                         System.out.println("Connected to server.");
                         //TODO Mark server as online. Is my admin online? / are my users online? / disablebutton.
 
