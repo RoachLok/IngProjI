@@ -28,13 +28,13 @@ public class UserUtils {
     }
 
     public static boolean login(String usuario, String password) throws FileNotFoundException {
-        if(usuario == null || password == null)
+        if(usuario.equals("") || password.equals(""))
             return false;
 
-        Scanner entrada = new Scanner(readUsersFile());
-        while(entrada.hasNext())
-            if(entrada.nextLine().startsWith(usuario+','+password)) {
-                entrada.close();
+        Scanner inText = new Scanner(readUsersFile());
+        while(inText.hasNext())
+            if(inText.nextLine().startsWith(usuario+','+password+',')) {
+                inText.close();
                 return true;
             }
 
@@ -98,9 +98,7 @@ public class UserUtils {
                 (String) object.get("contractor"),
                 (String) object.get("pricing"   ),
                 (String) object.get("author"    ),
-                (int) (long)   object.get("status"    ));
-
-                //TODO implement genre.
+        (int)   (long)   object.get("status"    ));
     }
 
     private static List<Service> initServices() throws Exception {
