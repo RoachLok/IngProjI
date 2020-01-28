@@ -1,31 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.RowConstraints?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="574.0" prefWidth="1109.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.SupervisorView.SupervisorViewController">
    <top>
       <HBox alignment="BOTTOM_LEFT" prefHeight="32.0" prefWidth="1109.0" BorderPane.alignment="CENTER">
          <children>
             <Pane prefHeight="26.0" prefWidth="5.0" />
-            <JFXButton graphicTextGap="5.0" onAction="#handleNewUserRequest" prefHeight="26.0" styleClass="supervisor-buttons" text="Nuevo Conductor">
+            <JFXButton graphicTextGap="5.0" onAction="#handleAcceptReserveRequest" prefHeight="26.0" styleClass="supervisor-buttons" text="Modificar Serivicio">
                <graphic>
-                  <FontAwesomeIconView glyphName="USER_PLUS" size="18" text="" />
+                  <FontAwesomeIconView glyphName="CALENDAR_CHECK_ALT" size="18" />
                </graphic>
             </JFXButton>
             <Region prefHeight="32.0" prefWidth="3.0" />
-            <JFXButton graphicTextGap="5.0" onAction="#handleRemoveUserRequest" prefHeight="26.0" styleClass="supervisor-buttons" text="Eliminar Conductor">
+            <JFXButton graphicTextGap="5.0" onAction="#handleNewServiceRequest" prefHeight="26.0" styleClass="supervisor-buttons" text="Montar Servicio">
+               <graphic>
+                  <FontAwesomeIconView glyphName="CALENDAR_PLUS_ALT" size="18" />
+               </graphic>
+            </JFXButton>
+            <Region prefHeight="32.0" prefWidth="3.0" />
+            <JFXButton graphicTextGap="5.0" onAction="#handleRemoveReserveRequest" prefHeight="26.0" styleClass="supervisor-buttons" text="Eliminar Reserva">
                <graphic>
                   <FontAwesomeIconView glyphName="TRASH_ALT" size="18" />
                </graphic>
@@ -36,76 +43,111 @@
    <center>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <JFXTreeTableView fx:id="servicesTreeTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="240.0" minWidth="240.0" prefHeight="542.0" prefWidth="622.0" HBox.hgrow="ALWAYS" />
-            <ScrollPane hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="542.0" prefWidth="494.0" HBox.hgrow="NEVER">
-               <content>
-                  <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+            <SplitPane fx:id="reserveSplitPane" dividerPositions="0.6" HBox.hgrow="ALWAYS">
+               <items>
+                  <JFXTreeTableView fx:id="servicesTreeTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="240.0" minWidth="240.0" onMouseClicked="#handleReserveTreeViewClick" prefHeight="542.0" prefWidth="622.0" />
+                  <Pane maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="541.0" prefWidth="350.0" SplitPane.resizableWithParent="false">
                      <children>
-                        <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="121.0" prefWidth="500.0" styleClass="colorPane" HBox.hgrow="ALWAYS">
-                           <children>
-                              <VBox layoutX="249.0" layoutY="22.0" prefHeight="85.0" prefWidth="234.0">
-                                 <children>
-                                    <HBox prefHeight="30.0" prefWidth="246.0">
+                        <Accordion maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="540.0" prefWidth="350.0">
+                          <panes>
+                            <TitledPane fx:id="defaultExpanded" maxHeight="1.7976931348623157E308" text="Modificar Servicio">
+                              <content>
+                                    <GridPane alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="294.0" prefWidth="224.0" styleClass="root">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="275.0" minWidth="10.0" prefWidth="188.0000244140625" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="241.0" minWidth="10.0" prefWidth="142.3999755859375" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
                                        <children>
-                                          <Label prefWidth="67.0" styleClass="orange-text" text="Nombre  :">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
-                                             <effect>
-                                                <Blend />
-                                             </effect>
-                                          </Label>
-                                          <Label fx:id="driverNameLabel" text="       driver.getName()">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
-                                          </Label>
+                                          <JFXTextField fx:id="newReserveNameLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="180.0" promptText="Nombre del Servicio" styleClass="supervisor-textfield" />
+                                          <JFXTextField fx:id="newReserveIDLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Identificador" styleClass="supervisor-textfield" GridPane.columnIndex="1" />
+                                          <JFXTextField fx:id="newReservePickupLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Recogida" styleClass="supervisor-textfield" GridPane.rowIndex="2" />
+                                          <JFXTextField fx:id="newReserveTransitLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Tránsito" styleClass="supervisor-textfield" GridPane.rowIndex="4" />
+                                          <JFXTextField fx:id="newReserveArrivalLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Llegada" styleClass="supervisor-textfield" GridPane.rowIndex="6" />
+                                          <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                                             <children>
+                                                <JFXTextField fx:id="newReserveStartTLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="50.0" promptText="H. Inicio" styleClass="supervisor-textfield" />
+                                                <Region prefHeight="48.0" prefWidth="34.0" />
+                                                <JFXTextField fx:id="newReserveEndTLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="50.0" promptText="H. Final" styleClass="supervisor-textfield" />
+                                             </children>
+                                          </HBox>
+                                          <JFXButton contentDisplay="RIGHT" onAction="#handleNewReserveRequest" styleClass="supervisor-buttons" text="Crear" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+                                             <graphic>
+                                                <FontAwesomeIconView glyphName="CHECK" />
+                                             </graphic>
+                                          </JFXButton>
+                                          <JFXButton contentDisplay="RIGHT" onAction="#handleCancelReserveRequest" styleClass="supervisor-buttons" text="Cancelar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+                                             <graphic>
+                                                <FontAwesomeIconView glyphName="CLOSE" />
+                                             </graphic>
+                                          </JFXButton>
+                                          <Region prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="8" />
                                        </children>
-                                    </HBox>
-                                    <HBox prefHeight="30.0" prefWidth="200.0">
+                                    </GridPane>
+                              </content>
+                            </TitledPane>
+                            <TitledPane expanded="false" text="Montar Servicio">
+                              <content>
+                                    <GridPane alignment="CENTER" prefHeight="294.0" prefWidth="224.0" styleClass="root">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="275.0" minWidth="10.0" prefWidth="188.0000244140625" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="241.0" minWidth="10.0" prefWidth="142.3999755859375" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
                                        <children>
-                                          <Label styleClass="orange-text" text="Apellido  :">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
-                                             <effect>
-                                                <Blend />
-                                             </effect>
-                                          </Label>
-                                          <Label fx:id="driverUsernameLabel" text="       driver.getName()">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
-                                          </Label>
+                                          <JFXTextField fx:id="oldReserveNameLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="180.0" promptText="Nombre del Servicio" styleClass="supervisor-textfield" />
+                                          <JFXTextField fx:id="oldReserveIDLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Identificador" styleClass="supervisor-textfield" GridPane.columnIndex="1" />
+                                          <JFXTextField fx:id="oldReservePickupLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Recogida" styleClass="supervisor-textfield" GridPane.rowIndex="2" />
+                                          <JFXTextField fx:id="oldReserveTransitLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Tránsito" styleClass="supervisor-textfield" GridPane.rowIndex="4" />
+                                          <JFXTextField fx:id="oldReserveArrivalLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Llegada" styleClass="supervisor-textfield" GridPane.rowIndex="6" />
+                                          <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                                             <children>
+                                                <JFXTextField fx:id="oldReserveStarTLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="50.0" promptText="H. Inicio" styleClass="supervisor-textfield" />
+                                                <Region prefHeight="48.0" prefWidth="34.0" />
+                                                <JFXTextField fx:id="oldReserveEndTLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="50.0" promptText="H. Final" styleClass="supervisor-textfield" />
+                                             </children>
+                                          </HBox>
+                                          <JFXButton contentDisplay="RIGHT" onAction="#handleApplyReserveEdit" styleClass="supervisor-buttons" text="Aplicar" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+                                             <graphic>
+                                                <FontAwesomeIconView glyphName="CHECK" />
+                                             </graphic>
+                                          </JFXButton>
+                                          <JFXButton contentDisplay="RIGHT" onAction="#handleCancelReserveRequest" styleClass="supervisor-buttons" text="Cancelar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+                                             <graphic>
+                                                <FontAwesomeIconView glyphName="CLOSE" />
+                                             </graphic>
+                                          </JFXButton>
                                        </children>
-                                    </HBox>
-                                    <HBox prefHeight="30.0" prefWidth="200.0">
-                                       <children>
-                                          <Label styleClass="orange-text" text="DNI         :">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
-                                             <effect>
-                                                <Blend />
-                                             </effect>
-                                          </Label>
-                                          <Label fx:id="driverDNILabel" text="       driver.getName()">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                              <Line endX="-16.0" endY="91.0" layoutX="228.0" layoutY="22.0" startX="-16.0" startY="-7.0" />
-                              <FontAwesomeIconView glyphName="USER_CIRCLE_ALT" layoutX="25.0" layoutY="143.0" size="150" styleClass="black-glyph" />
-                           </children>
-                        </Pane>
-                     </children>
-                  </HBox>
-               </content>
-            </ScrollPane>
+                                    </GridPane>
+                              </content>
+                            </TitledPane>
+                          </panes>
+                        </Accordion>
+                     </children></Pane>
+               </items>
+            </SplitPane>
          </children>
       </HBox>
    </center>
