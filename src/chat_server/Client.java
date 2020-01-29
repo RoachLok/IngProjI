@@ -2,7 +2,7 @@ package chat_server;
 
 import java.net.Socket;
 
-class Client {
+abstract class Client {
     private Socket socket;
     private String username;
 
@@ -26,5 +26,7 @@ class Client {
     private void setSocket(Socket socket) {
         this.socket = socket;
     }
+
+    abstract boolean isAdmin();
 
 }

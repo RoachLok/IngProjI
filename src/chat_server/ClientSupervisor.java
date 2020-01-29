@@ -36,4 +36,8 @@ public class ClientSupervisor extends Client {
         drivers.remove(index);
         return true;
     }
+
+    public boolean isAdmin () {
+        return true;
+    }
 }

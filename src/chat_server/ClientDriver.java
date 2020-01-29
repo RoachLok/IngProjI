@@ -22,4 +22,8 @@ public class ClientDriver extends Client {
     public Client getAdmin() {
         return admin;
     }
+
+    public boolean isAdmin () {
+        return false;
+    }
 }
