@@ -40,7 +40,7 @@ public class ServerClientHandler implements Runnable {
                         timeoutCounter++;
                         dataOut.println("SYN-ACK><Hey there!");
                     }else {
-                        server.sendMessage(socket, "FIN. USER TIMED-OUT");
+                        server.sendMessage(socket, "FIN. USER TIMED-OUT", true);
                         disconnectUser();
                     }
                 } else if (textIn.startsWith("ACKMSG")){                                                        //Message was read.
@@ -53,8 +53,9 @@ public class ServerClientHandler implements Runnable {
                     server.addClient(socket, parsedField[0], parsedField[1]);
 
                 } else if (textIn.startsWith("MSG")) {                                                          //User sending message to user.
-                    server.sendMessage(socket, textIn.substring(5));
-
+                    server.sendMessage(socket, textIn.substring(5), false);
+                } else if (textIn.startsWith("DL")) {
+                    server.resendPastMessages(socket, textIn.substring(4));
                 } else if (textIn.startsWith("FIN"))                                                            //User disconnecting.
                     disconnectUser();
 

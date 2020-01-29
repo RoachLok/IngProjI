@@ -11,8 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import java.io.IOException;
-import java.io.PrintWriter;
+
+import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -115,7 +115,7 @@ public class Main extends Application implements Runnable, Initializable {
 
     private void serverStop() {
         if (serverSocket != null) {
-            for (Client client : clientList) sendMessage(client.getSocket(), "FIN. SERVER CLOSED.");
+            for (Client client : clientList) sendMessage(client.getSocket(), "FIN. SERVER CLOSED.", false);
             thread = null;
             try {
                 serverSocket.close();
@@ -132,7 +132,7 @@ public class Main extends Application implements Runnable, Initializable {
         }
     }
 
-    void sendMessage(Socket clientSocket, String message) {
+    void sendMessage(Socket clientSocket, String message, boolean sendRaw) {
         if (clientSocket != null && !clientSocket.isClosed()) {                                                     //User disconnected/doesn't exist?
             String[] parsedField = message.split("><");                                         //Message example: MSG><FROM><FOR><MSGCONTENT
                                                                                                                     //parse[0] = from; parse[1] = for; parse[2] = msg;
@@ -148,25 +148,46 @@ public class Main extends Application implements Runnable, Initializable {
                     }
                 }
             }
+            if (sendRaw)
+                return;
             //Print log in server
             currentTime = LocalDateTime.now();
             textArea.appendText("\n["+dtf.format(currentTime)+']'+" INFO. User -> "+parsedField[0]+" sent message '"+parsedField[2]+"' to -> "+ parsedField[1]+".");
             //Store message for message history.
-            storeMessage(parsedField[0], parsedField[1], parsedField[2]);
+            storeMessage(parsedField[0], parsedField[1], parsedField[2], "MSG><"+parsedField[0]+"><"+parsedField[2]);
         }
     }
 
-    private void storeMessage(String sender, String destinatary, String messageContent) { //TODO maybe add timestamps to messages too.
+    private void storeMessage(String sender, String destinatary, String messageContent, String sentString) {
         /*** IMPLEMENT JSON ***/
         // All stored messages should be marked as not read.
         currentTime = LocalDateTime.now();
         textArea.appendText("\n["+dtf.format(currentTime)+']'+" INFO. "+sender+"'s message to -> "+destinatary+" was stored.");
+
+        String fileName = "";
+
+        for (Client client : clientList)
+            if (client.getUsername().equals(sender))
+                if (client.isAdmin())
+                    fileName = sender + '-' + destinatary + ".log";
+                else
+                    fileName = destinatary + "-" + sender + ".log";
+        try {
+            FileWriter fileWriter = new FileWriter("src/chat_server/chat_logs/" + fileName, true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            PrintWriter writer = new PrintWriter(bufferedWriter);
+            writer.println(sentString);
+            writer.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            writer.close();
+        }
     }
 
-    void markAsRead(String reciever){
+    void markAsRead(String receiver){
         /*** Mark reviever messages as read ***/
         currentTime = LocalDateTime.now();
-        textArea.appendText("\n["+dtf.format(currentTime)+']'+" INFO. "+reciever+" read his message.");
+        textArea.appendText("\n["+dtf.format(currentTime)+']'+" INFO. "+receiver+" read his message.");
     }
 
     void addClient(Socket socket, String username, String adminUsername) {
@@ -189,6 +210,21 @@ public class Main extends Application implements Runnable, Initializable {
                 textArea.appendText('('+clientList.size()+')'+" users left.");
                 return;
             }
+        }
+    }
+
+    void resendPastMessages(Socket clientSocket, String fileName) {
+        try {
+            File chatLog = new File("src/chat_server/chat_logs/" + fileName);
+
+            BufferedReader br = new BufferedReader(new FileReader(chatLog));
+            String line;
+            while ((line = br.readLine()) != null)
+                sendMessage(clientSocket, line, true);
+
+            br.close();
+        } catch (IOException e) {
+            System.err.println("File not existing yet.");
         }
     }
 
