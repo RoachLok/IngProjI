@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import eu.hansolo.medusa.Gauge?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.SupervisorView.SupervisorInfoPanesController">
+   <children>
+      <VBox stylesheets="@../../resources/main-theme.css">
+         <children>
+            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+               <children>
+                  <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="121.0" prefWidth="500.0" styleClass="colorPane" HBox.hgrow="ALWAYS">
+                     <children>
+                        <VBox layoutX="249.0" layoutY="22.0" prefHeight="85.0" prefWidth="234.0">
+                           <children>
+                              <HBox prefHeight="30.0" prefWidth="246.0">
+                                 <children>
+                                    <Label prefHeight="21.0" prefWidth="104.0" styleClass="orange-text" text="Temp          :">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                       <effect>
+                                          <Blend />
+                                       </effect>
+                                    </Label>
+                                    <Region prefHeight="21.0" prefWidth="28.0" />
+                                    <Label fx:id="tempLabel" text="22º C">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="30.0" prefWidth="200.0">
+                                 <children>
+                                    <Label prefHeight="21.0" prefWidth="103.0" styleClass="orange-text" text="Media         :">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                       <effect>
+                                          <Blend />
+                                       </effect>
+                                    </Label>
+                                    <Region prefHeight="21.0" prefWidth="27.0" />
+                                    <Label fx:id="avgSpeedLabel" text="67 Km/h">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="30.0" prefWidth="200.0">
+                                 <children>
+                                    <Label styleClass="orange-text" text="Fuel             :">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                       <effect>
+                                          <Blend />
+                                       </effect>
+                                    </Label>
+                                    <Region prefHeight="50.0" prefWidth="39.0" />
+                                    <Gauge fx:id="fuelGauge" minHeight="-Infinity" prefHeight="70.0" prefWidth="68.0" skinType="LEVEL" value="100.0" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <Line endX="-16.0" endY="91.0" layoutX="228.0" layoutY="22.0" startX="-16.0" startY="-7.0" />
+                        <Gauge fx:id="speedGauge" animated="true" layoutX="29.0" layoutY="2.0" lcdDesign="WHITE" prefHeight="163.0" prefWidth="150.0" skinType="MODERN" />
+                     </children>
+                  </Pane>
+               </children>
+            </HBox>
+            <Label styleClass="supervisor-welcome-texttitle" text="Presión Neumáticos">
+               <VBox.margin>
+                  <Insets left="23.0" top="50.0" />
+               </VBox.margin>
+            </Label>
+            <AnchorPane prefHeight="412.0" prefWidth="483.0">
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+               <children>
+                  <VBox layoutX="50.0" layoutY="12.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <GridPane>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+                              <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <ImageView fitHeight="378.0" fitWidth="157.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+                                 <image>
+                                    <Image url="@../../resources/img/busTopView.png" />
+                                 </image>
+                              </ImageView>
+                              <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Label fx:id="pressure1" styleClass="supervisor" text="OK" textFill="#5eff00" />
+                                    <Region prefHeight="252.0" prefWidth="123.0" />
+                                    <Label fx:id="pressure3" text="OK" textFill="#00ff15" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
+                                 <children>
+                                    <Label fx:id="pressure2" styleClass="supervisor" text="OK" textFill="#5eff00" />
+                                    <Region prefHeight="252.0" prefWidth="163.0" />
+                                    <Label fx:id="pressure4" text="OK" textFill="#00ff15" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </GridPane>
+                        <Label styleClass="supervisor-" text="Velocidad" />
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -11,16 +11,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.controlsfx.control.Notifications;
@@ -32,6 +30,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -87,10 +88,15 @@ public class SupervisorViewController implements Initializable {
     private JFXTreeTableView<Service> montajeTreeTable;
     @FXML
     private JFXDatePicker datePicker;
+    @FXML
+    public AnchorPane montajeInfoPanel;
+
+    private String chosenDate, todayDate;
 
     /***** CORE CODE ELEMENTS *****/
     private Admin admin = (Admin) Main.appUser;
     private ArrayList<Service> displayServices;
+    private volatile Thread thread;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -147,9 +153,19 @@ public class SupervisorViewController implements Initializable {
         }
 
         /*** -- MONTAJE VIEW -- ***/
-        observableServices = FXCollections.observableArrayList();
-
         if (montajeTreeTable != null) {
+            //DatePicker init with current date.
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            LocalDateTime now = LocalDateTime.now();
+            LocalDate localDate = LocalDate.parse(formatter.format(now), formatter);
+
+            datePicker.setValue(localDate);
+            todayDate = datePicker.getValue().toString();
+            chosenDate = todayDate;
+
+            //TreeTableView init
+            observableServices = FXCollections.observableArrayList();
+
             JFXTreeTableColumn<Service, String> identifier = new JFXTreeTableColumn("ID");
             identifier.setPrefWidth(75);
 
@@ -171,7 +187,7 @@ public class SupervisorViewController implements Initializable {
             });
 
             JFXTreeTableColumn<Service, String> pickup = new JFXTreeTableColumn("Salida");
-            pickup.setPrefWidth(250);
+            pickup.setPrefWidth(90);
 
             pickup.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
                 @Override
@@ -181,7 +197,7 @@ public class SupervisorViewController implements Initializable {
             });
 
             JFXTreeTableColumn<Service, String> arrival = new JFXTreeTableColumn("Llegada");
-            arrival.setPrefWidth(250);
+            arrival.setPrefWidth(90);
 
             arrival.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
                 @Override
@@ -191,7 +207,7 @@ public class SupervisorViewController implements Initializable {
             });
 
             JFXTreeTableColumn<Service, String> startT = new JFXTreeTableColumn("H. Inicio");
-            startT.setPrefWidth(250);
+            startT.setPrefWidth(90);
 
             startT.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
                 @Override
@@ -201,7 +217,7 @@ public class SupervisorViewController implements Initializable {
             });
 
             JFXTreeTableColumn<Service, String> endT = new JFXTreeTableColumn("H. Final");
-            endT.setPrefWidth(250);
+            endT.setPrefWidth(90);
 
             endT.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
                 @Override
@@ -221,7 +237,7 @@ public class SupervisorViewController implements Initializable {
             });
 
             JFXTreeTableColumn<Service, String> transit = new JFXTreeTableColumn("Tránsito");
-            transit.setPrefWidth(250);
+            transit.setPrefWidth(90);
 
             transit.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
                 @Override
@@ -240,17 +256,12 @@ public class SupervisorViewController implements Initializable {
                 }
             });
 
-            displayServices = admin.getMontajes();
-
-            for (Service montado : displayServices) {
-                montado.setObservable();
-                observableServices.add(montado);
-            }
-
             final TreeItem<Service> root = new RecursiveTreeItem<Service>(observableServices, RecursiveTreeObject::getChildren);
             montajeTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, chauffeur, vehicleName, transit);
             montajeTreeTable.setRoot(root);
             montajeTreeTable.setShowRoot(false);
+
+            updateMontajeTreeTable();
 
             montajeTreeTable.getSelectionModel().select(0);
         }
@@ -426,21 +437,46 @@ public class SupervisorViewController implements Initializable {
 
 
     /*********  ------------ MONTAJE VIEW METHODS IMPLEMENTATION ------------  *********/
+    private void loadIntoInfoScrollPane(boolean realTime) { //Loads a view into the montajeView infoPane.
+        String pane;
+        if (realTime)
+            pane = "supervisorMontajeRealtime.fxml";
+        else
+            pane = "supervisorMontajeRegisters.fxml";
+
+        Node newLoadedPane =  null;
+        try {
+            newLoadedPane = (Node)FXMLLoader.load(getClass().getResource(pane));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        montajeInfoPanel.getChildren().setAll(newLoadedPane);
+    }
+
+    private void updateMontajeTreeTable() {
+        observableServices.remove(0, observableServices.size()); //Empty current treeTable.
+        for (Service aceptado : admin.getMontajes())
+            if (aceptado.getStartT().substring(1, 11).equals(chosenDate)) { //Take only date matching services.
+                aceptado.setObservable();
+                observableServices.add(aceptado);
+            }
+        if (observableServices.isEmpty())
+            montajeTreeTable.setPlaceholder(new Label("No hay servicios montados para esta fecha."));
+
+            loadIntoInfoScrollPane(chosenDate.equals(todayDate));
+    }
+
+    public void datePickerUpdate() {
+         chosenDate =  datePicker.getValue().toString();
+         updateMontajeTreeTable();
+    }
+
     public void handleMontajeTableClick(MouseEvent mouseEvent) {
-        updateMontajeInfoPane(montajeTreeTable.getSelectionModel().getSelectedIndex());
+        loadIntoInfoScrollPane(chosenDate.equals(todayDate));
     }
-
-    private void updateMontajeInfoPane(int tableSelectedIndex) {
-        Service displayService = displayServices.get(tableSelectedIndex);
-
-        //TODO Date detector, update gauges on montajeViewPane.
-
-    }
-
-    //TODO implement date checker.
 
     /******************************************************************************************/
-    void initReservesTableView (ArrayList<Service> displayServices) {
+    void initReservesTableView(ArrayList<Service> displayServices) {
         observableServices = FXCollections.observableArrayList();
 
         //ID
@@ -524,4 +560,6 @@ public class SupervisorViewController implements Initializable {
         reserveTreeTable.setRoot(root);
         reserveTreeTable.setShowRoot(false);
     }
+
+
 }
