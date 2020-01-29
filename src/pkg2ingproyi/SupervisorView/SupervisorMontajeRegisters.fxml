@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="866.0" prefWidth="500.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.SupervisorView.SupervisorGraph">
+   <children>
+      <VBox layoutX="-14.0">
+         <children>
+            <AnchorPane prefHeight="418.0" prefWidth="503.0">
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+               <children>
+                  <Label layoutX="28.0" layoutY="1.0" styleClass="supervisor-welcome-texttitle" text="Presion" />
+                  <LineChart fx:id="grafpres" layoutX="51.0" layoutY="18.0" prefHeight="400.0" prefWidth="429.0">
+                     <xAxis>
+                        <CategoryAxis side="BOTTOM" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT" />
+                     </yAxis>
+                  </LineChart>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="418.0" prefWidth="414.0">
+               <children>
+                  <Label layoutX="28.0" layoutY="1.0" styleClass="supervisor-welcome-texttitle" text="Velocidad" />
+                  <LineChart fx:id="grafvelo" layoutX="51.0" layoutY="18.0" prefHeight="400.0" prefWidth="429.0">
+                     <xAxis>
+                        <CategoryAxis side="BOTTOM" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT" />
+                     </yAxis>
+                  </LineChart>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
