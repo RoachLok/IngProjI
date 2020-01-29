@@ -2,13 +2,21 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextArea?>
-<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+
 <AnchorPane fx:id="parentAnchorPane" prefHeight="522.0" prefWidth="332.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.ChatClient.DriverChat">
    <children>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="522.0" prefWidth="332.0">
@@ -47,9 +55,9 @@
                      </children>
                   </Pane>
                   <Pane prefHeight="44.0" prefWidth="10.0" />
-                  <VBox maxWidth="82.0" prefHeight="48.0" prefWidth="82.0">
+                  <VBox maxWidth="101.0" prefHeight="48.0" prefWidth="101.0">
                      <children>
-                        <Label fx:id="recieverName" alignment="CENTER" prefHeight="15.0" prefWidth="45.0" styleClass="title-label" text="Joset" textFill="#ff5b13">
+                        <Label fx:id="receiverName" prefHeight="30.0" prefWidth="108.0" styleClass="title-label" text="Joset" textFill="#ff5b13">
                            <font>
                               <Font size="19.0" />
                            </font>
@@ -66,15 +74,15 @@
                         </Label>
                      </children>
                   </VBox>
-                  <Pane prefHeight="48.0" prefWidth="166.0">
+                  <Pane prefHeight="48.0" prefWidth="124.0">
                      <children>
-                        <FontAwesomeIconView fx:id="isConnectedIcon" glyphName="WIFI" layoutX="152.0" layoutY="14.0" size="17" />
-                        <JFXButton fx:id="queryOldMessage" alignment="BASELINE_LEFT" contentDisplay="GRAPHIC_ONLY" layoutX="117.0" layoutY="21.0" onAction="#handleQueryButtonAction" prefWidth="24.0">
+                        <FontAwesomeIconView fx:id="isConnectedIcon" glyphName="WIFI" layoutX="130.0" layoutY="14.0" size="17" />
+                        <JFXButton fx:id="queryOldMessage" alignment="BASELINE_LEFT" contentDisplay="GRAPHIC_ONLY" layoutX="91.0" layoutY="21.0" onAction="#handleQueryButtonAction" prefWidth="24.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="REPEAT" size="22" />
                            </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="settingsButton" contentDisplay="GRAPHIC_ONLY" layoutX="117.0" layoutY="-6.0">
+                        <JFXButton fx:id="settingsButton" contentDisplay="GRAPHIC_ONLY" layoutX="91.0" layoutY="-6.0">
                            <graphic>
                               <FontAwesomeIconView glyphName="GEAR" size="24" />
                            </graphic>
@@ -82,8 +90,8 @@
                               <BoxBlur />
                            </effect>
                         </JFXButton>
-                        <FontAwesomeIconView fx:id="downloadingIcon" glyphName="DOWNLOAD" layoutX="152.0" layoutY="44.0" size="17" />
-                        <FontAwesomeIconView fx:id="isNotConnectedIcon" glyphName="UNLINK" layoutX="152.0" layoutY="14.0" size="17" />
+                        <FontAwesomeIconView fx:id="downloadingIcon" glyphName="DOWNLOAD" layoutX="130.0" layoutY="44.0" size="17" />
+                        <FontAwesomeIconView fx:id="isNotConnectedIcon" glyphName="UNLINK" layoutX="130.0" layoutY="14.0" size="17" />
                      </children>
                   </Pane>
                </children>
@@ -97,7 +105,7 @@
                         <Shadow />
                      </bumpInput>
                      <light>
-                        <Light.Distant/>
+                        <Light.Distant />
                      </light>
                   </Lighting>
                </effect>
