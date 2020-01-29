@@ -33,8 +33,6 @@ public class DriverChat implements Initializable {
     @FXML
     public Label receiverName;
     @FXML
-    private JFXButton queryOldMessage;
-    @FXML
     private FontAwesomeIconView isConnectedIcon;
     @FXML
     private FontAwesomeIconView isNotConnectedIcon;
@@ -110,7 +108,7 @@ public class DriverChat implements Initializable {
     @FXML
     private void handleSendButtonAction(ActionEvent event) throws IOException {
         String text = messageField.getText();
-        if (text == null)
+        if (text.equals(""))
             return;
         messageHandler.sendMessage("MSG><" + driver.getUsername() + "><" + driver.getAdminNick() + "><" + text);
         addText(messageField.getText(), true);
@@ -127,6 +125,7 @@ public class DriverChat implements Initializable {
     }
 
     public void handleQueryButtonAction(ActionEvent actionEvent) {
-        System.err.println("Previous message query to be implemented");
+        messagesArea.clear();
+        messageHandler.sendMessage("DL><"+driver.getAdminNick() + '-' + driver.getUsername() + ".log");
     }
 }

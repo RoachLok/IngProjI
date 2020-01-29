@@ -47,6 +47,7 @@ public class MessageHandler implements Runnable{
 
             //Thread start
             thread = new Thread(this);
+            thread.setDaemon(true);
             thread.start();
 
             //Server Hello
@@ -99,36 +100,34 @@ public class MessageHandler implements Runnable{
 
     @Override
     public void run() {
-            while (thread != null) {
-                try {
-                    String textIn = dataIn.readLine();
+        while (thread != null) {
+            try {
+                String textIn = dataIn.readLine();
+                if (textIn.equals("SYN-ACK><Hey there!")) {
+                    sendMessage("ACK><"+username+"><"+adminUsername);
+                    //TODO Mark server as online. Is my admin online? / are my users online? / disablebutton.
 
-                    if (textIn.equals("SYN-ACK><Hey there!")) {
-                        sendMessage("ACK><"+"><"+adminUsername);
-                        System.out.println("Connected to server.");
-                        //TODO Mark server as online. Is my admin online? / are my users online? / disablebutton.
+                } else if (textIn.startsWith("MSG")) {
+                    String[] parsedField = textIn.substring(5).split("><");
+                    if (adminUsername.equals("."))
+                        supChat.addText(parsedField[1], false, parsedField[0]);
+                    else
+                        driverChat.addText(parsedField[1], false);
+                    notifyReading(parsedField[0]);
 
-                    } else if (textIn.startsWith("MSG")) {
-                        String[] parsedField = textIn.substring(5).split("><");
-                        if (adminUsername.equals("."))
-                            supChat.addText(parsedField[1], false);
-                        else
-                            driverChat.addText(parsedField[1], false);
-                        notifyReading(parsedField[0]);
+                } else if (textIn.startsWith("FIN")) {
+                    disconnectFromServer();
 
-                    } else if (textIn.startsWith("FIN")) {
-                        disconnectFromServer();
+                } else if (textIn.startsWith("ACKMSG")) {  //Diferenciar entre sueprvisor y conductor
 
-                    } else if (textIn.startsWith("ACKMSG")) {  //Diferenciar entre sueprvisor y conductor
-
-                        System.out.println(textIn.substring(6)+" ha leído tu mensaje.");
-                        //TODO MARK MESSAGE AS READ
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    thread = null;
+                    System.out.println(textIn.substring(6)+" ha leído tu mensaje.");
+                    //TODO MARK MESSAGE AS READ
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
+                thread = null;
             }
+        }
     }
     private void notifyReading(String from) {
         sendMessage("ACKMSG"+from);

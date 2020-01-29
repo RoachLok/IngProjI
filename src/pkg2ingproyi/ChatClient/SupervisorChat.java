@@ -83,7 +83,7 @@ public class SupervisorChat implements Initializable {
         }
         //Select first driver as chat driver.
         chatDriverList.getSelectionModel().select(0);
-        updateCurrentChatDriver(0);
+
 
 
         try {
@@ -96,11 +96,12 @@ public class SupervisorChat implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                messageHandler = new MessageHandler(inetAddress.getHostAddress(), port,supervisor.getUsername(), thisSupervisorChat);
+                messageHandler = new MessageHandler(inetAddress.getHostAddress(), port, supervisor.getUsername(), thisSupervisorChat);
                 //Server Handshake//
                 if (messageHandler.connectToServer()) {
                     isNotConnectedIcon  .setVisible(false);
                     isConnectedIcon     .setVisible(true );
+                    updateCurrentChatDriver(0);
                 }
 
                 //Handle ENTER_KEY presses.
@@ -131,10 +132,10 @@ public class SupervisorChat implements Initializable {
     @FXML
     private void handleSendButtonAction(ActionEvent event) throws IOException {
         String text = messageField.getText();
-        if (text == null)
+        if (text.equals(""))
             return;
         messageHandler.sendMessage("MSG><" + supervisor.getUsername() + "><" + receiverName + "><" + text);
-        addText(messageField.getText(), true);
+        addText(messageField.getText(), true, "");
         messageField.clear();
     }
 
@@ -142,6 +143,7 @@ public class SupervisorChat implements Initializable {
         Driver displayDriver = supervisor.getDriver(driverIndex);
 
         receiverNameLabel.setText(receiverName = displayDriver.getUsername());
+        handleQueryButtonAction();
     }
 
     public void handleDriverListClick(MouseEvent mouseEvent) {
@@ -149,19 +151,27 @@ public class SupervisorChat implements Initializable {
     }
 
 
-    void addText(String text, boolean isSent) {
+    void addText(String text, boolean isSent, String driverName) {
         LocalDateTime currentTime = LocalDateTime.now();
+        String driverInTheChat = supervisor.getDriver(chatDriverList.getSelectionModel().getSelectedIndex()).getUsername();
+
         if (!isSent){
+            if (!driverInTheChat.equals(driverName))
+                return;
             messagesArea.appendText("\n["+dtf.format(currentTime)+']'+' '
-                        +supervisor.getDriver(chatDriverList.getSelectionModel().getSelectedIndex()).getUsername()
-                        +" envió: "+text+'.');
+                        + driverInTheChat
+                        + " envió: "+text+'.');
         }else{
             messagesArea.appendText("\n["+dtf.format(currentTime)+']'+" Has enviado: "+text+'.');
         }
     }
 
-    public void handleQueryButtonAction(ActionEvent actionEvent) {
-        System.err.println("Previous message query to be implemented");
+    public void handleQueryButtonAction() {
+        messagesArea.clear();
+        int selectedDriverIndex = chatDriverList.getSelectionModel().getSelectedIndex();
+        String driverInTheChat = supervisor.getDriver(selectedDriverIndex).getUsername();
+
+        messageHandler.sendMessage("DL><" + supervisor.getUsername() + '-' + driverInTheChat + ".log");
     }
 }
 
