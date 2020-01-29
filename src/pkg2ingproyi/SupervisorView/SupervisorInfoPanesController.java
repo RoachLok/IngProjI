@@ -31,6 +31,7 @@ public class SupervisorInfoPanesController implements Initializable, Runnable {
         fuelGauge.setAnimated(true);
 
         thread = new Thread(this);
+        thread.setDaemon(true);
         thread.start();
     }
 
