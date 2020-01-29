@@ -41,7 +41,7 @@
    <center>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <JFXTreeTableView fx:id="montajeTreeTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="240.0" minWidth="240.0" onMouseClicked="#handleDriverListClick" prefHeight="542.0" prefWidth="622.0" HBox.hgrow="ALWAYS" />
+            <JFXTreeTableView fx:id="montajeTreeTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="240.0" minWidth="240.0" onMouseClicked="#handleMontajeTableClick" prefHeight="542.0" prefWidth="622.0" HBox.hgrow="ALWAYS" />
             <ScrollPane hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="542.0" prefWidth="494.0" HBox.hgrow="NEVER">
                <content>
                   <AnchorPane fx:id="montajeInfoPanel" />
