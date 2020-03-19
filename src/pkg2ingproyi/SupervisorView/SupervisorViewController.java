@@ -187,7 +187,7 @@ public class SupervisorViewController implements Initializable {
             });
 
             JFXTreeTableColumn<Service, String> pickup = new JFXTreeTableColumn("Salida");
-            pickup.setPrefWidth(90);
+            pickup.setPrefWidth(200);
 
             pickup.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
                 @Override
@@ -197,7 +197,7 @@ public class SupervisorViewController implements Initializable {
             });
 
             JFXTreeTableColumn<Service, String> arrival = new JFXTreeTableColumn("Llegada");
-            arrival.setPrefWidth(90);
+            arrival.setPrefWidth(200);
 
             arrival.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
                 @Override
@@ -207,7 +207,7 @@ public class SupervisorViewController implements Initializable {
             });
 
             JFXTreeTableColumn<Service, String> startT = new JFXTreeTableColumn("H. Inicio");
-            startT.setPrefWidth(90);
+            startT.setPrefWidth(180);
 
             startT.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
                 @Override
@@ -217,7 +217,7 @@ public class SupervisorViewController implements Initializable {
             });
 
             JFXTreeTableColumn<Service, String> endT = new JFXTreeTableColumn("H. Final");
-            endT.setPrefWidth(90);
+            endT.setPrefWidth(180);
 
             endT.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
                 @Override
@@ -237,7 +237,7 @@ public class SupervisorViewController implements Initializable {
             });
 
             JFXTreeTableColumn<Service, String> transit = new JFXTreeTableColumn("Tránsito");
-            transit.setPrefWidth(90);
+            transit.setPrefWidth(200);
 
             transit.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
                 @Override
@@ -247,7 +247,7 @@ public class SupervisorViewController implements Initializable {
             });
 
             JFXTreeTableColumn<Service, String> vehicleName = new JFXTreeTableColumn("Vehículo");
-            vehicleName.setPrefWidth(100);
+            vehicleName.setPrefWidth(150);
 
             vehicleName.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
                 @Override

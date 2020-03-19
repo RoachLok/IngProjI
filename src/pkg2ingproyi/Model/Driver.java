@@ -1,18 +1,30 @@
 package pkg2ingproyi.Model;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class Driver extends User{
-    private String adminNick;
-    private ArrayList<Service> services;
+//TODO Refactor Driver to Chauffeur.
 
-    public Driver(String username, String password, String name, String surname, String dni, String adminNick) {
-        super(username, password, name, surname, dni);
+public class Driver extends User {
+    private String adminNick;
+    private ArrayList< Service        >   services;
+    private ArrayList< DrivingLicense >   licenses;
+    private ArrayList< Incidence      >   incidences;
+
+    public Driver(String username, String password, String name, String surname, String dni, String admingNick,
+                    ArrayList<Service> services, ArrayList<DrivingLicense> licenses, ArrayList<Incidence> incidences) {
+        super(username, password, name, surname, dni, incidences);
         this.adminNick = adminNick;
     }
 
-    public Driver(String[] parsed){
-        super(parsed[0], parsed[1], parsed[2], parsed[3], parsed[4]);
+    public Driver(String username, String password, String name, String surname, String dni, String adminNick,
+                    ArrayList<Incidence> incidences) {
+        super(username, password, name, surname, dni, incidences);
+        this.adminNick = adminNick;
+    }
+
+    public Driver(String[] parsed, ArrayList<Incidence> incidences){
+        super(parsed[0], parsed[1], parsed[2], parsed[3], parsed[4], incidences);
         this.adminNick = parsed[5];
     }
 
