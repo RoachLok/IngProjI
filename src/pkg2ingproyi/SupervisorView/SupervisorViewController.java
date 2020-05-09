@@ -22,19 +22,31 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.controlsfx.control.Notifications;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import pkg2ingproyi.Main;
 import pkg2ingproyi.Model.Admin;
 import pkg2ingproyi.Model.Driver;
 import pkg2ingproyi.Model.Service;
+import pkg2ingproyi.Model.Vehicle;
+import javax.xml.bind.annotation.XmlElementDecl;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.Permission;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 public class SupervisorViewController implements Initializable {
 
@@ -52,6 +64,10 @@ public class SupervisorViewController implements Initializable {
     private Label driverUsernameLabel;
     @FXML
     private Label driverDNILabel;
+
+    /**** DRIVER MENU VIEW ELEMENTS *****/
+    @FXML
+    private JFXListView<HBox> vehicleList;
 
     /****** ----- TREEVIEWS COMMON ----- ******/
     private ObservableList<Service> observableServices;
@@ -135,6 +151,44 @@ public class SupervisorViewController implements Initializable {
             }
             driverList.getSelectionModel().select(0);
             updateDriverInfoPane(0);
+        }
+
+        /*** -- VEHICLE VIEW -- ***/
+        if (vehicleList != null) {
+            //Grab to vehicle API link.
+            try {
+                URL vehiclesURL = new URL("https://JJ82BM9WO382QD8-SJ.adb.eu-amsterdam-1.oraclecloudapps.com/ords/admin/vehicle");
+                HttpURLConnection vehiclesConn = (HttpURLConnection) vehiclesURL.openConnection();
+                vehiclesConn.setRequestMethod("GET");
+                vehiclesConn.connect();
+
+                //Check if connection was stabilised correctly.
+                if (vehiclesConn.getResponseCode() != 200) {
+                    System.err.print("Wrong connection.");
+                } else {
+                    //Proceed only if correct connection with url.
+
+                    //Read URL and pass to String.
+                    Scanner sc = new Scanner(vehiclesURL.openStream());
+                    StringBuilder vehicleJSONString = new StringBuilder();
+                    while (sc.hasNext()) {
+                        vehicleJSONString.append(sc.nextLine());
+                    }
+
+                    //Parse String into a JSONArray.
+                    JSONParser jsonParser           = new JSONParser();
+                    JSONObject vehicleJSONObject    = (JSONObject) jsonParser.parse(vehicleJSONString.toString());
+                    JSONArray  vehicleJSONArray     = (JSONArray ) vehicleJSONObject.get("items"); //CLARIFICATION: "items" is the name of the object containing our desired items in the oracleCloud api.
+
+                    //Get the parsed objects from the JSONArray and cast them into a Vehicle List.
+                    List<Vehicle> parsedVehicles = new ArrayList<>();
+                    for (Object o : vehicleJSONArray)
+                        parsedVehicles.add(parseVehicleJsonObject((JSONObject) o));
+                }
+
+            } catch (ParseException | IOException e) {
+                e.printStackTrace();
+            }
         }
 
         /*** -- RESERVE VIEW -- ***/
@@ -305,6 +359,7 @@ public class SupervisorViewController implements Initializable {
 
     /*********  ------------ COMMON METHODS IMPLEMENTATION ------------  *********/
 
+    //Launches another window.
     private void launchStage(String filePath, String stageTitle) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource(filePath));
         Scene scene = new Scene(root);
@@ -338,6 +393,30 @@ public class SupervisorViewController implements Initializable {
 
     public void handleRemoveUserRequest(ActionEvent actionEvent) {
         Notifications.create().title("Feature to be implemented").text("Esta característica aun no ha sido implementada.").showError();
+    }
+
+    /*********  ------------ DRIVER VIEW METHODS IMPLEMENTATION ------------  *********/
+
+    private Vehicle parseVehicleJsonObject(JSONObject object) {
+        return new Vehicle(
+                (String) object.get("license_plate"),
+                (String) object.get("bodywork"     ),
+                (String) object.get("frame"        ),
+                Integer.parseInt( (String) object.get("axis_count"   )),
+                Integer.parseInt( (String) object.get("wheel_count"  )),
+                Integer.parseInt( (String) object.get("pax_capacity" )),
+                Date.valueOf((String) object.get("build_date"   )),
+                Date.valueOf((String)  object.get("acquire_date" )),
+                9                        ,
+                (String) object.get("vehicle_name" ),
+                (String) object.get("vehicle_type" ),
+                (String) object.get("fuel_type"    ),
+                (boolean)object.get("adblue"       ),
+                Integer.parseInt( (String) object.get("tank_capacity")),
+                10                       ,
+                0                         ,
+                153200                   ,
+                (String) object.get("department_id"));
     }
 
     /*********  ------------ RESERVES VIEW METHODS IMPLEMENTATION ------------  *********/
@@ -560,6 +639,4 @@ public class SupervisorViewController implements Initializable {
         reserveTreeTable.setRoot(root);
         reserveTreeTable.setShowRoot(false);
     }
-
-
 }

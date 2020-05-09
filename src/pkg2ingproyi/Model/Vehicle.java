@@ -1,39 +1,58 @@
 package pkg2ingproyi.Model;
 
+import java.sql.Date;
+
 public class Vehicle {
 	private String 	id;
 	private String 	bodywork;
-	private String 	chassis;
-	private int		pax;
-	private String 	date;
+	private String 	frame;
+	private int		axisCount;
+	private int		wheel_count;
+	private int		paxCapacity;
+	private Date 	buildDate;
+	private Date 	acquireDate;
 	private String 	nick;
+	private String  vehicleType;
+	private String	fuelType;
+	private boolean adblue;
 	private int 	permission;
-	private double  fuelTank;
+	private int  	fuelTank;
 	private double  literPerKm;
 	private double 	initialKm;
 	private double	currentKm;
+	private String  departmentId;
 
-	public Vehicle(String id, int pax, int permission, String bodywork, String chassis) {
-		this.id 		= id;
-		this.pax		= pax;
-		this.permission = permission;
-		this.bodywork	= bodywork;
-		this.chassis	= chassis;
+
+	public Vehicle(String id, int paxCapacity, int permission, String bodywork, String frame) {
+		this.id 			= id;
+		this.paxCapacity 	= paxCapacity;
+		this.permission 	= permission;
+		this.bodywork		= bodywork;
+		this.frame			= frame;
 	}
 
-	public Vehicle(String id, String bodyWork, String chassis, int pax, String date, int permission, String nick,
-				   	double fuelTank, double literPerKm, double initialKm, double currentKm) {
-		this.id 		= id;
-		this.bodywork 	= bodyWork;
-		this.chassis	= chassis;
-		this.pax		= pax;
-		this.date		= date;
-		this.nick		= nick;
-		this.permission = permission;
-		this.fuelTank	= fuelTank;
-		this.literPerKm = literPerKm;
-		this.initialKm	= initialKm;
-		this.currentKm	= currentKm;
+	public Vehicle(String id, String bodyWork, String frame, int axisCount, int wheel_count, int paxCapacity,
+				   Date buildDate, Date acquireDate, int permission, String nick, String vehicleType, String fuelType,
+				   boolean adblue, int fuelTank, double literPerKm, double initialKm, double currentKm,
+				   	String departmentId) {
+		this.id 			= id;
+		this.bodywork 		= bodyWork;
+		this.frame			= frame;
+		this.axisCount		= axisCount;
+		this.wheel_count  	= wheel_count;
+		this.paxCapacity	= paxCapacity;
+		this.buildDate		= buildDate;
+		this.acquireDate	= acquireDate;
+		this.nick			= nick;
+		this.vehicleType	= vehicleType;
+		this.fuelType		= fuelType;
+		this.adblue			= adblue;
+		this.permission 	= permission;
+		this.fuelTank		= fuelTank;
+		this.literPerKm 	= literPerKm;
+		this.initialKm		= initialKm;
+		this.currentKm		= currentKm;
+		this.departmentId	= departmentId;
 	}
 
 	public String getId() {
@@ -53,27 +72,51 @@ public class Vehicle {
 	}
 
 	public String getChassis() {
-		return chassis;
+		return frame;
 	}
 
-	public void setChassis(String chassis) {
-		this.chassis = chassis;
+	public void setChassis(String frame) {
+		this.frame = frame;
+	}
+
+	public int getAxisCount() {
+		return axisCount;
+	}
+
+	public void setAxisCount(int axisCount) {
+		this.axisCount = axisCount;
+	}
+
+	public int getWheel_count() {
+		return wheel_count;
+	}
+
+	public void setWheel_count(int wheel_count) {
+		this.wheel_count = wheel_count;
 	}
 
 	public int getPax() {
-		return pax;
+		return paxCapacity;
 	}
 
 	public void setPax(int pax) {
-		this.pax = pax;
+		this.paxCapacity = pax;
 	}
 
-	public String getDate() {
-		return date;
+	public Date getBuildDate() {
+		return buildDate;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
+	public void setBuildDate(Date buildDate) {
+		this.buildDate = buildDate;
+	}
+
+	public Date getAcquireDate() {
+		return acquireDate;
+	}
+
+	public void setAcquireDate(Date acquireDate) {
+		this.acquireDate = acquireDate;
 	}
 
 	public String getNick() {
@@ -84,6 +127,30 @@ public class Vehicle {
 		this.nick = nick;
 	}
 
+	public String getVehicleType() {
+		return vehicleType;
+	}
+
+	public void setVehicleType(String vehicleType) {
+		this.vehicleType = vehicleType;
+	}
+
+	public String getFuelType() {
+		return fuelType;
+	}
+
+	public void setFuelType(String fuelType) {
+		this.fuelType = fuelType;
+	}
+
+	public boolean hasAdBlue() {
+		return adblue;
+	}
+
+	public void setAdblue (boolean hasAdblue) {
+		this.adblue = hasAdblue;
+	}
+
 	public int getPermission() {
 		return permission;
 	}
@@ -92,11 +159,11 @@ public class Vehicle {
 		this.permission = permission;
 	}
 
-	public double getFuelTank() {
+	public int getFuelTank() {
 		return fuelTank;
 	}
 
-	public void setFuelTank(double fuelTank) {
+	public void setFuelTank(int fuelTank) {
 		this.fuelTank = fuelTank;
 	}
 
@@ -122,6 +189,14 @@ public class Vehicle {
 
 	public void setCurrentKm(double currentKm) {
 		this.currentKm = currentKm;
+	}
+
+	public String getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(String departmentId) {
+		this.departmentId = departmentId;
 	}
 
 	public String getPermissionName() {
