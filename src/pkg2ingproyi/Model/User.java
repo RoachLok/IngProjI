@@ -4,13 +4,15 @@ import java.util.ArrayList;
 
 public abstract class User {
     private String username, password, dni, name, surname;
+    private ArrayList<Incidence> incidences;
 
-    User(String username, String password, String name, String surname, String dni) {
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.surname = surname;
-        this.dni = dni;
+    User(String username, String password, String name, String surname, String dni, ArrayList<Incidence> incidences) {
+        this.username   = username;
+        this.password   = password;
+        this.name       = name;
+        this.surname    = surname;
+        this.dni        = dni;
+        this.incidences = incidences;
     }
 
     public String getUsername() {
@@ -31,6 +33,10 @@ public abstract class User {
 
     public String getSurname() {
         return surname;
+    }
+
+    public ArrayList<Incidence> getIncidences() {
+        return incidences;
     }
 
     public abstract ArrayList<Service> getReserves();

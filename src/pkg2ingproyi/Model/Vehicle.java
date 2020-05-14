@@ -1,130 +1,242 @@
 package pkg2ingproyi.Model;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.sql.Date;
 
 public class Vehicle {
-	private String Matricula;
-	private String DNI;
-	
-	public Vehicle(String matricula, String dni) {
-		this.Matricula = matricula;
-		this.DNI = dni;
+	private String 	id;
+	private String 	bodywork;
+	private String 	frame;
+	private int		axisCount;
+	private int		wheel_count;
+	private int		paxCapacity;
+	private String 	buildDate;
+	private String 	acquireDate;
+	private String 	nick;
+	private String  vehicleType;
+	private String	fuelType;
+	private boolean adblue;
+	private int 	permission;
+	private int  	fuelTank;
+	private double  literPerKm;
+	private double 	initialKm;
+	private double	currentKm;
+	private String  departmentId;
+
+
+	public Vehicle(String id, int paxCapacity, int permission, String bodywork, String frame) {
+		this.id 			= id;
+		this.paxCapacity 	= paxCapacity;
+		this.permission 	= permission;
+		this.bodywork		= bodywork;
+		this.frame			= frame;
 	}
-	
-	public String getMatricula() {
-		return this.Matricula;
+
+	public Vehicle(String id, String bodyWork, String frame, int axisCount, int wheel_count, int paxCapacity,
+				   String buildDate, String acquireDate, int permission, String nick, String vehicleType,
+				   String fuelType, boolean adblue, int fuelTank, double literPerKm, double initialKm,
+				   double currentKm, String departmentId) {
+		this.id 			= id;
+		this.bodywork 		= bodyWork;
+		this.frame			= frame;
+		this.axisCount		= axisCount;
+		this.wheel_count  	= wheel_count;
+		this.paxCapacity	= paxCapacity;
+		this.buildDate		= buildDate;
+		this.acquireDate	= acquireDate;
+		this.nick			= nick;
+		this.vehicleType	= vehicleType;
+		this.fuelType		= fuelType;
+		this.adblue			= adblue;
+		this.permission 	= permission;
+		this.fuelTank		= fuelTank;
+		this.literPerKm 	= literPerKm;
+		this.initialKm		= initialKm;
+		this.currentKm		= currentKm;
+		this.departmentId	= departmentId;
 	}
-	
-	public String getDNI() {
-		return this.DNI;
+
+	public String getId() {
+		return id;
 	}
-	
-	public Boolean comprobarMatricula(String matricula) {
-		File fichero = new File("camiones.txt");
-		String linea;
-		Scanner entrada = null;
-		try {
-			entrada = new Scanner(fichero);
-			while(entrada.hasNext()) {
-				linea = entrada.nextLine();
-				if(linea.contains(matricula)) {
-					entrada.close();
-					return true; /*La matricula existe en la base de datos*/
-				}
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getBodywork() {
+		return bodywork;
+	}
+
+	public void setBodywork(String bodywork) {
+		this.bodywork = bodywork;
+	}
+
+	public String getChassis() {
+		return frame;
+	}
+
+	public void setChassis(String frame) {
+		this.frame = frame;
+	}
+
+	public int getAxisCount() {
+		return axisCount;
+	}
+
+	public void setAxisCount(int axisCount) {
+		this.axisCount = axisCount;
+	}
+
+	public int getWheel_count() {
+		return wheel_count;
+	}
+
+	public void setWheel_count(int wheel_count) {
+		this.wheel_count = wheel_count;
+	}
+
+	public int getPax() {
+		return paxCapacity;
+	}
+
+	public void setPax(int pax) {
+		this.paxCapacity = pax;
+	}
+
+	public String getBuildDate() {
+		return buildDate;
+	}
+
+	public void setBuildDate(String buildDate) {
+		this.buildDate = buildDate;
+	}
+
+	public String getAcquireDate() {
+		return acquireDate;
+	}
+
+	public void setAcquireDate(String acquireDate) {
+		this.acquireDate = acquireDate;
+	}
+
+	public String getNick() {
+		return nick;
+	}
+
+	public void setNick(String nick) {
+		this.nick = nick;
+	}
+
+	public String getVehicleType() {
+		return vehicleType;
+	}
+
+	public void setVehicleType(String vehicleType) {
+		this.vehicleType = vehicleType;
+	}
+
+	public String getFuelType() {
+		return fuelType;
+	}
+
+	public void setFuelType(String fuelType) {
+		this.fuelType = fuelType;
+	}
+
+	public boolean hasAdBlue() {
+		return adblue;
+	}
+
+	public void setAdblue (boolean hasAdblue) {
+		this.adblue = hasAdblue;
+	}
+
+	public int getPermission() {
+		return permission;
+	}
+
+	public void setPermission(int permission) {
+		this.permission = permission;
+	}
+
+	public int getFuelTank() {
+		return fuelTank;
+	}
+
+	public void setFuelTank(int fuelTank) {
+		this.fuelTank = fuelTank;
+	}
+
+	public double getLiterPerKm() {
+		return literPerKm;
+	}
+
+	public void setLiterPerKm(double literPerKm) {
+		this.literPerKm = literPerKm;
+	}
+
+	public double getInitialKm() {
+		return initialKm;
+	}
+
+	public void setInitialKm(double initialKm) {
+		this.initialKm = initialKm;
+	}
+
+	public double getCurrentKm() {
+		return currentKm;
+	}
+
+	public void setCurrentKm(double currentKm) {
+		this.currentKm = currentKm;
+	}
+
+	public String getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(String departmentId) {
+		this.departmentId = departmentId;
+	}
+
+	public String getPermissionName() {
+		switch (permission) {
+			case 1:
+				return "AM";
+			case 2:
+				return "A1";
+			case 3:
+				return "A2";
+			case 4:
+				return "A";
+			case 5:
+				return "B1";
+			case 6:
+				return "B";
+			case 7:
+				return "C1";
+			case 8:
+				return "C";
+			case 9:
+				return "D1";
+			case 10:
+				return "D";
+			case 11:
+				return "BE";
+			case 12:
+				return "C1E";
+			case 13:
+				return "CE";
+			case 14:
+				return "D1E";
+			case 15:
+				return "DE";
+			default:
+				return "";
 		}
-		return false;
 	}
-	
-	public String consultarVelocidad(String matricula) {
-		Scanner entrada = null;
-		String linea = null;
-		String[] partes = null;
-		File fichero = new File("camiones.txt");
-		if(this.comprobarMatricula(matricula) == true) {
-			try {
-				entrada = new Scanner(fichero);
-				while(entrada.hasNext()) {
-					linea = entrada.nextLine();
-					if(linea.contains(matricula)) {
-						partes = linea.split(",");
-						entrada.close();
-						return partes[3] + "Km/h";
-						}
-				}
-	
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} 
-			
-		}
-		return "-1";
+
+	public double kmDone() {
+		return currentKm - initialKm;
 	}
-	
-	public String consultarTiempo(String matricula) {
-		Scanner entrada = null;
-		String linea = null, devolver = null;
-		String[] partes = null;
-		File fichero = new File("camiones.txt");
-		if(this.comprobarMatricula(matricula) == true) {
-			try {
-				entrada = new Scanner(fichero);
-				while(entrada.hasNext()) {
-					linea = entrada.nextLine();
-					if(linea.contains(matricula)) {
-						partes = linea.split(",");
-						entrada.close();
-						devolver += "El camion esta " + partes[2] + ", lleva " + partes[4] + "parado y " + partes[5] + "en movimiento./n";
-						return devolver;
-					}
-				}
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}  
-		}
-		return "Error a la hora de la consulta";
-	}
-	
-	/*A partir de la matricula del camion encuentra el dni del conductor*/
-	public String consultarConductor(String matricula) {
-		Scanner entrada = null;
-		String linea = null, dni = null, devolver = null;
-		String[] partes = null;
-		File fichero = new File("camiones.txt");
-		File fichero2 = new File("usuario.txt");
-		if(this.comprobarMatricula(matricula) == true) { /*cogemos el dni*/
-			try {
-				entrada = new Scanner(fichero);
-				while(entrada.hasNext()) {
-					linea = entrada.nextLine();
-					if(linea.contains(matricula)) {
-						partes = linea.split(",");
-						entrada.close();
-						dni = partes[1];
-						
-						linea = null;
-						entrada = new Scanner(fichero2);
-						while(entrada.hasNext()) {
-							linea = entrada.nextLine();
-							if(linea.contains(dni)) {
-								partes = linea.split(",");
-								entrada.close();
-								devolver += partes[0] + " " + partes[1] + " " + partes[3];
-								return devolver;
-								}	
-						}
-					}
-				}
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}  
-			
-		}
-		return "Error a la hora de buscar el conductor";
-	}
-	
 }

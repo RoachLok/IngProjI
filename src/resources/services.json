@@ -103,6 +103,36 @@
       "author": "admin",
     "status": 1
   },
+  {
+    "title": "PUERTA DEL SOL TRANSFER OUT ATOCHA",
+    "startTime": "[2020-01-30 19:00]",
+    "endTime": "[2020-01-31 20:00]",
+    "pickup": "PUERTAL DEL SOL, MADRID",
+    "transit": "",
+    "arrival": "ESTACION ATOCHA, MADRID",
+    "driverName": "driver2",
+    "vehicleID": "0001BBB",
+    "identifier": "S0003A",
+    "contractor": "UEM",
+    "pricing": "400.00",
+    "author": "admin",
+    "status": 3
+  },
+  {
+    "title": "PUERTA DEL SOL TRANSFER OUT ATOCHA",
+    "startTime": "[2020-01-30 19:00]",
+    "endTime": "[2020-01-31 15:00]",
+    "pickup": "PUERTAL DEL SOL, MADRID",
+    "transit": "",
+    "arrival": "ESTACION ATOCHA, MADRID",
+    "driverName": "driver1",
+    "vehicleID": "0001BBB",
+    "identifier": "S0003A",
+    "contractor": "UEM",
+    "pricing": "400.00",
+    "author": "admin",
+    "status": 3
+  },
    {
       "title": "PUERTA DEL SOL TRANSFER OUT ATOCHA",
       "startTime": "[2020-01-29 19:00]",
@@ -116,7 +146,7 @@
       "contractor": "UEM",
       "pricing": "400.00",
       "author": "admin",
-      "status": 2
+      "status": 3
    },
   {
       "title": "BARAJAS TRANSFER IN HOTEL NH MADRID CHAMBERÍ",

@@ -2,7 +2,6 @@ package pkg2ingproyi.SupervisorView;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import com.sun.xml.internal.bind.v2.TODO;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.value.ObservableValue;
@@ -36,11 +35,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.text.ParseException;
-import java.util.List;
-
 
 public class SupervisorViewController implements Initializable {
 
@@ -83,20 +77,6 @@ public class SupervisorViewController implements Initializable {
     public JFXTextField newReserveStartTLbl;
     @FXML
     public JFXTextField newReserveEndTLbl;
-    @FXML
-    public JFXTextField newReserveDistanceLbl;
-    @FXML
-    public JFXTextField newReserveClientDNILbl;
-    @FXML
-    public JFXTextField oldReserveNameLbl;
-    @FXML
-    public JFXTextField oldReserveIDLbl;
-    @FXML
-    public JFXTextField oldReservePickupLbl;
-    @FXML
-    public JFXTextField oldReserveTransitLbl;
-    @FXML
-    public JFXTextField oldReserveArrivalLbl;
 
     /**** SERVICES VIEW ELEMENTS ****/
 
@@ -117,6 +97,8 @@ public class SupervisorViewController implements Initializable {
     private Admin admin = (Admin) Main.appUser;
     private ArrayList<Service> displayServices;
     private volatile Thread thread;
+
+    private String dptId = "TESTDPT";
 
     /***** TAB MANAGEMENT *****/
      private List<String> openTabs = new ArrayList<String>();
@@ -160,15 +142,13 @@ public class SupervisorViewController implements Initializable {
             selectionModel = tabPane.getSelectionModel();
         }
 
-
-
         /*** -- DRIVER VIEW -- ***/
         if (driverList != null) {
             for (int z = 0; z < 10; z++) {
                 for (int i = 0; i < admin.driversCount(); i++) {
                     Driver driver = admin.getDriver(i);
                     Label label = new Label("   Conductor " + (i + 1) + "   --   Nombre: " + driver.getName() + "   --   Apellido: " + driver.getSurname() + "");
-                    FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.USER_SECRET);
+                    FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.USER_CIRCLE);
                     icon.setGlyphSize(20);
                     CheckBox chckbox = new CheckBox();
                     Region region1 = new Region();
@@ -180,7 +160,7 @@ public class SupervisorViewController implements Initializable {
                 }
             }
             driverList.getSelectionModel().select(0);
-            //updateDriverInfoPane(0);
+            updateDriverInfoPane(0);
         }
 
         /*** -- RESERVE VIEW -- ***/
@@ -194,7 +174,7 @@ public class SupervisorViewController implements Initializable {
 
         if (serviceTreeTable != null) {
             displayServices = admin.getReserves();
-            initServicesTableView(displayServices);
+            initReservesTableView(displayServices);
             reserveTreeTable.getSelectionModel().select(0);
         }
 
@@ -302,7 +282,6 @@ public class SupervisorViewController implements Initializable {
                 }
             });
 
-
             final TreeItem<Service> root = new RecursiveTreeItem<Service>(observableServices, RecursiveTreeObject::getChildren);
             montajeTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, chauffeur, vehicleName, transit);
             montajeTreeTable.setRoot(root);
@@ -316,20 +295,10 @@ public class SupervisorViewController implements Initializable {
 
     /*****  ------------ MAIN CONTAINER METHODS IMPLEMENTATION ------------  *****/
     private void addTab(Pane pane, String tabTitle) {
-        if (openTabs.contains(tabTitle)){
-            int indexTab = openTabs.indexOf(tabTitle);
-            Tab tabExists = tabPane.getTabs().get(indexTab+1);
-            selectionModel.select(tabExists);
-        }
-        else {
-            Tab tab = new Tab(tabTitle);
-            tab.setContent(pane);
-            tabPane.getTabs().add(tab);
-            openTabs.add(tabTitle);
-            selectionModel.select(tab);
-            int indexTabE = openTabs.indexOf(tabTitle);
-            tab.setOnCloseRequest(event -> openTabs.remove(indexTabE));
-        }
+        Tab tab = new Tab(tabTitle);
+        tab.setContent(pane);
+        tabPane.getTabs().add(tab);
+        selectionModel.select(tab);
     }
 
     public void handleConductoresButton(ActionEvent actionEvent) throws IOException {
@@ -412,15 +381,12 @@ public class SupervisorViewController implements Initializable {
 
     public void handleNewReserveRequest(ActionEvent actionEvent) throws IOException {
         if (newReserveNameLbl       .getText().equals("") ||
-            newReserveArrivalLbl    .getText().equals("") ||
-            newReserveIDLbl         .getText().equals("") ||
-            newReserveIDLbl         .getText().length() != 6 ||
             newReserveStartTLbl     .getText().equals("") ||
             newReserveEndTLbl       .getText().equals("") ||
-            !isValidDate(newReserveStartTLbl.getText()) ||
-            !isValidDate(newReserveEndTLbl.getText())
-
-        )
+            newReservePickupLbl     .getText().equals("") ||
+            newReserveTransitLbl    .getText().equals("") ||
+            newReserveArrivalLbl    .getText().equals("") ||
+            newReserveIDLbl         .getText().equals("")   )
             Notifications.create().title("Fields Missing").text("Faltan campos obligatorios.").showError();
         else {
             Service reserve = new Service
@@ -432,8 +398,6 @@ public class SupervisorViewController implements Initializable {
                         newReserveTransitLbl    .getText(),
                         newReserveArrivalLbl    .getText(),
                         newReserveIDLbl         .getText(),
-                        newReserveDistanceLbl   .getText(),
-                        newReserveClientDNILbl  .getText(),
                         admin                   .getUsername()
                     );
             reserve.setObservable();
@@ -455,14 +419,12 @@ public class SupervisorViewController implements Initializable {
         newReserveTransitLbl    .setText("");
         newReserveArrivalLbl    .setText("");
         newReserveIDLbl         .setText("");
-        newReserveDistanceLbl   .setText("");
-        newReserveClientDNILbl  .setText("");
     }
 
     private void updateOldFields(int reserveIndex) {
         Service clickedReserve = observableServices.get(reserveIndex);
 
-        // TODO he olvidado que ponia aqui
+        //TODO Update oldReserve fields.
 
     }
 
@@ -470,33 +432,16 @@ public class SupervisorViewController implements Initializable {
         updateOldFields(reserveTreeTable.getSelectionModel().getSelectedIndex());
     }
 
-
-    // Método para aceptar la reserva como servicio
-
-
     public void acceptReserveAsService(int reserveIndex) {
         Service clickedReserve = observableServices.get(reserveIndex);
-        if (newReserveNameLbl.getText().equals("") ||
-                newReserveEndTLbl.getText().equals("") ||
-                newReserveArrivalLbl.getText().equals("") ||
-                newReserveIDLbl.getText().equals("") ||
-                newReserveStartTLbl.getText().equals("") ||
-                newReservePickupLbl.getText().equals("") ||
-                newReserveTransitLbl.getText().equals("") ||
-                newReserveDistanceLbl.getText().equals("") ||
-                newReserveClientDNILbl.getText().equals("")
-        )
-            Notifications.create().title("Cannot accept reserve").text("Faltan campos obligatorios o no se cumplen ciertas condiciones.").showError();
-        else {
-            observableServices.remove(reserveIndex);
+        observableServices.remove(reserveIndex);
 
-            final TreeItem<Service> root = new RecursiveTreeItem<Service>(observableServices, RecursiveTreeObject::getChildren);
-            reserveTreeTable.setRoot(root);
+        final TreeItem<Service> root = new RecursiveTreeItem<Service>(observableServices, RecursiveTreeObject::getChildren);
+        reserveTreeTable.setRoot(root);
 
-            clickedReserve.setReserve(false);
-            clickedReserve.setAccepted(true);
-            Notifications.create().title("Reserve Accept Successful").text("La reserva ha sido aceptada como servicio.").showInformation();
-        }
+        clickedReserve.setReserve(false);
+        clickedReserve.setAccepted(true);
+        Notifications.create().title("Reserve Accept Successful").text("La reserva ha sido aceptada como servicio.").showInformation();
     }
 
     public void handleAcceptReserveRequest(ActionEvent actionEvent) throws IOException {
@@ -505,7 +450,6 @@ public class SupervisorViewController implements Initializable {
 
     public void handleApplyReserveEdit(ActionEvent actionEvent) throws IOException {
         Notifications.create().title("Feature to be implemented").text("Esta característica aun no ha sido implementada.").showError();
-
     }
 
     public void handleRemoveReserveRequest(ActionEvent actionEvent) {
@@ -631,27 +575,6 @@ public class SupervisorViewController implements Initializable {
                 return param.getValue().getValue().observableTransit;
             }
         });
-        //DISTANCE
-        JFXTreeTableColumn<Service, String> distance = new JFXTreeTableColumn("Distancia");
-        distance.setPrefWidth(250);
-
-        distance.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableDistance;
-            }
-        });
-
-        //CLIENT DNI
-        JFXTreeTableColumn<Service, String> clientDNI = new JFXTreeTableColumn("DNI Cliente");
-        clientDNI.setPrefWidth(250);
-
-        clientDNI.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableDNI;
-            }
-        });
 
         for (Service reserve : displayServices) {
             reserve.setObservable();
@@ -659,115 +582,49 @@ public class SupervisorViewController implements Initializable {
         }
 
         final TreeItem<Service> root = new RecursiveTreeItem<Service>(observableServices, RecursiveTreeObject::getChildren);
-        reserveTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, distance, clientDNI);
+        reserveTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT);
         reserveTreeTable.setRoot(root);
         reserveTreeTable.setShowRoot(false);
     }
 
-    void initServicesTableView(ArrayList<Service> displayServices) {
-        observableServices = FXCollections.observableArrayList();
+    @Override
+    public void run() {
+        if (vehicleList != null) {
+            //Grab to vehicle API link.
+            try {
+                URL vehiclesURL = new URL("https://JJ82BM9WO382QD8-SJ.adb.eu-amsterdam-1.oraclecloudapps.com/ords/admin/vehicle/?q={%22department_id%22:%22"+ dptId +"%22}");
+                HttpURLConnection vehiclesConn = (HttpURLConnection) vehiclesURL.openConnection();
+                vehiclesConn.setRequestMethod("GET");
+                vehiclesConn.connect();
 
-        //ID
-        JFXTreeTableColumn<Service, String> identifier = new JFXTreeTableColumn("ID");
-        identifier.setPrefWidth(75);
+                //Check if connection was stabilised correctly.
+                if (vehiclesConn.getResponseCode() != 200) {
+                    System.err.print("Wrong connection.");
+                } else {
+                    //Proceed only if correct connection with url.
 
-        identifier.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableIdentifier;
+                    //Read URL and pass to String.
+                    Scanner sc = new Scanner(vehiclesURL.openStream());
+                    StringBuilder vehicleJSONString = new StringBuilder();
+                    while (sc.hasNext()) {
+                        vehicleJSONString.append(sc.nextLine());
+                    }
+
+                    //Parse String into a JSONArray.
+                    JSONParser jsonParser           = new JSONParser();
+                    JSONObject vehicleJSONObject    = (JSONObject) jsonParser.parse(vehicleJSONString.toString());
+                    JSONArray  vehicleJSONArray     = (JSONArray ) vehicleJSONObject.get("items"); //CLARIFICATION: "items" is the name of the object containing our desired items in the oracleCloud api.
+
+                    //Get the parsed objects from the JSONArray and cast them into a Vehicle List.
+                    List<Vehicle> parsedVehicles = new ArrayList<>();
+                    for (Object o : vehicleJSONArray)
+                        parsedVehicles.add(parseVehicleJsonObject((JSONObject) o));
+                    System.out.println("Done parsing.");
+                }
+
+            } catch (ParseException | IOException e) {
+                e.printStackTrace();
             }
-        });
-        //NAME
-        JFXTreeTableColumn<Service, String> name = new JFXTreeTableColumn("Servicio");
-        name.setPrefWidth(300);
-
-        name.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableName;
-            }
-        });
-        //PICKUP
-        JFXTreeTableColumn<Service, String> pickup = new JFXTreeTableColumn("Salida");
-        pickup.setPrefWidth(250);
-
-        pickup.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observablePickup;
-            }
-        });
-        //ARRIVAL
-        JFXTreeTableColumn<Service, String> arrival = new JFXTreeTableColumn("Llegada");
-        arrival.setPrefWidth(250);
-
-        arrival.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableArrival;
-            }
-        });
-        //START
-        JFXTreeTableColumn<Service, String> startT = new JFXTreeTableColumn("H. Inicio");
-        startT.setPrefWidth(250);
-
-        startT.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableStartT;
-            }
-        });
-        //ENDT
-        JFXTreeTableColumn<Service, String> endT = new JFXTreeTableColumn("H. Final");
-        endT.setPrefWidth(250);
-
-        endT.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableEndT;
-            }
-        });
-        //TRANSIT
-        JFXTreeTableColumn<Service, String> transit = new JFXTreeTableColumn("Tránsito");
-        transit.setPrefWidth(250);
-
-        transit.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableTransit;
-            }
-        });
-        //DISTANCE
-        JFXTreeTableColumn<Service, String> distance = new JFXTreeTableColumn("Distancia");
-        distance.setPrefWidth(250);
-
-        distance.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableDistance;
-            }
-        });
-
-        //CLIENT DNI
-        JFXTreeTableColumn<Service, String> clientDNI = new JFXTreeTableColumn("DNI Cliente");
-        clientDNI.setPrefWidth(250);
-
-        clientDNI.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableDNI;
-            }
-        });
-
-        for (Service reserve : displayServices) {
-            reserve.setObservable();
-            observableServices.add(reserve);
         }
-
-        final TreeItem<Service> root = new RecursiveTreeItem<Service>(observableServices, RecursiveTreeObject::getChildren);
-        reserveTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, distance, clientDNI);
-        reserveTreeTable.setRoot(root);
-        reserveTreeTable.setShowRoot(false);
     }
-
 }
