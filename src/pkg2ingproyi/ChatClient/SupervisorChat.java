@@ -73,7 +73,7 @@ public class SupervisorChat implements Initializable {
         for (int i = 0; i < supervisor.driversCount(); i++) { //Creates and fills an HBox containing the driver's info.
             Driver driver = supervisor.getDriver(i);
             Label label = new Label(" -  " + driver.getUsername() + "  - ");
-            FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.USER_CIRCLE);
+            FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.USER_SECRET);
             icon.setGlyphSize(20);
             Region region1 = new Region();
             HBox.setHgrow(region1, Priority.ALWAYS);

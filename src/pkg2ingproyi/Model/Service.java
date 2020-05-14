@@ -17,6 +17,8 @@ public class Service extends RecursiveTreeObject<Service> {
     private String contractor;
     private String pricing;
     private String author;
+    private String distance;
+    private String clientDNI;
 
     private boolean isReserve;
     private boolean isAccepted;
@@ -34,9 +36,11 @@ public class Service extends RecursiveTreeObject<Service> {
     public StringProperty observableContractor;
     public StringProperty observablePricing;
     public StringProperty observableAuthor;
+    public StringProperty observableDistance;
+    public StringProperty observableDNI;
 
     public Service(String title, String startTime, String endT, String pickup, String transit, String arrival,
-                   String identifier, String author)
+                   String identifier, String author, String distance, String clientDNI)
     {
         this.name           = title;
         this.startT         = startTime;
@@ -45,12 +49,14 @@ public class Service extends RecursiveTreeObject<Service> {
         this.arrival        = arrival;
         this.identifier     = identifier;
         this.author         = author;
+        this.distance       = distance;
+        this.clientDNI      = clientDNI;
         this.isReserve      = true;
     }
 
     public Service(String title, String startTime, String endTime, String pickup, String transit, String arrival,
                     String driverName, String vehicleID, String identifier, String contractor, String pricing,
-                        String author, int status)
+                        String author, String distance, String clientDNI, int status)
     {
         this.name           = title;
         this.startT         = startTime;
@@ -64,6 +70,8 @@ public class Service extends RecursiveTreeObject<Service> {
         this.contractor     = contractor;
         this.pricing        = pricing;
         this.author         = author;
+        this.distance       = distance;
+        this.clientDNI      = clientDNI;
 
         switch (status) {
             case 1:
@@ -93,6 +101,8 @@ public class Service extends RecursiveTreeObject<Service> {
             observableArrival       = new SimpleStringProperty( arrival     );
             observableIdentifier    = new SimpleStringProperty( identifier  );
             observableAuthor        = new SimpleStringProperty( author      );
+            observableDistance      = new SimpleStringProperty( distance    );
+            observableDNI           = new SimpleStringProperty( clientDNI   );
             return;
         }
 
@@ -108,6 +118,8 @@ public class Service extends RecursiveTreeObject<Service> {
         observableContractor    = new SimpleStringProperty( contractor  );
         observablePricing       = new SimpleStringProperty( pricing     );
         observableAuthor        = new SimpleStringProperty( author      );
+        observableDistance      = new SimpleStringProperty( distance    );
+        observableDNI           = new SimpleStringProperty( clientDNI   );
     }
 
     public String getName() {
@@ -182,6 +194,22 @@ public class Service extends RecursiveTreeObject<Service> {
         this.pricing = pricing;
     }
 
+    public String getClientDNI() {
+        return clientDNI;
+    }
+
+    public void setClientDNI(String clientDNI) {
+        this.clientDNI = clientDNI;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
     public void setReserve(boolean isReserve) {
         this.isReserve = isReserve;
     }
@@ -232,6 +260,8 @@ public class Service extends RecursiveTreeObject<Service> {
                 ", identifier='" + identifier + '\'' +
                 ", contractor='" + contractor + '\'' +
                 ", author='" + author + '\'' +
+                ", distance='" + distance + '\'' +
+                ", clientDNI='" + clientDNI+ '\'' +
                 '}';
     }
 }

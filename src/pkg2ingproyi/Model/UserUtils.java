@@ -98,6 +98,8 @@ public class UserUtils {
                 (String) object.get("contractor"),
                 (String) object.get("pricing"   ),
                 (String) object.get("author"    ),
+                (String) object.get("distance"  ),
+                (String) object.get("clientDNI" ),
         (int)   (long)   object.get("status"    ));
     }
 
