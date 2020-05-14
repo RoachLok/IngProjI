@@ -2,7 +2,6 @@ package pkg2ingproyi.SupervisorView;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import com.sun.xml.internal.bind.v2.TODO;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.value.ObservableValue;
@@ -23,26 +22,27 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.controlsfx.control.Notifications;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import pkg2ingproyi.Main;
 import pkg2ingproyi.Model.Admin;
 import pkg2ingproyi.Model.Driver;
 import pkg2ingproyi.Model.Service;
+import pkg2ingproyi.Model.Vehicle;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.text.ParseException;
-import java.util.List;
 
-
-public class SupervisorViewController implements Initializable {
+public class SupervisorViewController implements Initializable, Runnable {
 
     /**** MAIN CONTAINER VIEW ELEMENTS *****/
     @FXML
@@ -58,6 +58,10 @@ public class SupervisorViewController implements Initializable {
     private Label driverUsernameLabel;
     @FXML
     private Label driverDNILabel;
+
+    /**** DRIVER MENU VIEW ELEMENTS *****/
+    @FXML
+    private JFXListView<HBox> vehicleList;
 
     /****** ----- TREEVIEWS COMMON ----- ******/
     private ObservableList<Service> observableServices;
@@ -99,7 +103,6 @@ public class SupervisorViewController implements Initializable {
     public JFXTextField oldReserveArrivalLbl;
 
     /**** SERVICES VIEW ELEMENTS ****/
-
     @FXML
     public JFXTreeTableView<Service> serviceTreeTable;
 
@@ -118,11 +121,11 @@ public class SupervisorViewController implements Initializable {
     private ArrayList<Service> displayServices;
     private volatile Thread thread;
 
+    private String dptId = "TESTDPT";
+
     /***** TAB MANAGEMENT *****/
     private List<String> openTabs = new ArrayList<String>();
 
-
-    // Manejo del formato fecha y horas
 
     public boolean isValidDate(String fecha){
         SimpleDateFormat sdfrmt = new SimpleDateFormat("MM/dd/yyyy HH:mm");
@@ -133,7 +136,7 @@ public class SupervisorViewController implements Initializable {
             Date javaDate = sdfrmt.parse(fecha);
         }
         /* Date format is invalid */
-        catch (ParseException e)
+        catch (java.text.ParseException e)
         {
             Notifications.create().title("Invalid date hour").text("Fecha hora inválida").showError();
             return false;
@@ -160,8 +163,6 @@ public class SupervisorViewController implements Initializable {
             selectionModel = tabPane.getSelectionModel();
         }
 
-
-
         /*** -- DRIVER VIEW -- ***/
         if (driverList != null) {
             for (int z = 0; z < 10; z++) {
@@ -181,6 +182,12 @@ public class SupervisorViewController implements Initializable {
             }
             driverList.getSelectionModel().select(0);
             updateDriverInfoPane(0);
+        }
+
+        /*** -- VEHICLE VIEW -- ***/
+        if (vehicleList != null) {
+            Thread dataLoadThread = new Thread(this);
+            dataLoadThread.start();
         }
 
         /*** -- RESERVE VIEW -- ***/
@@ -362,6 +369,7 @@ public class SupervisorViewController implements Initializable {
 
     /*********  ------------ COMMON METHODS IMPLEMENTATION ------------  *********/
 
+    //Launches another window.
     private void launchStage(String filePath, String stageTitle) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource(filePath));
         Scene scene = new Scene(root);
@@ -380,9 +388,9 @@ public class SupervisorViewController implements Initializable {
         Driver displayDriver = admin.getDriver(driverIndex);
 
         //TODO More driver fields and pfp.
-        driverNameLabel     .setText("      " + displayDriver.getName()    );
-        driverUsernameLabel .setText("      " + displayDriver.getUsername());
-        driverDNILabel      .setText("      " + displayDriver.getDni()     );
+//        driverNameLabel     .setText("      " + displayDriver.getName()    );
+//        driverUsernameLabel .setText("      " + displayDriver.getUsername());
+//        driverDNILabel      .setText("      " + displayDriver.getDni()     );
     }
 
     public void handleDriverListClick(MouseEvent mouseEvent) {
@@ -395,6 +403,34 @@ public class SupervisorViewController implements Initializable {
 
     public void handleRemoveUserRequest(ActionEvent actionEvent) {
         Notifications.create().title("Feature to be implemented").text("Esta característica aun no ha sido implementada.").showError();
+    }
+
+    /*********  ------------ VEHICLE VIEW METHODS IMPLEMENTATION ------------  *********/
+
+    private Vehicle parseVehicleJsonObject(JSONObject object) {
+        return new Vehicle(
+                (String) object.get("license_plate"),
+                (String) object.get("bodywork"     ),
+                (String) object.get("frame"        ),
+                Integer.parseInt( (String) object.get("axis_count"   )),
+                Integer.parseInt( (String) object.get("wheel_count"  )),
+                Integer.parseInt( (String) object.get("pax_capacity" )),
+                (String) object.get("build_date"   ),
+                (String) object.get("acquire_date" ),
+                9                        ,
+                (String) object.get("vehicle_name" ),
+                (String) object.get("vehicle_type" ),
+                (String) object.get("fuel_type"    ),
+                ((String) object.get("adblue")).charAt(0) == 'T',
+                (int) (long) object.get("tank_capacity"),
+                10                       ,
+                0                         ,
+                153200                   ,
+                (String) object.get("department_id"));
+    }
+
+    private void drawVehicles(List<Vehicle> vehicles) {
+        //TODO Draw vehicles in the listview nicely.
     }
 
     /*********  ------------ RESERVES VIEW METHODS IMPLEMENTATION ------------  *********/
@@ -462,17 +498,13 @@ public class SupervisorViewController implements Initializable {
     private void updateOldFields(int reserveIndex) {
         Service clickedReserve = observableServices.get(reserveIndex);
 
-        // TODO he olvidado que ponia aqui
+        // TODO update old fields
 
     }
 
     public void handleReserveTreeViewClick(MouseEvent mouseEvent) {
         updateOldFields(reserveTreeTable.getSelectionModel().getSelectedIndex());
     }
-
-
-    // Método para aceptar la reserva como servicio
-
 
     public void acceptReserveAsService(int reserveIndex) {
         Service clickedReserve = observableServices.get(reserveIndex);
@@ -768,6 +800,50 @@ public class SupervisorViewController implements Initializable {
         reserveTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, distance, clientDNI);
         reserveTreeTable.setRoot(root);
         reserveTreeTable.setShowRoot(false);
+    }
+
+    @Override
+    public void run() {
+        if (vehicleList != null) {
+            //Grab to vehicle API link.
+            try {
+                URL vehiclesURL = new URL("https://JJ82BM9WO382QD8-SJ.adb.eu-amsterdam-1.oraclecloudapps.com/ords/admin/vehicle/?q={%22department_id%22:%22"+ dptId +"%22}");
+                HttpURLConnection vehiclesConn = (HttpURLConnection) vehiclesURL.openConnection();
+                vehiclesConn.setRequestMethod("GET");
+                vehiclesConn.connect();
+
+                //Check if connection was stabilised correctly.
+                if (vehiclesConn.getResponseCode() != 200) {
+                    System.err.print("Wrong connection.");
+                } else {
+                    //Proceed only if correct connection with url.
+
+                    //Read URL and pass to String.
+                    Scanner sc = new Scanner(vehiclesURL.openStream());
+                    StringBuilder vehicleJSONString = new StringBuilder();
+                    while (sc.hasNext()) {
+                        vehicleJSONString.append(sc.nextLine());
+                    }
+
+                    //Parse String into a JSONArray.
+                    JSONParser jsonParser           = new JSONParser();
+                    JSONObject vehicleJSONObject    = (JSONObject) jsonParser.parse(vehicleJSONString.toString());
+                    JSONArray vehicleJSONArray     =  (JSONArray ) vehicleJSONObject.get("items"); //CLARIFICATION: "items" is the name of the object containing our desired items in the oracleCloud api.
+
+                    //Get the parsed objects from the JSONArray and cast them into a Vehicle List.
+                    List<Vehicle> parsedVehicles = new ArrayList<>();
+                    for (Object o : vehicleJSONArray)
+                        parsedVehicles.add(parseVehicleJsonObject((JSONObject) o));
+
+                    drawVehicles(parsedVehicles);
+
+                    System.out.println("Done parsing.");
+                }
+
+            } catch (ParseException | IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

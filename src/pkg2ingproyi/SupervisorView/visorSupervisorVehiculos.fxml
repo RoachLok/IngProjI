@@ -34,7 +34,7 @@
     <center>
         <HBox alignment="CENTER" prefHeight="593.0" prefWidth="1109.0" BorderPane.alignment="CENTER">
             <children>
-                <JFXListView fx:id="driverList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleDriverListClick" prefHeight="542.0" prefWidth="619.0" styleClass="supervisor-driver-cell" stylesheets="@../../resources/main-theme.css" HBox.hgrow="ALWAYS" />
+                <JFXListView fx:id="vehicleList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleDriverListClick" prefHeight="542.0" prefWidth="619.0" styleClass="supervisor-driver-cell" stylesheets="@../../resources/main-theme.css" HBox.hgrow="ALWAYS" />
                   <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="584.0" prefWidth="484.0">
                       <children>
                           <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="308.0" prefWidth="484.0" style="-fx-background-color: #ff7000;">
