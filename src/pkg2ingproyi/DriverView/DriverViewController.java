@@ -81,6 +81,17 @@ public class DriverViewController implements Initializable {
     }
 
     @FXML
+    private void handleDriverShowIncidencesAction(Event event) {
+        try {
+            newLoadedPane = (Node)FXMLLoader.load(getClass().getResource("visorConductorIncidences.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        driverSVHolder.getChildren().setAll(newLoadedPane);
+    }
+
+
+    @FXML
     private void handleDriverShowMessagesAction(Event event) {
         try {
             newLoadedPane = (Node)FXMLLoader.load(getClass().getResource("visorConductorMessages.fxml"));

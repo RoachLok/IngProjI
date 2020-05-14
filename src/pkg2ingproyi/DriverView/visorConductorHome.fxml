@@ -1,40 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Line?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.TextFlow?>
 
-<SplitPane dividerPositions="0.25576923076923075" orientation="VERTICAL" prefHeight="522.0" prefWidth="332.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-  <items>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="547.0" prefWidth="337.0" style="-fx-background-color: #2C3840;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="90.0" layoutY="28.0" text="Bienvenido Conductor" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <GridPane layoutX="41.0" layoutY="306.0" prefHeight="218.0" prefWidth="298.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
          <children>
-            <FontAwesomeIconView glyphName="USER_CIRCLE_ALT" layoutX="220.0" layoutY="98.0" size="95" text="" />
-            <Label layoutX="9.0" layoutY="1.0" styleClass="title-label-small" text="Bienvenido">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <Line endX="-12.0" layoutX="110.0" layoutY="25.0" startX="-100.0" stroke="#b2b2b2" strokeWidth="0.7" />
-            <Label layoutX="105.0" layoutY="5.0" styleClass="login-textfields" text="Fulanito" />
-            <Label layoutX="20.0" layoutY="42.0" styleClass="login-textfields" text="Servicios Asignados: " />
-            <Label layoutX="20.0" layoutY="62.0" styleClass="login-textfields" text="ETC." />
+            <Label prefHeight="18.0" prefWidth="167.0" text="Nombre y apellidos" textAlignment="CENTER" textFill="WHITE" />
+            <Label prefHeight="18.0" prefWidth="167.0" text="Teléfono" textFill="WHITE" GridPane.rowIndex="1" />
+            <Label prefHeight="18.0" prefWidth="158.0" text="Paco Rodríguez Ruiz" textFill="WHITE" GridPane.columnIndex="1" />
+            <Label prefHeight="18.0" prefWidth="159.0" text="666666666" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label prefHeight="18.0" prefWidth="168.0" text="Departamento" textFill="WHITE" GridPane.rowIndex="2" />
+            <Label text="Dep. 1" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Permisos" textFill="WHITE" GridPane.rowIndex="3" />
+            <Label text="A, B, C, D" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Tipo de jornada" textFill="WHITE" GridPane.rowIndex="4" />
+            <Label text="Jornada Completa" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label text="Antigüedad" textFill="WHITE" GridPane.rowIndex="5" />
+            <Label text="2" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label text="Estado" textFill="WHITE" GridPane.rowIndex="6" />
+            <Label text="En alta" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="6" />
          </children>
-      </AnchorPane>
-      <ScrollPane hbarPolicy="NEVER" stylesheets="@../../resources/main-theme.css">
-         <content>
-            <AnchorPane prefHeight="479.0" prefWidth="330.0">
-               <children>
-                  <Label layoutX="7.0" layoutY="5.0" styleClass="title-label" text="Servicio Próximo / Actual" />
-                  <Line endX="100.0" layoutX="114.0" layoutY="35.0" startX="-100.0" stroke="#b2b2b2" />
-                  <TextFlow layoutY="87.0" prefHeight="384.0" prefWidth="319.0" />
-                  <Label layoutX="14.0" layoutY="67.0" styleClass="login-textfields" text="Hora Inicio: " />
-                  <Label layoutX="14.0" layoutY="47.0" styleClass="login-textfields" text="Nombre del Servicio" />
-               </children>
-            </AnchorPane>
-         </content>
-      </ScrollPane>
-  </items>
-</SplitPane>
+      </GridPane>
+      <ImageView fitHeight="127.0" fitWidth="172.0" layoutX="83.0" layoutY="94.0" pickOnBounds="true" preserveRatio="true" />
+      <Pane layoutX="29.0" layoutY="293.0" prefHeight="2.0" prefWidth="280.0" style="-fx-background-color: #000000;" />
+   </children>
+</Pane>
