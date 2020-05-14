@@ -4,6 +4,8 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.sql.Connection;
+
 public class Service extends RecursiveTreeObject<Service> {
     private String name;
     private String startT;
@@ -47,6 +49,29 @@ public class Service extends RecursiveTreeObject<Service> {
         this.author         = author;
         this.isReserve      = true;
     }
+
+    /*public boolean deleteServiceBD(String identifier) {
+        /*Conectamos a la base de datos*/
+        /*Connection con  = connectDatabase();
+        String st = con.createStatement();
+        String query = "DELETE FROM servicios where identifier =" + identifier;
+        st.executeStatement(query);
+        //Si hago una consulta a por el servicio eliminado y no sale return true
+        /*Arreglar la conexion a la base de datos*/
+        /*return true;
+    }*/
+
+    /*public boolean addServiceBD() {
+        /*Conectamos a la base de datos*/
+        /*Connection con  = connectDatabase();
+        String st = con.createStatement();
+        String query = "INSERT INTO servicios values(?,?,?,?,?,?);
+        st.executeStatement(query);
+        //Si devuelve lo que yo quiero true.
+        /*Arreglar la conexion a la base de datos*/
+
+        /*return true;
+    }*/
 
     public Service(String title, String startTime, String endTime, String pickup, String transit, String arrival,
                     String driverName, String vehicleID, String identifier, String contractor, String pricing,

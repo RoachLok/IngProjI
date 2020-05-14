@@ -3,15 +3,22 @@ package pkg2ingproyi.Model;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import org.json.simple.parser.ParseException;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
-public class UserUtils {
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+
+public class UserUtils{
+
+    static boolean[] loginDetails = {false, false};
 
     private static boolean comprobarUsuario(String dni, File file) throws FileNotFoundException {
         Scanner entrada = new Scanner(file);
@@ -26,34 +33,56 @@ public class UserUtils {
         }
         return false;
     }
+    private static Login parseloginJsonObject(JSONObject object) {
+        return  new Login (  /*resolver el que sea abstracta la clase*/
+                (String) object.get("username"),
+                (String)  object.get("password"),
+                (String)object.get("isAdmin" ));
+    }
 
-    public static boolean login(String usuario, String password) throws FileNotFoundException {
-        if(usuario.equals("") || password.equals(""))
-            return false;
 
-        Scanner inText = new Scanner(readUsersFile());
-        while(inText.hasNext())
-            if(inText.nextLine().startsWith(usuario+','+password+',')) {
-                inText.close();
-                return true;
+    public static boolean[] login(String username, String password) {
+        if (username.equals("") || password.equals("")) {
+            return loginDetails;
+        }
+        try {
+        URL loginURL = new URL("https://pu2ie1oa0lzqala-sjpruebas.adb.eu-frankfurt-1.oraclecloudapps.com/ords/admin/login/?q={%22$and%22:[{%22username%22:%22" + username + "%22},{%22password%22:%22" + password + "%22}]}");
+        HttpURLConnection loginConection = (HttpURLConnection) loginURL.openConnection();
+        loginConection.setRequestMethod("GET");
+        loginConection.connect();
+
+            /*Comprobamos si nos hemos conectado correctamente*/
+            if (loginConection.getResponseCode() != 200) {
+                System.err.print("Wrong connection");
+            } else {
+                Scanner sc = new Scanner(loginURL.openStream());
+                StringBuilder loginJSONString;
+                loginJSONString = new StringBuilder();
+                while (sc.hasNext()) {
+                    loginJSONString.append(sc.nextLine());
+                }
+                System.out.println(loginJSONString);
+
+                //Parse String into a JSONArray.
+                JSONParser jsonParser = new JSONParser();
+                JSONObject loginJSONObject = (JSONObject) jsonParser.parse(loginJSONString.toString());
+                loginDetails[0] = 1== (int)(long) loginJSONObject.get("count");
+                System.out.println(loginJSONObject);
+                loginDetails[1] = 'Y' ==  ((String) (((JSONObject) ((JSONArray)(loginJSONObject.get("items"))).get(0)).get("isadmin"))).charAt(0);
+                return loginDetails; //CLARIFICATION: "items" is the name of the object containing our desired items in the oracleCloud api
             }
 
-        return false;
+        }  catch (ParseException | IOException e) {
+            e.printStackTrace();
+        }
+        return loginDetails;
     }
+
 
     public static boolean isAdmin(String username) throws FileNotFoundException {
         if (username == null)
             return false;
-
-        String holder;
-        Scanner scIn = new Scanner(readUsersFile());
-        while(scIn.hasNext())
-            if((holder = scIn.nextLine()).startsWith(username)){
-                scIn.close();
-                return holder.endsWith(",");
-            }
-
-        return false;
+        return loginDetails[1];
     }
 
     private static File readUsersFile() {

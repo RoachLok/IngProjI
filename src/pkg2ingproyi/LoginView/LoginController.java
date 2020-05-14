@@ -23,6 +23,7 @@ import pkg2ingproyi.Main;
 import pkg2ingproyi.Model.UserUtils;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 /**
@@ -97,7 +98,7 @@ public class LoginController implements Initializable {
     private void handleLoginButtonAction(ActionEvent event) throws IOException {
         /*     LOGIN ACTION     */
         String uName = usernameField.getText();
-        if (UserUtils.login(uName, passwordField.getText())) {
+        if (UserUtils.login(uName, passwordField.getText())[0]) {
             boolean isAdmin = UserUtils.isAdmin(uName);
             Main.appUser = UserUtils.createUser(uName, isAdmin);
             Stage stage = (Stage) loginButton.getScene().getWindow();

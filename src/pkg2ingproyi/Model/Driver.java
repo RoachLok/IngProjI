@@ -6,14 +6,14 @@ public class Driver extends User{
     private String adminNick;
     private ArrayList<Service> services;
 
-    public Driver(String username, String password, String name, String surname, String dni, String adminNick) {
-        super(username, password, name, surname, dni);
+    public Driver(String username, String password, String name, String surname, String dni, String address, String phonenumber, String phonenumber2, String derpartment_id, String adminNick) {
+        super(username, password, name, surname, dni, address, phonenumber, phonenumber2, "55");
         this.adminNick = adminNick;
     }
 
     public Driver(String[] parsed){
-        super(parsed[0], parsed[1], parsed[2], parsed[3], parsed[4]);
-        this.adminNick = parsed[5];
+        super(parsed[0], parsed[1], parsed[2], parsed[3], parsed[4], parsed[5], parsed[6], parsed[7], parsed[8]);
+        this.adminNick = parsed[9];
     }
 
     public void addService(Service service) {
