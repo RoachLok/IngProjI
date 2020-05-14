@@ -48,7 +48,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
-public class SupervisorViewController implements Initializable {
+public class SupervisorViewController implements Initializable, Runnable {
 
     /**** MAIN CONTAINER VIEW ELEMENTS *****/
     @FXML
@@ -114,6 +114,8 @@ public class SupervisorViewController implements Initializable {
     private ArrayList<Service> displayServices;
     private volatile Thread thread;
 
+    private String dptId = "TESTDPT";
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         /** Check if true admin before every view load. **/
@@ -155,40 +157,9 @@ public class SupervisorViewController implements Initializable {
 
         /*** -- VEHICLE VIEW -- ***/
         if (vehicleList != null) {
-            //Grab to vehicle API link.
-            try {
-                URL vehiclesURL = new URL("https://JJ82BM9WO382QD8-SJ.adb.eu-amsterdam-1.oraclecloudapps.com/ords/admin/vehicle");
-                HttpURLConnection vehiclesConn = (HttpURLConnection) vehiclesURL.openConnection();
-                vehiclesConn.setRequestMethod("GET");
-                vehiclesConn.connect();
-
-                //Check if connection was stabilised correctly.
-                if (vehiclesConn.getResponseCode() != 200) {
-                    System.err.print("Wrong connection.");
-                } else {
-                    //Proceed only if correct connection with url.
-
-                    //Read URL and pass to String.
-                    Scanner sc = new Scanner(vehiclesURL.openStream());
-                    StringBuilder vehicleJSONString = new StringBuilder();
-                    while (sc.hasNext()) {
-                        vehicleJSONString.append(sc.nextLine());
-                    }
-
-                    //Parse String into a JSONArray.
-                    JSONParser jsonParser           = new JSONParser();
-                    JSONObject vehicleJSONObject    = (JSONObject) jsonParser.parse(vehicleJSONString.toString());
-                    JSONArray  vehicleJSONArray     = (JSONArray ) vehicleJSONObject.get("items"); //CLARIFICATION: "items" is the name of the object containing our desired items in the oracleCloud api.
-
-                    //Get the parsed objects from the JSONArray and cast them into a Vehicle List.
-                    List<Vehicle> parsedVehicles = new ArrayList<>();
-                    for (Object o : vehicleJSONArray)
-                        parsedVehicles.add(parseVehicleJsonObject((JSONObject) o));
-                }
-
-            } catch (ParseException | IOException e) {
-                e.printStackTrace();
-            }
+            Thread dataLoadThread = new Thread(this);
+            //dataLoadThread.setDaemon(true);
+            dataLoadThread.start();
         }
 
         /*** -- RESERVE VIEW -- ***/
@@ -405,14 +376,14 @@ public class SupervisorViewController implements Initializable {
                 Integer.parseInt( (String) object.get("axis_count"   )),
                 Integer.parseInt( (String) object.get("wheel_count"  )),
                 Integer.parseInt( (String) object.get("pax_capacity" )),
-                Date.valueOf((String) object.get("build_date"   )),
-                Date.valueOf((String)  object.get("acquire_date" )),
+                (String) object.get("build_date"   ),
+                (String) object.get("acquire_date" ),
                 9                        ,
                 (String) object.get("vehicle_name" ),
                 (String) object.get("vehicle_type" ),
                 (String) object.get("fuel_type"    ),
-                (boolean)object.get("adblue"       ),
-                Integer.parseInt( (String) object.get("tank_capacity")),
+                ((String) object.get("adblue")).charAt(0) == 'T',
+                (int) (long) object.get("tank_capacity"),
                 10                       ,
                 0                         ,
                 153200                   ,
@@ -638,5 +609,46 @@ public class SupervisorViewController implements Initializable {
         reserveTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT);
         reserveTreeTable.setRoot(root);
         reserveTreeTable.setShowRoot(false);
+    }
+
+    @Override
+    public void run() {
+        if (vehicleList != null) {
+            //Grab to vehicle API link.
+            try {
+                URL vehiclesURL = new URL("https://JJ82BM9WO382QD8-SJ.adb.eu-amsterdam-1.oraclecloudapps.com/ords/admin/vehicle/?q={%22department_id%22:%22"+ dptId +"%22}");
+                HttpURLConnection vehiclesConn = (HttpURLConnection) vehiclesURL.openConnection();
+                vehiclesConn.setRequestMethod("GET");
+                vehiclesConn.connect();
+
+                //Check if connection was stabilised correctly.
+                if (vehiclesConn.getResponseCode() != 200) {
+                    System.err.print("Wrong connection.");
+                } else {
+                    //Proceed only if correct connection with url.
+
+                    //Read URL and pass to String.
+                    Scanner sc = new Scanner(vehiclesURL.openStream());
+                    StringBuilder vehicleJSONString = new StringBuilder();
+                    while (sc.hasNext()) {
+                        vehicleJSONString.append(sc.nextLine());
+                    }
+
+                    //Parse String into a JSONArray.
+                    JSONParser jsonParser           = new JSONParser();
+                    JSONObject vehicleJSONObject    = (JSONObject) jsonParser.parse(vehicleJSONString.toString());
+                    JSONArray  vehicleJSONArray     = (JSONArray ) vehicleJSONObject.get("items"); //CLARIFICATION: "items" is the name of the object containing our desired items in the oracleCloud api.
+
+                    //Get the parsed objects from the JSONArray and cast them into a Vehicle List.
+                    List<Vehicle> parsedVehicles = new ArrayList<>();
+                    for (Object o : vehicleJSONArray)
+                        parsedVehicles.add(parseVehicleJsonObject((JSONObject) o));
+                    System.out.println("Done parsing.");
+                }
+
+            } catch (ParseException | IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

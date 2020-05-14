@@ -9,8 +9,8 @@ public class Vehicle {
 	private int		axisCount;
 	private int		wheel_count;
 	private int		paxCapacity;
-	private Date 	buildDate;
-	private Date 	acquireDate;
+	private String 	buildDate;
+	private String 	acquireDate;
 	private String 	nick;
 	private String  vehicleType;
 	private String	fuelType;
@@ -32,9 +32,9 @@ public class Vehicle {
 	}
 
 	public Vehicle(String id, String bodyWork, String frame, int axisCount, int wheel_count, int paxCapacity,
-				   Date buildDate, Date acquireDate, int permission, String nick, String vehicleType, String fuelType,
-				   boolean adblue, int fuelTank, double literPerKm, double initialKm, double currentKm,
-				   	String departmentId) {
+				   String buildDate, String acquireDate, int permission, String nick, String vehicleType,
+				   String fuelType, boolean adblue, int fuelTank, double literPerKm, double initialKm,
+				   double currentKm, String departmentId) {
 		this.id 			= id;
 		this.bodywork 		= bodyWork;
 		this.frame			= frame;
@@ -103,19 +103,19 @@ public class Vehicle {
 		this.paxCapacity = pax;
 	}
 
-	public Date getBuildDate() {
+	public String getBuildDate() {
 		return buildDate;
 	}
 
-	public void setBuildDate(Date buildDate) {
+	public void setBuildDate(String buildDate) {
 		this.buildDate = buildDate;
 	}
 
-	public Date getAcquireDate() {
+	public String getAcquireDate() {
 		return acquireDate;
 	}
 
-	public void setAcquireDate(Date acquireDate) {
+	public void setAcquireDate(String acquireDate) {
 		this.acquireDate = acquireDate;
 	}
 
