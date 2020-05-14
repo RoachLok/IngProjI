@@ -112,7 +112,7 @@ public class UserUtils {
     }
 
     private static Driver initDriver(String line, String username) throws Exception {
-        Driver driver = new Driver(line.split(","));
+        Driver driver = new Driver(line.split(","), null);
         for (Service service : initServices())
             if (service.getDriverName().equals(username))
                 driver.addService(service);
