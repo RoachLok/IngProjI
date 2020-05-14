@@ -180,7 +180,7 @@ public class SupervisorViewController implements Initializable {
                 }
             }
             driverList.getSelectionModel().select(0);
-            updateDriverInfoPane(0);
+            //updateDriverInfoPane(0);
         }
 
         /*** -- RESERVE VIEW -- ***/

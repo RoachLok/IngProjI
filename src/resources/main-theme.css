@@ -199,6 +199,9 @@
     -fx-cell-vertical-margin: 5;
     -fx-vertical-gap        : 10;
 }
-
+.combo-box .cell{
+    -fx-text-fill:  #bfbfbf;
+    -fx-font: 16px "System";
+}
 
 

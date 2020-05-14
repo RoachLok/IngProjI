@@ -7,14 +7,14 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="547.0" prefWidth="337.0" style="-fx-background-color: #2C3840;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="138.0" layoutY="26.0" text="Servicios" textFill="WHITE">
+      <Label layoutX="129.0" layoutY="27.0" text="Incidencias" textFill="WHITE">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <ScrollPane layoutY="72.0" prefHeight="476.0" prefWidth="337.0">
+      <ScrollPane layoutY="72.0" prefHeight="474.0" prefWidth="337.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="575.0" prefWidth="320.0" />
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="587.0" prefWidth="315.0" />
         </content>
       </ScrollPane>
    </children>
