@@ -45,7 +45,7 @@
                   <HBox prefHeight="36.0" prefWidth="484.0" style="-fx-background-color: #ff7000;">
                      <children>
                         <Pane prefHeight="25.0" prefWidth="20.0" />
-                        <JFXButton fx:id="DatosPrincipalesConductorAdminButton" buttonType="RAISED" onAction="#ButtonScrollInfo" prefHeight="25.0" prefWidth="470.0" ripplerFill="BLACK" style="-fx-background-color: #5a5755;" text="DATOS PRINCIPALES" />
+                        <JFXButton fx:id="DatosPrincipalesConductorAdminButton" buttonType="RAISED" prefHeight="25.0" prefWidth="470.0" ripplerFill="BLACK" style="-fx-background-color: #5a5755;" text="DATOS PRINCIPALES" />
                         <Pane prefHeight="25.0" prefWidth="20.0" />
                      </children>
                   </HBox>
