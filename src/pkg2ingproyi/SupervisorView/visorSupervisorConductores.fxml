@@ -2,7 +2,10 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.effect.Blend?>
@@ -10,101 +13,323 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="574.0" prefWidth="1109.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.SupervisorView.SupervisorViewController">
-   <top>
-      <HBox alignment="BOTTOM_LEFT" prefHeight="32.0" prefWidth="1109.0" BorderPane.alignment="CENTER">
-         <children>
-            <Pane prefHeight="26.0" prefWidth="5.0" />
-            <JFXButton graphicTextGap="5.0" onAction="#handleNewUserRequest" prefHeight="26.0" prefWidth="144.0" styleClass="supervisor-buttons" text="Nuevo Conductor">
-               <graphic>
-                  <FontAwesomeIconView glyphName="USER_PLUS" size="18" text="" />
-               </graphic>
-            </JFXButton>
-            <JFXButton graphicTextGap="5.0" onAction="#handleRemoveUserRequest" prefHeight="26.0" prefWidth="144.0" styleClass="supervisor-buttons" text="Eliminar Conductor">
-               <graphic>
-                  <FontAwesomeIconView glyphName="TRASH_ALT" size="18" />
-               </graphic>
-            </JFXButton>
-         </children>
-      </HBox>
-   </top>
-   <center>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <JFXListView fx:id="driverList" onMouseClicked="#handleDriverListClick" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="542.0" prefWidth="622.0" styleClass="supervisor-driver-cell" stylesheets="@../../resources/main-theme.css" HBox.hgrow="ALWAYS" />
-            <ScrollPane hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="542.0" prefWidth="494.0" HBox.hgrow="NEVER">
-               <content>
-                  <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+    <top>
+        <HBox alignment="BOTTOM_LEFT" prefHeight="32.0" prefWidth="996.0" BorderPane.alignment="CENTER">
+            <children>
+                <Pane prefHeight="26.0" prefWidth="5.0" />
+                <JFXButton graphicTextGap="5.0" onAction="#handleNewUserRequest" prefHeight="26.0" prefWidth="144.0" styleClass="supervisor-buttons" text="Nuevo Conductor">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="USER_PLUS" size="18" text="" />
+                    </graphic>
+                </JFXButton>
+                <JFXButton graphicTextGap="5.0" onAction="#handleRemoveUserRequest" prefHeight="26.0" prefWidth="144.0" styleClass="supervisor-buttons" text="Eliminar Conductor">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="TRASH_ALT" size="18" />
+                    </graphic>
+                </JFXButton>
+            </children>
+        </HBox>
+    </top>
+    <center>
+        <HBox alignment="CENTER" prefHeight="593.0" prefWidth="1109.0" BorderPane.alignment="CENTER">
+            <children>
+                <JFXListView fx:id="driverList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleDriverListClick" prefHeight="542.0" prefWidth="619.0" styleClass="supervisor-driver-cell" stylesheets="@../../resources/main-theme.css" HBox.hgrow="ALWAYS" />
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="584.0" prefWidth="484.0">
+                      <children>
+                          <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="308.0" prefWidth="484.0" style="-fx-background-color: #ff7000;">
+                              <children>
+                                  <FontAwesomeIconView glyphName="USER_CIRCLE_ALT" layoutX="170.0" layoutY="139.0" size="150" styleClass="black-glyph" wrappingWidth="145.0" />
+                              </children>
+                          </Pane>
+                  <HBox prefHeight="36.0" prefWidth="484.0" style="-fx-background-color: #ff7000;">
                      <children>
-                        <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="121.0" prefWidth="500.0" styleClass="colorPane" HBox.hgrow="ALWAYS">
-                           <children>
-                              <VBox layoutX="249.0" layoutY="22.0" prefHeight="85.0" prefWidth="234.0">
-                                 <children>
-                                    <HBox prefHeight="30.0" prefWidth="246.0">
-                                       <children>
-                                          <Label prefWidth="67.0" styleClass="orange-text" text="Nombre  :">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
-                                             <effect>
-                                                <Blend />
-                                             </effect>
-                                          </Label>
-                                          <Label fx:id="driverNameLabel" text="       driver.getName()">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                    <HBox prefHeight="30.0" prefWidth="200.0">
-                                       <children>
-                                          <Label styleClass="orange-text" text="Apellido  :">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
-                                             <effect>
-                                                <Blend />
-                                             </effect>
-                                          </Label>
-                                          <Label fx:id="driverUsernameLabel" text="       driver.getName()">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                    <HBox prefHeight="30.0" prefWidth="200.0">
-                                       <children>
-                                          <Label styleClass="orange-text" text="DNI         :">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
-                                             <effect>
-                                                <Blend />
-                                             </effect>
-                                          </Label>
-                                          <Label fx:id="driverDNILabel" text="       driver.getName()">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                              <Line endX="-16.0" endY="91.0" layoutX="228.0" layoutY="22.0" startX="-16.0" startY="-7.0" />
-                              <FontAwesomeIconView glyphName="USER_CIRCLE_ALT" layoutX="25.0" layoutY="143.0" size="150" styleClass="black-glyph" />
-                           </children>
-                        </Pane>
+                        <Pane prefHeight="25.0" prefWidth="20.0" />
+                        <JFXButton fx:id="DatosPrincipalesConductorAdminButton" buttonType="RAISED" onAction="#ButtonScrollInfo" prefHeight="56.0" prefWidth="161.0" ripplerFill="BLACK" style="-fx-background-color: #5a5755;" text="DATOS PRINCIPALES" />
+                        <Pane prefHeight="25.0" prefWidth="20.0" />
+                        <JFXButton fx:id="DietasConductorAdminButton" buttonType="RAISED" prefHeight="62.0" prefWidth="161.0" style="-fx-background-color: #5a5755;" text="DIETAS" />
+                        <Pane prefHeight="25.0" prefWidth="20.0" />
+                        <JFXButton fx:id="IncidenciasConductorAdminButton" buttonType="RAISED" prefHeight="56.0" prefWidth="161.0" style="-fx-background-color: #5a5755;" text="INCIDENCIAS" />
+                        <Pane prefHeight="25.0" prefWidth="20.0" />
                      </children>
                   </HBox>
-               </content>
-            </ScrollPane>
-         </children>
-      </HBox>
-   </center>
+                  <ScrollPane fx:id="InfoConducoresScrollPane" hbarPolicy="NEVER" prefHeight="474.0" prefWidth="484.0">
+                     <content>
+                        <VBox prefHeight="1277.0" prefWidth="484.0">
+                           <children>
+                              <HBox prefHeight="330.0" prefWidth="484.0">
+                                 <children>
+                                    <VBox prefHeight="344.0" prefWidth="30.0" style="-fx-background-color: #dfe3e2;" />
+                                    <VBox prefHeight="310.0" prefWidth="100.0" style="-fx-background-color: #dfe3e2;">
+                                       <children>
+                                          <Label alignment="BOTTOM_RIGHT" prefHeight="35.0" prefWidth="82.0" text="Nombre: " textFill="#4b4b4b">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                             <effect>
+                                                <Blend />
+                                             </effect>
+                                          </Label>
+                                          <Label alignment="BOTTOM_RIGHT" prefHeight="42.0" prefWidth="82.0" text="Teléfono:" textAlignment="CENTER" textFill="#4b4b4b">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                             <effect>
+                                                <Blend />
+                                             </effect>
+                                          </Label>
+                                          <Label prefHeight="10.0" prefWidth="100.0" />
+                                          <Label alignment="BOTTOM_RIGHT" prefHeight="50.0" prefWidth="100.0" text="Permiso de Conducir" textAlignment="RIGHT" textFill="#4b4b4b" wrapText="true">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                             <effect>
+                                                <Blend />
+                                             </effect>
+                                          </Label>
+                                          <Label alignment="BOTTOM_RIGHT" prefHeight="50.0" prefWidth="100.0" text="CAP:" textFill="#4b4b4b" wrapText="true">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                             <effect>
+                                                <Blend />
+                                             </effect>
+                                          </Label>
+                                          <Label prefHeight="10.0" prefWidth="100.0" />
+                                          <Label alignment="BOTTOM_RIGHT" prefHeight="50.0" prefWidth="100.0" text="Tipo de Jornada:" textAlignment="RIGHT" textFill="#4b4b4b" wrapText="true">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                             <effect>
+                                                <Blend />
+                                             </effect>
+                                          </Label>
+                                          <Label alignment="BOTTOM_RIGHT" prefHeight="50.0" prefWidth="100.0" text="Antigüedad:" textFill="#4b4b4b" wrapText="true">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                             <effect>
+                                                <Blend />
+                                             </effect>
+                                          </Label>
+                                          <Label prefHeight="10.0" prefWidth="100.0" />
+                                          <Label alignment="BOTTOM_RIGHT" contentDisplay="CENTER" prefHeight="50.0" prefWidth="100.0" text="Tipo de Permiso:" textAlignment="RIGHT" textFill="#4b4b4b" wrapText="true">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                             <effect>
+                                                <Blend />
+                                             </effect>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="25.0" style="-fx-background-color: #dfe3e2;" />
+                                    <VBox prefHeight="240.0" prefWidth="150.0" style="-fx-background-color: #dfe3e2;">
+                                       <children>
+                                          <JFXTextField fx:id="DriverNameID" alignment="BOTTOM_CENTER" depthTest="DISABLE" focusColor="#ff7700aa" prefHeight="14.0" prefWidth="133.0" style="-fx-text-fill: #504f4f;" text="Paco" unFocusColor="#dfe3e2">
+                                             <cursor>
+                                                <Cursor fx:constant="TEXT" />
+                                             </cursor>
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="DriverPhoneID" alignment="BOTTOM_CENTER" depthTest="DISABLE" focusColor="#ff7700aa" prefHeight="40.0" prefWidth="133.0" style="-fx-text-fill: #504f4f;" text="231312312" unFocusColor="#dfe3e2">
+                                             <cursor>
+                                                <Cursor fx:constant="TEXT" />
+                                             </cursor>
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="DriverLicenceID" alignment="BOTTOM_CENTER" depthTest="ENABLE" focusColor="#ff7700aa" prefHeight="55.0" prefWidth="133.0" style="-fx-text-fill: #504f4f;" text="A" unFocusColor="#dfe3e2">
+                                             <cursor>
+                                                <Cursor fx:constant="TEXT" />
+                                             </cursor>
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="CAPDriverID" alignment="BOTTOM_CENTER" depthTest="ENABLE" focusColor="#ff7700aa" prefHeight="51.0" prefWidth="133.0" style="-fx-text-fill: #504f4f;" text="A" unFocusColor="#dfe3e2">
+                                             <cursor>
+                                                <Cursor fx:constant="TEXT" />
+                                             </cursor>
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="DriverJourneyTypeID" alignment="BOTTOM_CENTER" depthTest="ENABLE" focusColor="#ff7700aa" prefHeight="50.0" prefWidth="150.0" style="-fx-text-fill: #504f4f;" text="Completa" unFocusColor="#dfe3e2">
+                                             <cursor>
+                                                <Cursor fx:constant="TEXT" />
+                                             </cursor>
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="DriverLaborOldID" alignment="BOTTOM_CENTER" depthTest="ENABLE" focusColor="#ff7700aa" prefHeight="60.0" prefWidth="133.0" style="-fx-text-fill: #504f4f;" text="3" unFocusColor="#dfe3e2">
+                                             <cursor>
+                                                <Cursor fx:constant="TEXT" />
+                                             </cursor>
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </JFXTextField>
+                                          <Label prefHeight="15.0" prefWidth="150.0" style="-fx-text-fill: #504f4f;" />
+                                          <JFXTextField fx:id="DriverTypeofPermit" alignment="BOTTOM_CENTER" depthTest="ENABLE" focusColor="#ff7700aa" prefHeight="35.0" prefWidth="133.0" style="-fx-text-fill: #504f4f;" text="B" unFocusColor="#dfe3e2">
+                                             <cursor>
+                                                <Cursor fx:constant="TEXT" />
+                                             </cursor>
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </JFXTextField>
+                                       </children></VBox>
+                                    <VBox prefHeight="200.0" prefWidth="30.0" style="-fx-background-color: #dfe3e2;" />
+                                    <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #dfe3e2;">
+                                       <children>
+                                          <Label alignment="BOTTOM_RIGHT" prefHeight="35.0" prefWidth="85.0" text="Apellidos: " textAlignment="RIGHT" textFill="#4b4b4b">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                             <effect>
+                                                <Blend />
+                                             </effect>
+                                          </Label>
+                                          <Label alignment="BOTTOM_RIGHT" prefHeight="50.0" prefWidth="100.0" text="DNI:" textFill="#4b4b4b">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                             <effect>
+                                                <Blend />
+                                             </effect>
+                                          </Label>
+                                          <Label prefHeight="10.0" prefWidth="100.0" />
+                                          <Label alignment="BOTTOM_RIGHT" prefHeight="50.0" prefWidth="100.0" text="Fecha límite del Permiso:" textAlignment="RIGHT" textFill="#4b4b4b" wrapText="true">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                             <effect>
+                                                <Blend />
+                                             </effect>
+                                          </Label>
+                                          <Label prefHeight="10.0" prefWidth="100.0" />
+                                          <Label alignment="BOTTOM_RIGHT" prefHeight="50.0" prefWidth="100.0" text="Fecha límite del CAP:" textAlignment="RIGHT" textFill="#4b4b4b" wrapText="true">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                             <effect>
+                                                <Blend />
+                                             </effect>
+                                          </Label>
+                                          <Label prefHeight="10.0" prefWidth="100.0" />
+                                          <Label alignment="BOTTOM_RIGHT" prefHeight="50.0" prefWidth="100.0" text="Fecha de Registro:" textAlignment="RIGHT" textFill="#4b4b4b" wrapText="true">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                             <effect>
+                                                <Blend />
+                                             </effect>
+                                          </Label>
+                                          <Label prefHeight="10.0" prefWidth="100.0" />
+                                          <Label alignment="BOTTOM_RIGHT" prefHeight="50.0" prefWidth="100.0" text="Estado de Alta:" textAlignment="RIGHT" textFill="#4b4b4b" wrapText="true">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                             <effect>
+                                                <Blend />
+                                             </effect>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="25.0" style="-fx-background-color: #dfe3e2;" />
+                                    <VBox prefHeight="344.0" prefWidth="150.0" style="-fx-background-color: #dfe3e2;">
+                                       <children>
+                                          <JFXTextField fx:id="DriverSurnameID" alignment="BOTTOM_CENTER" depthTest="DISABLE" focusColor="#ff7700aa" prefHeight="37.0" prefWidth="133.0" style="-fx-text-fill: #504f4f;" text="Perez Garcia" unFocusColor="#dfe3e2">
+                                             <cursor>
+                                                <Cursor fx:constant="TEXT" />
+                                             </cursor>
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="DriverID" alignment="BOTTOM_CENTER" depthTest="DISABLE" focusColor="#ff7700aa" prefHeight="43.0" prefWidth="133.0" style="-fx-text-fill: #504f4f;" text="12312412J" unFocusColor="#dfe3e2">
+                                             <cursor>
+                                                <Cursor fx:constant="TEXT" />
+                                             </cursor>
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="DriverLicenceDeadlineID" alignment="BOTTOM_CENTER" depthTest="ENABLE" focusColor="#ff7700aa" prefHeight="55.0" prefWidth="133.0" style="-fx-text-fill: #504f4f;" text="14/2/24" unFocusColor="#dfe3e2">
+                                             <cursor>
+                                                <Cursor fx:constant="TEXT" />
+                                             </cursor>
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="DriverCAPDeadLineID" alignment="BOTTOM_CENTER" depthTest="ENABLE" focusColor="#ff7700aa" prefHeight="66.0" prefWidth="135.0" style="-fx-text-fill: #504f4f;" text="14/2/24" unFocusColor="#dfe3e2">
+                                             <cursor>
+                                                <Cursor fx:constant="TEXT" />
+                                             </cursor>
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="DriverRegistrationDateID" alignment="BOTTOM_CENTER" depthTest="ENABLE" focusColor="#ff7700aa" prefHeight="62.0" prefWidth="135.0" style="-fx-text-fill: #504f4f;" text="14/2/24" unFocusColor="#dfe3e2">
+                                             <cursor>
+                                                <Cursor fx:constant="TEXT" />
+                                             </cursor>
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="DriverDischargeStatusID" alignment="BOTTOM_CENTER" depthTest="ENABLE" focusColor="#ff7700aa" prefHeight="59.0" prefWidth="133.0" style="-fx-text-fill: #504f4f;" text="3" unFocusColor="#dfe3e2">
+                                             <cursor>
+                                                <Cursor fx:constant="TEXT" />
+                                             </cursor>
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </JFXTextField>
+                                       </children></VBox>
+                                    <VBox prefHeight="344.0" prefWidth="30.0" style="-fx-background-color: #dfe3e2;" />
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="16.0" prefWidth="484.0" style="-fx-background-color: #dfe3e2;" />
+                              <HBox prefHeight="15.0" prefWidth="484.0" style="-fx-background-color: #ff7000;" />
+                              <HBox prefHeight="10.0" prefWidth="484.0" style="-fx-background-color: #dfe3e2;" />
+                              <HBox prefHeight="36.0" prefWidth="484.0" style="-fx-background-color: #5a5755;">
+                                 <children>
+                                    <Pane prefHeight="46.0" prefWidth="25.0" style="-fx-background-color: #dfe3e2;" />
+                                    <ComboBox fx:id="AddDietDriverAdmin" prefWidth="242.0" promptText="Añadir Dieta" style="-fx-background-color: #5a5755;" styleClass="combo-box" />
+                                    <Pane prefHeight="25.0" prefWidth="25.0" style="-fx-background-color: #dfe3e2;" />
+                                    <ComboBox fx:id="DeleteDietDriverAdmin" prefWidth="242.0" promptText="Eliminar Dieta" style="-fx-background-color: #5a5755;" />
+                                    <Pane prefHeight="36.0" prefWidth="40.0" style="-fx-background-color: #dfe3e2;" />
+                                 </children>
+                              </HBox>
+                              <JFXListView prefHeight="415.0" prefWidth="484.0" style="-fx-background-color: #dfe3e2;" />
+                              <HBox prefHeight="15.0" prefWidth="484.0" style="-fx-background-color: #ff7000;" />
+                              <HBox prefHeight="10.0" prefWidth="484.0" style="-fx-background-color: #dfe3e2;" />
+                              <HBox prefHeight="36.0" prefWidth="484.0" style="-fx-background-color: #5a5755;">
+                                 <children>
+                                    <Pane prefHeight="46.0" prefWidth="25.0" style="-fx-background-color: #dfe3e2;" />
+                                    <ComboBox fx:id="AddStrikeToDriver" prefWidth="242.0" promptText="Añadir Incidencia" style="-fx-background-color: #5a5755;" styleClass="combo-box" />
+                                    <Pane prefHeight="25.0" prefWidth="25.0" style="-fx-background-color: #dfe3e2;" />
+                                    <ComboBox fx:id="DeleteStrikeToDriver" prefWidth="242.0" promptText="Eliminar Incidencia" style="-fx-background-color: #5a5755;" />
+                                    <Pane prefHeight="36.0" prefWidth="40.0" style="-fx-background-color: #dfe3e2;" />
+                                 </children>
+                              </HBox>
+                              <JFXListView prefHeight="415.0" prefWidth="484.0" style="-fx-background-color: #dfe3e2;" />
+                           </children>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+                      </children>
+                  </VBox>
+            </children>
+        </HBox>
+    </center>
 </BorderPane>
