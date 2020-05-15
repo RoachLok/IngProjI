@@ -6,12 +6,12 @@ public class Admin extends User {
     private ArrayList<Driver> drivers;
 
     public Admin(String username, String password, String name, String surname, String dni, ArrayList<Driver> drivers) {
-        super(username, password, name, surname, dni);
+        super(username, password, name, surname, dni, null);
         this.drivers = drivers;
     }
 
     public Admin(String[] parsed, ArrayList<Driver> drivers) {
-        super(parsed[0], parsed[1], parsed[2], parsed[3], parsed[4]);
+        super(parsed[0], parsed[1], parsed[2], parsed[3], parsed[4], null);
         this.drivers = drivers;
     }
     
