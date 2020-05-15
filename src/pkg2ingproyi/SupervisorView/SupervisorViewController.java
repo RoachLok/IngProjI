@@ -52,12 +52,12 @@ public class SupervisorViewController implements Initializable, Runnable {
     /**** DRIVER MENU VIEW ELEMENTS *****/
     @FXML
     private JFXListView<HBox> driverList;
-    @FXML
-    private Label driverNameLabel;
-    @FXML
-    private Label driverUsernameLabel;
-    @FXML
-    private Label driverDNILabel;
+    //@FXML
+    //private Label driverNameLabel;
+    //@FXML
+    //private Label driverUsernameLabel;
+    //@FXML
+    //private Label driverDNILabel;
 
     /**** DRIVER MENU VIEW ELEMENTS *****/
     @FXML
@@ -117,37 +117,16 @@ public class SupervisorViewController implements Initializable, Runnable {
     private String chosenDate, todayDate;
 
     /***** CORE CODE ELEMENTS *****/
-    private Admin admin = (Admin) Main.appUser;
-    private ArrayList<Service> displayServices;
-    private volatile Thread thread;
+    private final Admin admin = (Admin) Main.appUser;
 
     private String dptId = "TESTDPT";
 
     /***** TAB MANAGEMENT *****/
-    private List<String> openTabs = new ArrayList<String>();
-
-
-    public boolean isValidDate(String fecha){
-        SimpleDateFormat sdfrmt = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-        sdfrmt.setLenient(false);
-
-        try
-        {
-            Date javaDate = sdfrmt.parse(fecha);
-        }
-        /* Date format is invalid */
-        catch (java.text.ParseException e)
-        {
-            Notifications.create().title("Invalid date hour").text("Fecha hora inválida").showError();
-            return false;
-        }
-        /* Return true if date format is valid */
-        return true;
-    }
+    private final List<String> openTabs = new ArrayList<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        /** Check if true admin before every view load. **/
+        /* Check if true admin before every view load. */
         if (!Main.appUser.isAdmin()) {
             Notifications.create().title("Autentication Error").text("Ha habido un problema al verificar tu usuario.").showError();
             try {
@@ -191,6 +170,7 @@ public class SupervisorViewController implements Initializable, Runnable {
         }
 
         /*** -- RESERVE VIEW -- ***/
+        ArrayList<Service> displayServices;
         if (reserveTreeTable != null) {
             displayServices = admin.getReserves();
             initReservesTableView(displayServices);
@@ -198,7 +178,6 @@ public class SupervisorViewController implements Initializable, Runnable {
         }
 
         /*** -- SERVICES VIEW -- ***/
-
         if (serviceTreeTable != null) {
             displayServices = admin.getReserves();
             initServicesTableView(displayServices);
@@ -219,98 +198,53 @@ public class SupervisorViewController implements Initializable, Runnable {
             //TreeTableView init
             observableServices = FXCollections.observableArrayList();
 
-            JFXTreeTableColumn<Service, String> identifier = new JFXTreeTableColumn("ID");
+            JFXTreeTableColumn<Service, String> identifier = new JFXTreeTableColumn<>("ID");
             identifier.setPrefWidth(75);
 
-            identifier.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-                @Override
-                public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                    return param.getValue().getValue().observableIdentifier;
-                }
-            });
+            identifier.setCellValueFactory(param -> param.getValue().getValue().observableIdentifier);
 
-            JFXTreeTableColumn<Service, String> name = new JFXTreeTableColumn("Servicio");
+            JFXTreeTableColumn<Service, String> name = new JFXTreeTableColumn<>("Servicio");
             name.setPrefWidth(300);
 
-            name.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-                @Override
-                public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                    return param.getValue().getValue().observableName;
-                }
-            });
+            name.setCellValueFactory(param -> param.getValue().getValue().observableName);
 
-            JFXTreeTableColumn<Service, String> pickup = new JFXTreeTableColumn("Salida");
+            JFXTreeTableColumn<Service, String> pickup = new JFXTreeTableColumn<>("Salida");
             pickup.setPrefWidth(90);
 
-            pickup.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-                @Override
-                public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                    return param.getValue().getValue().observablePickup;
-                }
-            });
+            pickup.setCellValueFactory(param -> param.getValue().getValue().observablePickup);
 
-            JFXTreeTableColumn<Service, String> arrival = new JFXTreeTableColumn("Llegada");
+            JFXTreeTableColumn<Service, String> arrival = new JFXTreeTableColumn<>("Llegada");
             arrival.setPrefWidth(90);
 
-            arrival.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-                @Override
-                public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                    return param.getValue().getValue().observableArrival;
-                }
-            });
+            arrival.setCellValueFactory(param -> param.getValue().getValue().observableArrival);
 
-            JFXTreeTableColumn<Service, String> startT = new JFXTreeTableColumn("H. Inicio");
+            JFXTreeTableColumn<Service, String> startT = new JFXTreeTableColumn<>("H. Inicio");
             startT.setPrefWidth(90);
 
-            startT.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-                @Override
-                public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                    return param.getValue().getValue().observableStartT;
-                }
-            });
+            startT.setCellValueFactory(param -> param.getValue().getValue().observableStartT);
 
-            JFXTreeTableColumn<Service, String> endT = new JFXTreeTableColumn("H. Final");
+            JFXTreeTableColumn<Service, String> endT = new JFXTreeTableColumn<>("H. Final");
             endT.setPrefWidth(90);
 
-            endT.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-                @Override
-                public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                    return param.getValue().getValue().observableEndT;
-                }
-            });
+            endT.setCellValueFactory(param -> param.getValue().getValue().observableEndT);
 
-            JFXTreeTableColumn<Service, String> chauffeur = new JFXTreeTableColumn("Conductor");
+            JFXTreeTableColumn<Service, String> chauffeur = new JFXTreeTableColumn<>("Conductor");
             chauffeur.setPrefWidth(100);
 
-            chauffeur.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-                @Override
-                public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                    return param.getValue().getValue().observableDriverName;
-                }
-            });
+            chauffeur.setCellValueFactory(param -> param.getValue().getValue().observableDriverName);
 
-            JFXTreeTableColumn<Service, String> transit = new JFXTreeTableColumn("Tránsito");
+            JFXTreeTableColumn<Service, String> transit = new JFXTreeTableColumn<>("Tránsito");
             transit.setPrefWidth(90);
 
-            transit.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-                @Override
-                public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                    return param.getValue().getValue().observableTransit;
-                }
-            });
+            transit.setCellValueFactory(param -> param.getValue().getValue().observableTransit);
 
-            JFXTreeTableColumn<Service, String> vehicleName = new JFXTreeTableColumn("Vehículo");
+            JFXTreeTableColumn<Service, String> vehicleName = new JFXTreeTableColumn<>("Vehículo");
             vehicleName.setPrefWidth(100);
 
-            vehicleName.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-                @Override
-                public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                    return param.getValue().getValue().observableVehicleName;
-                }
-            });
+            vehicleName.setCellValueFactory(param -> param.getValue().getValue().observableVehicleName);
 
 
-            final TreeItem<Service> root = new RecursiveTreeItem<Service>(observableServices, RecursiveTreeObject::getChildren);
+            final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
             montajeTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, chauffeur, vehicleName, transit);
             montajeTreeTable.setRoot(root);
             montajeTreeTable.setShowRoot(false);
@@ -339,31 +273,31 @@ public class SupervisorViewController implements Initializable, Runnable {
         }
     }
 
-    public void handleConductoresButton(ActionEvent actionEvent) throws IOException {
-        addTab(FXMLLoader.load(getClass().getResource("visorSupervisorConductores.fxml")), "Conductores");
+    public void handleConductoresButton () throws IOException {
+        addTab(FXMLLoader.load( getClass().getResource("visorSupervisorConductores.fxml")), "Conductores");
     }
 
-    public void handleVehiculosButton(ActionEvent actionEvent) throws IOException {
-        addTab(FXMLLoader.load(getClass().getResource("visorSupervisorVehiculos.fxml")), "Coches");
+    public void handleVehiculosButton   () throws IOException {
+        addTab(FXMLLoader.load( getClass().getResource("visorSupervisorVehiculos.fxml")  ), "Coches");
     }
 
-    public void handleReservasButton(ActionEvent actionEvent) throws IOException {
-        addTab(FXMLLoader.load(getClass().getResource("visorSupervisorReservas.fxml")), "Reservas");
+    public void handleReservasButton    () throws IOException {
+        addTab(FXMLLoader.load( getClass().getResource("visorSupervisorReservas.fxml")   ), "Reservas");
     }
 
-    public void handleServiciosButton(ActionEvent actionEvent) throws IOException {
-        addTab(FXMLLoader.load(getClass().getResource("visorSupervisorServicios.fxml")), "Servicios");
+    public void handleServiciosButton   () throws IOException {
+        addTab(FXMLLoader.load( getClass().getResource("visorSupervisorServicios.fxml")  ), "Servicios");
     }
 
-    public void handleMontajeButton(ActionEvent actionEvent) throws IOException {
-        addTab(FXMLLoader.load(getClass().getResource("visorSupervisorMontaje.fxml")), "Montaje");
+    public void handleMontajeButton     () throws IOException {
+        addTab(FXMLLoader.load( getClass().getResource("visorSupervisorMontaje.fxml")    ), "Montaje");
     }
 
-    public void handleChatButton(ActionEvent actionEvent) throws IOException {
-        addTab(FXMLLoader.load(getClass().getResource("visorSupervisorChat.fxml")), "Chat");
+    public void handleChatButton        () throws IOException {
+        addTab(FXMLLoader.load( getClass().getResource("visorSupervisorChat.fxml")       ), "Chat");
     }
 
-    public void handleSettingsButton(ActionEvent actionEvent) throws IOException {
+    public void handleSettingsButton    () throws IOException {
 
     }
 
@@ -393,15 +327,15 @@ public class SupervisorViewController implements Initializable, Runnable {
 //        driverDNILabel      .setText("      " + displayDriver.getDni()     );
     }
 
-    public void handleDriverListClick(MouseEvent mouseEvent) {
+    public void handleDriverListClick   () {
         updateDriverInfoPane(driverList.getSelectionModel().getSelectedIndex());
     }
 
-    public void handleNewUserRequest(ActionEvent actionEvent) throws IOException {
+    public void handleNewUserRequest    () throws IOException {
         launchStage("SupervisorNuevousuario.fxml", "Registro de Usuario");
     }
 
-    public void handleRemoveUserRequest(ActionEvent actionEvent) {
+    public void handleRemoveUserRequest () {
         Notifications.create().title("Feature to be implemented").text("Esta característica aun no ha sido implementada.").showError();
     }
 
@@ -417,7 +351,7 @@ public class SupervisorViewController implements Initializable, Runnable {
                 Integer.parseInt( (String) object.get("pax_capacity" )),
                 (String) object.get("build_date"   ),
                 (String) object.get("acquire_date" ),
-                9                        ,
+                9                       ,
                 (String) object.get("vehicle_name" ),
                 (String) object.get("vehicle_type" ),
                 (String) object.get("fuel_type"    ),
@@ -435,55 +369,66 @@ public class SupervisorViewController implements Initializable, Runnable {
 
     /*********  ------------ RESERVES VIEW METHODS IMPLEMENTATION ------------  *********/
 
-    public void handleNewServiceRequest(ActionEvent actionEvent) throws IOException {
+    public void handleNewServiceRequest() {
         defaultExpanded.setExpanded(true);
 
         if (reserveSplitPane.getDividerPositions()[0] > 0.8) {
             reserveSplitPane.setDividerPositions(0.1f, 0.6f, 0.9f);
         } else {
             reserveSplitPane.setDividerPositions(1f, 1f, 1f);
-            handleNewReserveRequest(actionEvent);
+            handleNewReserveRequest();
         }
     }
 
-    public void handleNewReserveRequest(ActionEvent actionEvent) throws IOException {
-        if (newReserveNameLbl       .getText().equals("") ||
-                newReserveArrivalLbl    .getText().equals("") ||
-                newReserveIDLbl         .getText().equals("") ||
-                newReserveIDLbl         .getText().length() != 6 ||
-                newReserveStartTLbl     .getText().equals("") ||
-                newReserveEndTLbl       .getText().equals("") ||
-                !isValidDate(newReserveStartTLbl.getText()) ||
-                !isValidDate(newReserveEndTLbl.getText())
+    public boolean isValidDate(String fecha){
+        SimpleDateFormat sdfrmt = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+        sdfrmt.setLenient(false);
 
-        )
+        try {
+            Date javaDate = sdfrmt.parse(fecha);
+        } catch (java.text.ParseException e) {
+            Notifications.create().title("Invalid date hour").text("Fecha hora inválida").showError();
+            return true;
+        }
+        /* Return true if date format is valid */
+        return false;
+    }
+
+    public void handleNewReserveRequest() {
+        if (newReserveNameLbl       .getText().equals("") ||
+            newReserveArrivalLbl    .getText().equals("") ||
+            newReserveIDLbl         .getText().equals("") ||
+            newReserveStartTLbl     .getText().equals("") ||
+            newReserveEndTLbl       .getText().equals("") ||
+            isValidDate(newReserveStartTLbl .getText()  ) ||
+            isValidDate(newReserveEndTLbl   .getText()  )   )
             Notifications.create().title("Fields Missing").text("Faltan campos obligatorios.").showError();
         else {
             Service reserve = new Service
                     (
-                            newReserveNameLbl       .getText(),
-                            newReserveStartTLbl     .getText(),
-                            newReserveEndTLbl       .getText(),
-                            newReservePickupLbl     .getText(),
-                            newReserveTransitLbl    .getText(),
-                            newReserveArrivalLbl    .getText(),
-                            newReserveIDLbl         .getText(),
-                            newReserveDistanceLbl   .getText(),
-                            newReserveClientDNILbl  .getText(),
-                            admin                   .getUsername()
+                        newReserveNameLbl       .getText(),
+                        newReserveStartTLbl     .getText(),
+                        newReserveEndTLbl       .getText(),
+                        newReservePickupLbl     .getText(),
+                        newReserveTransitLbl    .getText(),
+                        newReserveArrivalLbl    .getText(),
+                        newReserveIDLbl         .getText(),
+                        newReserveDistanceLbl   .getText(),
+                        newReserveClientDNILbl  .getText(),
+                        admin                   .getUsername()
                     );
             reserve.setObservable();
 
             observableServices.add(reserve);
-            final TreeItem<Service> root = new RecursiveTreeItem<Service>(observableServices, RecursiveTreeObject::getChildren);
+            final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
             reserveTreeTable.setRoot(root);
 
             Notifications.create().title("Reserve Successful").text("La reserva ha sido creada con éxito.").showInformation();
-            handleCancelReserveRequest(actionEvent);
+            handleCancelReserveRequest();
         }
     }
 
-    public void handleCancelReserveRequest(ActionEvent actionEvent) throws IOException {
+    public void handleCancelReserveRequest() {
         newReserveNameLbl       .setText("");
         newReserveStartTLbl     .setText("");
         newReserveEndTLbl       .setText("");
@@ -499,30 +444,27 @@ public class SupervisorViewController implements Initializable, Runnable {
         Service clickedReserve = observableServices.get(reserveIndex);
 
         // TODO update old fields
-
     }
 
-    public void handleReserveTreeViewClick(MouseEvent mouseEvent) {
+    public void handleReserveTreeViewClick() {
         updateOldFields(reserveTreeTable.getSelectionModel().getSelectedIndex());
     }
 
     public void acceptReserveAsService(int reserveIndex) {
-        Service clickedReserve = observableServices.get(reserveIndex);
-        if (newReserveNameLbl.getText().equals("") ||
-                newReserveEndTLbl.getText().equals("") ||
-                newReserveArrivalLbl.getText().equals("") ||
-                newReserveIDLbl.getText().equals("") ||
-                newReserveStartTLbl.getText().equals("") ||
-                newReservePickupLbl.getText().equals("") ||
-                newReserveTransitLbl.getText().equals("") ||
-                newReserveDistanceLbl.getText().equals("") ||
-                newReserveClientDNILbl.getText().equals("")
-        )
+        if (newReserveNameLbl       .getText().equals("") ||
+            newReserveArrivalLbl    .getText().equals("") ||
+            newReserveIDLbl         .getText().equals("") ||
+            newReserveStartTLbl     .getText().equals("") ||
+            newReservePickupLbl     .getText().equals("") ||
+            newReserveTransitLbl    .getText().equals("") ||
+            newReserveDistanceLbl   .getText().equals("") ||
+            newReserveClientDNILbl  .getText().equals("")  )
             Notifications.create().title("Cannot accept reserve").text("Faltan campos obligatorios o no se cumplen ciertas condiciones.").showError();
         else {
+            Service clickedReserve = observableServices.get(reserveIndex);
             observableServices.remove(reserveIndex);
 
-            final TreeItem<Service> root = new RecursiveTreeItem<Service>(observableServices, RecursiveTreeObject::getChildren);
+            final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
             reserveTreeTable.setRoot(root);
 
             clickedReserve.setReserve(false);
@@ -531,16 +473,16 @@ public class SupervisorViewController implements Initializable, Runnable {
         }
     }
 
-    public void handleAcceptReserveRequest(ActionEvent actionEvent) throws IOException {
+    public void handleAcceptReserveRequest  () {
         acceptReserveAsService(reserveTreeTable.getSelectionModel().getSelectedIndex());
     }
 
-    public void handleApplyReserveEdit(ActionEvent actionEvent) throws IOException {
+    public void handleApplyReserveEdit      () {
         Notifications.create().title("Feature to be implemented").text("Esta característica aun no ha sido implementada.").showError();
 
     }
 
-    public void handleRemoveReserveRequest(ActionEvent actionEvent) {
+    public void handleRemoveReserveRequest  () {
         Notifications.create().title("Feature to be implemented").text("Esta característica aun no ha sido implementada.").showError();
     }
 
@@ -548,7 +490,6 @@ public class SupervisorViewController implements Initializable, Runnable {
     public void updateServiceInfoPane() {
         admin.getDriver(0).servicesCount();
     }
-
 
     /*********  ------------ MONTAJE VIEW METHODS IMPLEMENTATION ------------  *********/
     private void loadIntoInfoScrollPane(boolean realTime) { //Loads a view into the montajeView infoPane.
@@ -560,7 +501,7 @@ public class SupervisorViewController implements Initializable, Runnable {
 
         Node newLoadedPane =  null;
         try {
-            newLoadedPane = (Node)FXMLLoader.load(getClass().getResource(pane));
+            newLoadedPane = FXMLLoader.load(getClass().getResource(pane));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -585,7 +526,7 @@ public class SupervisorViewController implements Initializable, Runnable {
         updateMontajeTreeTable();
     }
 
-    public void handleMontajeTableClick(MouseEvent mouseEvent) {
+    public void handleMontajeTableClick() {
         loadIntoInfoScrollPane(chosenDate.equals(todayDate));
     }
 
@@ -594,96 +535,52 @@ public class SupervisorViewController implements Initializable, Runnable {
         observableServices = FXCollections.observableArrayList();
 
         //ID
-        JFXTreeTableColumn<Service, String> identifier = new JFXTreeTableColumn("ID");
+        JFXTreeTableColumn<Service, String> identifier = new JFXTreeTableColumn<>("ID");
         identifier.setPrefWidth(75);
 
-        identifier.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableIdentifier;
-            }
-        });
+        identifier.setCellValueFactory(param -> param.getValue().getValue().observableIdentifier);
         //NAME
-        JFXTreeTableColumn<Service, String> name = new JFXTreeTableColumn("Servicio");
+        JFXTreeTableColumn<Service, String> name = new JFXTreeTableColumn<>("Servicio");
         name.setPrefWidth(300);
 
-        name.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableName;
-            }
-        });
+        name.setCellValueFactory(param -> param.getValue().getValue().observableName);
         //PICKUP
-        JFXTreeTableColumn<Service, String> pickup = new JFXTreeTableColumn("Salida");
+        JFXTreeTableColumn<Service, String> pickup = new JFXTreeTableColumn<>("Salida");
         pickup.setPrefWidth(250);
 
-        pickup.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observablePickup;
-            }
-        });
+        pickup.setCellValueFactory(param -> param.getValue().getValue().observablePickup);
         //ARRIVAL
-        JFXTreeTableColumn<Service, String> arrival = new JFXTreeTableColumn("Llegada");
+        JFXTreeTableColumn<Service, String> arrival = new JFXTreeTableColumn<>("Llegada");
         arrival.setPrefWidth(250);
 
-        arrival.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableArrival;
-            }
-        });
+        arrival.setCellValueFactory(param -> param.getValue().getValue().observableArrival);
         //START
-        JFXTreeTableColumn<Service, String> startT = new JFXTreeTableColumn("H. Inicio");
+        JFXTreeTableColumn<Service, String> startT = new JFXTreeTableColumn<>("H. Inicio");
         startT.setPrefWidth(250);
 
-        startT.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableStartT;
-            }
-        });
+        startT.setCellValueFactory(param -> param.getValue().getValue().observableStartT);
         //ENDT
-        JFXTreeTableColumn<Service, String> endT = new JFXTreeTableColumn("H. Final");
+        JFXTreeTableColumn<Service, String> endT = new JFXTreeTableColumn<>("H. Final");
         endT.setPrefWidth(250);
 
-        endT.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableEndT;
-            }
-        });
+        endT.setCellValueFactory(param -> param.getValue().getValue().observableEndT);
         //TRANSIT
-        JFXTreeTableColumn<Service, String> transit = new JFXTreeTableColumn("Tránsito");
+        JFXTreeTableColumn<Service, String> transit = new JFXTreeTableColumn<>("Tránsito");
         transit.setPrefWidth(250);
 
-        transit.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableTransit;
-            }
-        });
+        transit.setCellValueFactory(param -> param.getValue().getValue().observableTransit);
+
         //DISTANCE
-        JFXTreeTableColumn<Service, String> distance = new JFXTreeTableColumn("Distancia");
+        JFXTreeTableColumn<Service, String> distance = new JFXTreeTableColumn<>("Distancia");
         distance.setPrefWidth(250);
 
-        distance.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableDistance;
-            }
-        });
+        distance.setCellValueFactory(param -> param.getValue().getValue().observableDistance);
 
         //CLIENT DNI
-        JFXTreeTableColumn<Service, String> clientDNI = new JFXTreeTableColumn("DNI Cliente");
+        JFXTreeTableColumn<Service, String> clientDNI = new JFXTreeTableColumn<>("DNI Cliente");
         clientDNI.setPrefWidth(250);
 
-        clientDNI.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableDNI;
-            }
-        });
+        clientDNI.setCellValueFactory(param -> param.getValue().getValue().observableDNI);
 
         for (Service reserve : displayServices) {
             reserve.setObservable();
@@ -700,96 +597,58 @@ public class SupervisorViewController implements Initializable, Runnable {
         observableServices = FXCollections.observableArrayList();
 
         //ID
-        JFXTreeTableColumn<Service, String> identifier = new JFXTreeTableColumn("ID");
+        JFXTreeTableColumn<Service, String> identifier = new JFXTreeTableColumn<>("ID");
         identifier.setPrefWidth(75);
 
-        identifier.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableIdentifier;
-            }
-        });
+        identifier.setCellValueFactory(param -> param.getValue().getValue().observableIdentifier);
+
         //NAME
-        JFXTreeTableColumn<Service, String> name = new JFXTreeTableColumn("Servicio");
+        JFXTreeTableColumn<Service, String> name = new JFXTreeTableColumn<>("Servicio");
         name.setPrefWidth(300);
 
-        name.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableName;
-            }
-        });
+        name.setCellValueFactory(param -> param.getValue().getValue().observableName);
+
         //PICKUP
-        JFXTreeTableColumn<Service, String> pickup = new JFXTreeTableColumn("Salida");
+        JFXTreeTableColumn<Service, String> pickup = new JFXTreeTableColumn<>("Salida");
         pickup.setPrefWidth(250);
 
-        pickup.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observablePickup;
-            }
-        });
+        pickup.setCellValueFactory(param -> param.getValue().getValue().observablePickup);
+
         //ARRIVAL
-        JFXTreeTableColumn<Service, String> arrival = new JFXTreeTableColumn("Llegada");
+        JFXTreeTableColumn<Service, String> arrival = new JFXTreeTableColumn<>("Llegada");
         arrival.setPrefWidth(250);
 
-        arrival.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableArrival;
-            }
-        });
+        arrival.setCellValueFactory(param -> param.getValue().getValue().observableArrival);
+
         //START
-        JFXTreeTableColumn<Service, String> startT = new JFXTreeTableColumn("H. Inicio");
+        JFXTreeTableColumn<Service, String> startT = new JFXTreeTableColumn<>("H. Inicio");
         startT.setPrefWidth(250);
 
-        startT.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableStartT;
-            }
-        });
+        startT.setCellValueFactory(param -> param.getValue().getValue().observableStartT);
+
         //ENDT
-        JFXTreeTableColumn<Service, String> endT = new JFXTreeTableColumn("H. Final");
+        JFXTreeTableColumn<Service, String> endT = new JFXTreeTableColumn<>("H. Final");
         endT.setPrefWidth(250);
 
-        endT.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableEndT;
-            }
-        });
+        endT.setCellValueFactory(param -> param.getValue().getValue().observableEndT);
+
         //TRANSIT
-        JFXTreeTableColumn<Service, String> transit = new JFXTreeTableColumn("Tránsito");
+        JFXTreeTableColumn<Service, String> transit = new JFXTreeTableColumn<>("Tránsito");
         transit.setPrefWidth(250);
 
-        transit.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableTransit;
-            }
-        });
+        transit.setCellValueFactory(param -> param.getValue().getValue().observableTransit);
+
         //DISTANCE
-        JFXTreeTableColumn<Service, String> distance = new JFXTreeTableColumn("Distancia");
+        JFXTreeTableColumn<Service, String> distance = new JFXTreeTableColumn<>("Distancia");
         distance.setPrefWidth(250);
 
-        distance.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableDistance;
-            }
-        });
+        distance.setCellValueFactory(param -> param.getValue().getValue().observableDistance);
 
         //CLIENT DNI
-        JFXTreeTableColumn<Service, String> clientDNI = new JFXTreeTableColumn("DNI Cliente");
+        JFXTreeTableColumn<Service, String> clientDNI = new JFXTreeTableColumn<>("DNI Cliente");
         clientDNI.setPrefWidth(250);
 
-        clientDNI.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Service, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Service, String> param) {
-                return param.getValue().getValue().observableDNI;
-            }
-        });
+        clientDNI.setCellValueFactory(param -> param.getValue().getValue().observableDNI);
 
         for (Service reserve : displayServices) {
             reserve.setObservable();
