@@ -20,7 +20,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.controlsfx.control.Notifications;
 import pkg2ingproyi.Main;
-import pkg2ingproyi.Model.UserUtils;
+import pkg2ingproyi.Util.UserUtils;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
