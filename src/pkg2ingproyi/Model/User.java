@@ -3,7 +3,7 @@ package pkg2ingproyi.Model;
 import java.util.ArrayList;
 
 public abstract class User {
-    private String username, password, dni, name, surname;
+    private String username, password, dni, name, surname, dptId;
     private ArrayList<Incidence> incidences;
 
     User(String username, String password, String name, String surname, String dni, ArrayList<Incidence> incidences) {
@@ -13,6 +13,7 @@ public abstract class User {
         this.surname    = surname;
         this.dni        = dni;
         this.incidences = incidences;
+        this.dptId      = "TESTDPT";
     }
 
     public String getUsername() {
@@ -33,6 +34,10 @@ public abstract class User {
 
     public String getSurname() {
         return surname;
+    }
+
+    public String getDptId() {
+        return dptId;
     }
 
     public ArrayList<Incidence> getIncidences() {
