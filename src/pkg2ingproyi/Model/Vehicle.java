@@ -1,8 +1,9 @@
 package pkg2ingproyi.Model;
 
-import java.sql.Date;
+import org.json.simple.JSONObject;
+import pkg2ingproyi.Util.JSONSerializable;
 
-public class Vehicle {
+public class Vehicle implements JSONSerializable {
 	private String 	id;
 	private String 	bodywork;
 	private String 	frame;
@@ -238,5 +239,31 @@ public class Vehicle {
 
 	public double kmDone() {
 		return currentKm - initialKm;
+	}
+
+	public Vehicle(JSONObject object) {
+		jsonParse(object);
+	}
+
+	@Override
+	public void jsonParse(JSONObject object) {
+			this.id 			= (String) object.get("license_plate");
+			this.bodywork 		= (String) object.get("bodywork"     );
+			this.frame			= (String) object.get("frame"        );
+			this.axisCount		= Integer.parseInt( (String) object.get("axis_count"   ));
+			this.wheel_count  	= Integer.parseInt( (String) object.get("wheel_count"  ));
+			this.paxCapacity	= Integer.parseInt( (String) object.get("pax_capacity" ));
+			this.buildDate		= (String) object.get("build_date"   );
+			this.acquireDate	= (String) object.get("acquire_date" );
+			this.nick			= (String) object.get("vehicle_name" );
+			this.vehicleType	= (String) object.get("vehicle_type" );
+			this.fuelType		= (String) object.get("fuel_type"    );
+			this.adblue			= ((String) object.get("adblue")).charAt(0) == 'T';
+			this.permission 	= 9;
+			this.fuelTank		= (int) (long) object.get("tank_capacity");
+			this.literPerKm 	= 10;
+			this.initialKm		= 0;
+			this.currentKm		= 153200;
+			this.departmentId	= (String) object.get("department_id");
 	}
 }

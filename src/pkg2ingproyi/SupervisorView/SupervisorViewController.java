@@ -4,10 +4,9 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import javafx.beans.value.ObservableValue;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,10 +16,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import org.controlsfx.control.Notifications;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -31,10 +28,13 @@ import pkg2ingproyi.Model.Admin;
 import pkg2ingproyi.Model.Driver;
 import pkg2ingproyi.Model.Service;
 import pkg2ingproyi.Model.Vehicle;
+import pkg2ingproyi.Util.*;
+
+import javax.management.NotificationListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.HttpURLConnection;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -42,7 +42,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.text.SimpleDateFormat;
 
-public class SupervisorViewController implements Initializable, Runnable {
+public class SupervisorViewController implements Initializable {
 
     /**** MAIN CONTAINER VIEW ELEMENTS *****/
     @FXML
@@ -52,12 +52,6 @@ public class SupervisorViewController implements Initializable, Runnable {
     /**** DRIVER MENU VIEW ELEMENTS *****/
     @FXML
     private JFXListView<HBox> driverList;
-    //@FXML
-    //private Label driverNameLabel;
-    //@FXML
-    //private Label driverUsernameLabel;
-    //@FXML
-    //private Label driverDNILabel;
 
     /**** DRIVER MENU VIEW ELEMENTS *****/
     @FXML
@@ -119,8 +113,6 @@ public class SupervisorViewController implements Initializable, Runnable {
     /***** CORE CODE ELEMENTS *****/
     private final Admin admin = (Admin) Main.appUser;
 
-    private String dptId = "TESTDPT";
-
     /***** TAB MANAGEMENT *****/
     private final List<String> openTabs = new ArrayList<>();
 
@@ -154,7 +146,6 @@ public class SupervisorViewController implements Initializable, Runnable {
                     Region region1 = new Region();
                     HBox.setHgrow(region1, Priority.ALWAYS);
 
-
                     HBox listItem = new HBox(icon, label, region1, chckbox);
                     driverList.getItems().add(listItem);
                 }
@@ -165,20 +156,38 @@ public class SupervisorViewController implements Initializable, Runnable {
 
         /*** -- VEHICLE VIEW -- ***/
         if (vehicleList != null) {
-            Thread dataLoadThread = new Thread(this);
-            dataLoadThread.start();
+            NetworkHandler networkHandler = new NetworkHandler(APIRoutes.VEHICLES, new OnDataReceivedListener() {
+                @Override
+                public void dataReceived(String rawData) throws Exception {
+                    JSONParser jsonParser           = new JSONParser();
+                    JSONObject vehicleJSONObject    = (JSONObject) jsonParser.parse(rawData);
+                    JSONArray vehicleJSONArray      = (JSONArray ) vehicleJSONObject.get("items");
+
+                    ArrayList<Vehicle> parsedVehicles = new JSONCastedList<>(vehicleJSONArray, Vehicle.class);
+                    Platform.runLater(() -> Notifications.create().title("Data Loaded").text("Archivos cargados desde la base de datos.").showInformation());
+
+                    drawVehicles(parsedVehicles);
+                }
+
+                @Override
+                public void onDataFail() {
+                    Platform.runLater(() -> Notifications.create().title("Data Receive Error").text("¿Hay conexión con la BD?").showError());
+                }
+            });
+            networkHandler.start();
         }
 
         /*** -- RESERVE VIEW -- ***/
-        ArrayList<Service> displayServices;
         if (reserveTreeTable != null) {
-            displayServices = admin.getReserves();
-            initReservesTableView(displayServices);
+            ArrayList<Service> displayReserves;
+            displayReserves = admin.getReserves();
+            initReservesTableView(displayReserves);
             reserveTreeTable.getSelectionModel().select(0);
         }
 
         /*** -- SERVICES VIEW -- ***/
         if (serviceTreeTable != null) {
+            ArrayList<Service> displayServices;
             displayServices = admin.getReserves();
             initServicesTableView(displayServices);
             reserveTreeTable.getSelectionModel().select(0);
@@ -340,28 +349,6 @@ public class SupervisorViewController implements Initializable, Runnable {
     }
 
     /*********  ------------ VEHICLE VIEW METHODS IMPLEMENTATION ------------  *********/
-
-    private Vehicle parseVehicleJsonObject(JSONObject object) {
-        return new Vehicle(
-                (String) object.get("license_plate"),
-                (String) object.get("bodywork"     ),
-                (String) object.get("frame"        ),
-                Integer.parseInt( (String) object.get("axis_count"   )),
-                Integer.parseInt( (String) object.get("wheel_count"  )),
-                Integer.parseInt( (String) object.get("pax_capacity" )),
-                (String) object.get("build_date"   ),
-                (String) object.get("acquire_date" ),
-                9                       ,
-                (String) object.get("vehicle_name" ),
-                (String) object.get("vehicle_type" ),
-                (String) object.get("fuel_type"    ),
-                ((String) object.get("adblue")).charAt(0) == 'T',
-                (int) (long) object.get("tank_capacity"),
-                10                       ,
-                0                         ,
-                153200                   ,
-                (String) object.get("department_id"));
-    }
 
     private void drawVehicles(List<Vehicle> vehicles) {
         //TODO Draw vehicles in the listview nicely.
@@ -531,7 +518,9 @@ public class SupervisorViewController implements Initializable, Runnable {
     }
 
     /******************************************************************************************/
-    void initReservesTableView(ArrayList<Service> displayServices) {
+
+    //INIT RESERVES TABLE
+    void initReservesTableView(ArrayList<Service> displayReserves) {
         observableServices = FXCollections.observableArrayList();
 
         //ID
@@ -582,17 +571,18 @@ public class SupervisorViewController implements Initializable, Runnable {
 
         clientDNI.setCellValueFactory(param -> param.getValue().getValue().observableDNI);
 
-        for (Service reserve : displayServices) {
+        for (Service reserve : displayReserves) {
             reserve.setObservable();
             observableServices.add(reserve);
         }
 
-        final TreeItem<Service> root = new RecursiveTreeItem<Service>(observableServices, RecursiveTreeObject::getChildren);
+        final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
         reserveTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, distance, clientDNI);
         reserveTreeTable.setRoot(root);
         reserveTreeTable.setShowRoot(false);
     }
 
+    //INIT SERVICES TABLE
     void initServicesTableView(ArrayList<Service> displayServices) {
         observableServices = FXCollections.observableArrayList();
 
@@ -660,49 +650,4 @@ public class SupervisorViewController implements Initializable, Runnable {
         reserveTreeTable.setRoot(root);
         reserveTreeTable.setShowRoot(false);
     }
-
-    @Override
-    public void run() {
-        if (vehicleList != null) {
-            //Grab to vehicle API link.
-            try {
-                URL vehiclesURL = new URL("https://JJ82BM9WO382QD8-SJ.adb.eu-amsterdam-1.oraclecloudapps.com/ords/admin/vehicle/?q={%22department_id%22:%22"+ dptId +"%22}");
-                HttpURLConnection vehiclesConn = (HttpURLConnection) vehiclesURL.openConnection();
-                vehiclesConn.setRequestMethod("GET");
-                vehiclesConn.connect();
-
-                //Check if connection was stabilised correctly.
-                if (vehiclesConn.getResponseCode() != 200) {
-                    System.err.print("Wrong connection.");
-                } else {
-                    //Proceed only if correct connection with url.
-
-                    //Read URL and pass to String.
-                    Scanner sc = new Scanner(vehiclesURL.openStream());
-                    StringBuilder vehicleJSONString = new StringBuilder();
-                    while (sc.hasNext()) {
-                        vehicleJSONString.append(sc.nextLine());
-                    }
-
-                    //Parse String into a JSONArray.
-                    JSONParser jsonParser           = new JSONParser();
-                    JSONObject vehicleJSONObject    = (JSONObject) jsonParser.parse(vehicleJSONString.toString());
-                    JSONArray vehicleJSONArray     =  (JSONArray ) vehicleJSONObject.get("items"); //CLARIFICATION: "items" is the name of the object containing our desired items in the oracleCloud api.
-
-                    //Get the parsed objects from the JSONArray and cast them into a Vehicle List.
-                    List<Vehicle> parsedVehicles = new ArrayList<>();
-                    for (Object o : vehicleJSONArray)
-                        parsedVehicles.add(parseVehicleJsonObject((JSONObject) o));
-
-                    drawVehicles(parsedVehicles);
-
-                    System.out.println("Done parsing.");
-                }
-
-            } catch (ParseException | IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
 }
