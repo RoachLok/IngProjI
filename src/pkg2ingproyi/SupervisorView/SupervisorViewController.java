@@ -46,6 +46,8 @@ public class SupervisorViewController implements Initializable {
 
     /**** MAIN CONTAINER VIEW ELEMENTS *****/
     @FXML
+    private JFXProgressBar progressBar;
+    @FXML
     private JFXTabPane tabPane;
     private SingleSelectionModel<Tab> selectionModel;
 
@@ -351,6 +353,7 @@ public class SupervisorViewController implements Initializable {
     /*********  ------------ VEHICLE VIEW METHODS IMPLEMENTATION ------------  *********/
 
     private void drawVehicles(List<Vehicle> vehicles) {
+        progressBar.setVisible(false);
         //TODO Draw vehicles in the listview nicely.
     }
 
