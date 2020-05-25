@@ -352,9 +352,31 @@ public class SupervisorViewController implements Initializable {
 
     /*********  ------------ VEHICLE VIEW METHODS IMPLEMENTATION ------------  *********/
 
+    public void handleVehicleListClick   () {
+        updateVehicleInfoPane(vehicleList.getSelectionModel().getSelectedIndex());
+    }
+
+    private void updateVehicleInfoPane(int selectedVehicleIndex) {
+        System.out.println(selectedVehicleIndex);
+    }
+
     private void drawVehicles(List<Vehicle> vehicles) {
+        for (Vehicle vehicle : vehicles) {
+            Label label = new Label("   Matrícula " + vehicle.getId() + "   --   Referencia: " + vehicle.getNick()
+                        + "   --   Permiso: " + vehicle.getPermissionName() + "   --   PAX: " + vehicle.getPax() + ".");
+            FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.BUS);
+            icon.setGlyphSize(20);
+            CheckBox checkBox = new CheckBox();
+            Region region1 = new Region();
+            HBox.setHgrow(region1, Priority.ALWAYS);
+
+            HBox listItem = new HBox(icon, label, region1, checkBox);
+            vehicleList.getItems().add(listItem);
+        }
         progressBar.setVisible(false);
-        //TODO Draw vehicles in the listview nicely.
+
+        vehicleList.getSelectionModel().select(0);
+        updateVehicleInfoPane(0);
     }
 
     /*********  ------------ RESERVES VIEW METHODS IMPLEMENTATION ------------  *********/

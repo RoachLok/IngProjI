@@ -38,7 +38,7 @@
             <children>
             <StackPane HBox.hgrow="ALWAYS">
                <children>
-                      <JFXListView fx:id="vehicleList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleDriverListClick" prefHeight="542.0" prefWidth="619.0" styleClass="supervisor-driver-cell" stylesheets="@../../resources/main-theme.css" />
+                      <JFXListView fx:id="vehicleList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleVehicleListClick" prefHeight="542.0" prefWidth="619.0" styleClass="supervisor-driver-cell" stylesheets="@../../resources/main-theme.css" />
                   <JFXProgressBar fx:id="progressBar" prefHeight="7.0" prefWidth="406.0" />
                </children>
             </StackPane>
