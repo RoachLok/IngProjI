@@ -37,6 +37,12 @@
                   <FontAwesomeIconView glyphName="TRASH_ALT" size="18" />
                </graphic>
             </JFXButton>
+            <Region prefHeight="32.0" prefWidth="3.0" />
+            <JFXButton graphicTextGap="5.0" onAction="#handleInvalidateServiceRequest" prefHeight="26.0" styleClass="supervisor-buttons" text="Anular Servicio">
+               <graphic>
+                  <FontAwesomeIconView glyphName="ARROW_LEFT" size="18" />
+               </graphic>
+            </JFXButton>
          </children>
       </HBox>
    </top>

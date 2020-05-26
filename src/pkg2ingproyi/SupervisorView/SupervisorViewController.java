@@ -494,6 +494,22 @@ public class SupervisorViewController implements Initializable {
         }
     }
 
+    public void cancelService(int ServiceIndex){
+        Service clickedReserve = observableServices.get(ServiceIndex);
+        clickedReserve.setReserve(true);
+        clickedReserve.setAccepted(false);
+
+        final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
+        reserveTreeTable.setRoot(root);
+
+        Notifications.create().title("Reserve Cancel Successful").text("El servicio ha sido devuelto a las reservas.").showInformation();
+    }
+
+    public void handleInvalidateServiceRequest (){
+        cancelService(reserveTreeTable.getSelectionModel().getSelectedIndex());
+    }
+
+
     public void handleAcceptReserveRequest  () {
         acceptReserveAsService(reserveTreeTable.getSelectionModel().getSelectedIndex());
     }
