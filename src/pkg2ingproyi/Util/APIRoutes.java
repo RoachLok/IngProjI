@@ -14,6 +14,8 @@ public class APIRoutes {
     public final static String CLIENT       = baseUrl + "client"    + dptQuery;
     public final static String INVOICE      = baseUrl + "invoice"   + dptQuery;
 
+    //TEMP SOLUTION UNTIL LOGIN
+    public final static String ALL_SERVICES = baseUrl + "service"   + "/?q={%22department_id%22:%22"+ "TESTDPT" +"%22}";
 
     //Service-Type MultiQueries
     private final static String reserveQuery    = "/?q={\"$and\":[{\"department_id\":\""+ Main.appUser.getDptId() + "\"},{\"status\":\"1\"}]}";
