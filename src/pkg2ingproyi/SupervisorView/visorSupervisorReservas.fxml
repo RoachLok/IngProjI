@@ -37,6 +37,12 @@
                   <FontAwesomeIconView glyphName="TRASH_ALT" size="18" />
                </graphic>
             </JFXButton>
+            <Region prefHeight="32.0" prefWidth="3.0" />
+            <JFXButton graphicTextGap="5.0" onAction="#handleEditReserveRequest" prefHeight="26.0" styleClass="supervisor-buttons" text="Editar Reserva">
+               <graphic>
+                  <FontAwesomeIconView glyphName="EDIT" size="18" />
+               </graphic>
+            </JFXButton>
          </children>
       </HBox>
    </top>
@@ -122,7 +128,9 @@
                                           <JFXTextField fx:id="oldReserveIDLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Identificador" styleClass="supervisor-textfield" GridPane.columnIndex="1" />
                                           <JFXTextField fx:id="oldReservePickupLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Recogida" styleClass="supervisor-textfield" GridPane.rowIndex="2" />
                                           <JFXTextField fx:id="oldReserveTransitLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Tránsito" styleClass="supervisor-textfield" GridPane.rowIndex="4" />
-                                          <JFXTextField fx:id="oldReserveArrivalLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Llegada" styleClass="supervisor-textfield" GridPane.rowIndex="6" />
+                                          <JFXTextField fx:id="oldReserveArrivalLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Llegada" styleClass="supervisor-textfield" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                                          <JFXTextField fx:id="oldReserveDistanceLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Distancia" styleClass="supervisor-textfield" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+                                          <JFXTextField fx:id="oldReserveClientDNILbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="DNI Cliente" styleClass="supervisor-textfield" GridPane.rowIndex="6" />
                                           <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                                              <children>
                                                 <JFXTextField fx:id="oldReserveStarTLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="50.0" promptText="H. Inicio" styleClass="supervisor-textfield" />
