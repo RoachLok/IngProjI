@@ -397,12 +397,11 @@ public class SupervisorViewController implements Initializable {
                         newReserveStartTLbl     .getText(),
                         newReserveEndTLbl       .getText(),
                         newReservePickupLbl     .getText(),
-                        newReserveTransitLbl    .getText(),
                         newReserveArrivalLbl    .getText(),
                         newReserveIDLbl         .getText(),
-                        newReserveDistanceLbl   .getText(),
-                        newReserveClientDNILbl  .getText(),
-                        admin                   .getUsername()
+       Integer.parseInt(newReserveDistanceLbl   .getText()),
+                        admin                   .getUsername(),
+                        admin                   .getDptId()
                     );
             reserve.setObservable();
 
@@ -560,7 +559,7 @@ public class SupervisorViewController implements Initializable {
         transit.setCellValueFactory(param -> param.getValue().getValue().observableTransit);
 
         //DISTANCE
-        JFXTreeTableColumn<Service, String> distance = new JFXTreeTableColumn<>("Distancia");
+        JFXTreeTableColumn<Service, Number> distance = new JFXTreeTableColumn<>("Distancia");
         distance.setPrefWidth(250);
 
         distance.setCellValueFactory(param -> param.getValue().getValue().observableDistance);
@@ -569,7 +568,6 @@ public class SupervisorViewController implements Initializable {
         JFXTreeTableColumn<Service, String> clientDNI = new JFXTreeTableColumn<>("DNI Cliente");
         clientDNI.setPrefWidth(250);
 
-        clientDNI.setCellValueFactory(param -> param.getValue().getValue().observableDNI);
 
         for (Service reserve : displayReserves) {
             reserve.setObservable();
@@ -577,7 +575,7 @@ public class SupervisorViewController implements Initializable {
         }
 
         final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
-        reserveTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, distance, clientDNI);
+        reserveTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, distance);
         reserveTreeTable.setRoot(root);
         reserveTreeTable.setShowRoot(false);
     }
@@ -629,7 +627,7 @@ public class SupervisorViewController implements Initializable {
         transit.setCellValueFactory(param -> param.getValue().getValue().observableTransit);
 
         //DISTANCE
-        JFXTreeTableColumn<Service, String> distance = new JFXTreeTableColumn<>("Distancia");
+        JFXTreeTableColumn<Service, Number> distance = new JFXTreeTableColumn<>("Distancia");
         distance.setPrefWidth(250);
 
         distance.setCellValueFactory(param -> param.getValue().getValue().observableDistance);
@@ -638,7 +636,6 @@ public class SupervisorViewController implements Initializable {
         JFXTreeTableColumn<Service, String> clientDNI = new JFXTreeTableColumn<>("DNI Cliente");
         clientDNI.setPrefWidth(250);
 
-        clientDNI.setCellValueFactory(param -> param.getValue().getValue().observableDNI);
 
         for (Service reserve : displayServices) {
             reserve.setObservable();
@@ -646,7 +643,7 @@ public class SupervisorViewController implements Initializable {
         }
 
         final TreeItem<Service> root = new RecursiveTreeItem<Service>(observableServices, RecursiveTreeObject::getChildren);
-        reserveTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, distance, clientDNI);
+        reserveTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, distance);
         reserveTreeTable.setRoot(root);
         reserveTreeTable.setShowRoot(false);
     }

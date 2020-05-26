@@ -1,6 +1,7 @@
 package pkg2ingproyi.Util;
 
 import org.json.simple.JSONObject;
+import pkg2ingproyi.Model.Service;
 import pkg2ingproyi.Model.Vehicle;
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -11,7 +12,7 @@ public class ModelFactory {
 
     static {
         elementBuilder.put(Vehicle.class, (ModelBuilder<Vehicle>) Vehicle::new); // because we can't pass anonymous class here because build returns generic type
-
+        elementBuilder.put(Service.class, (ModelBuilder<Service>) Service::new);
     }
 
     public static <T> T buildModel(Type targetType, JSONObject object) throws Exception {

@@ -1,16 +1,17 @@
 package pkg2ingproyi.Util;
 
+import javafx.application.Platform;
+import org.controlsfx.control.Notifications;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import pkg2ingproyi.Model.Admin;
-import pkg2ingproyi.Model.Driver;
-import pkg2ingproyi.Model.Service;
-import pkg2ingproyi.Model.User;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import org.json.simple.parser.ParseException;
+import pkg2ingproyi.Model.*;
+
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -82,40 +83,40 @@ public class UserUtils {
         return null;
     }
 
-    private static JSONArray readJson(String filepath) throws Exception {
-        FileReader reader = new FileReader(filepath);
-        JSONParser jsonParser = new JSONParser();
-        return (JSONArray) jsonParser.parse(reader);
+    private static List<Service> initServices() {
+        try {
+            URL url = new URL("https://jj82bm9wo382qd8-sj3.adb.eu-amsterdam-1.oraclecloudapps.com/ords/admin/service/?q={%22department_id%22:%22"+ "TESTDPT" +"%22}");
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.connect();
+
+            //Check if connection was stabilised correctly.
+            if (urlConnection.getResponseCode() != 200) {
+                System.err.println("Wrong Connection.");
+            } else {
+                //Proceed only if correct connection with url.
+
+                //Read URL and pass to String.
+                Scanner sc = new Scanner(url.openStream());
+                StringBuilder rawData = new StringBuilder();
+                while (sc.hasNext())
+                    rawData.append(sc.nextLine());
+
+                //Pass data to listener.
+                JSONParser jsonParser           = new JSONParser();
+                JSONObject serviceJSONObject    = (JSONObject) jsonParser.parse(rawData.toString());
+                JSONArray serviceJSONArray      = (JSONArray ) serviceJSONObject.get("items");
+
+                return new JSONCastedList<>(serviceJSONArray, Service.class);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
-    private static Service parseJsonObject(JSONObject object) {
-        return new Service(
-                (String) object.get("title"     ),
-                (String) object.get("startTime" ),
-                (String) object.get("endTime"   ),
-                (String) object.get("pickup"    ),
-                (String) object.get("transit"   ),
-                (String) object.get("arrival"   ),
-                (String) object.get("driverName"),
-                (String) object.get("vehicleID" ),
-                (String) object.get("identifier"),
-                (String) object.get("contractor"),
-                (String) object.get("pricing"   ),
-                (String) object.get("author"    ),
-                (String) object.get("distance"  ),
-                (String) object.get("clientDNI" ),
-        (int)   (long)   object.get("status"    ));
-    }
-
-    private static List<Service> initServices() throws Exception {
-        List<Service> services = new ArrayList<>();
-        JSONArray jsonArray = readJson("src/resources/services.json");
-        for (Object o : jsonArray)
-            services.add(parseJsonObject((JSONObject) o));
-        return services;
-    }
-
-    private static Driver initDriver(String line, String username) throws Exception {
+    private static Driver initDriver(String line, String username) {
         Driver driver = new Driver(line.split(","), null);
         for (Service service : initServices())
             if (service.getDriverName().equals(username))

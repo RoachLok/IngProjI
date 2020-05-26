@@ -1,10 +1,14 @@
 package pkg2ingproyi.Model;
 
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import org.json.simple.JSONObject;
+import pkg2ingproyi.Util.JSONSerializable;
 
-public class Service extends RecursiveTreeObject<Service> {
+public class Service extends RecursiveTreeObject<Service> implements JSONSerializable {
     private String name;
     private String startT;
     private String endT;
@@ -15,10 +19,12 @@ public class Service extends RecursiveTreeObject<Service> {
     private String vehicleName;
     private String identifier;
     private String contractor;
-    private String pricing;
     private String author;
-    private String distance;
-    private String clientDNI;
+    private String indications;
+    private String dptId;
+    private int    distance;
+    private int    pricing;
+    private int    pax;
 
     private boolean isReserve;
     private boolean isAccepted;
@@ -34,13 +40,14 @@ public class Service extends RecursiveTreeObject<Service> {
     public StringProperty observableVehicleName;
     public StringProperty observableIdentifier;
     public StringProperty observableContractor;
-    public StringProperty observablePricing;
     public StringProperty observableAuthor;
-    public StringProperty observableDistance;
-    public StringProperty observableDNI;
+    public StringProperty observableIndications;
+    public IntegerProperty observableDistance;
+    public IntegerProperty observablePricing;
+    public IntegerProperty observablePax;
 
-    public Service(String title, String startTime, String endT, String pickup, String transit, String arrival,
-                   String identifier, String author, String distance, String clientDNI)
+    public Service(String title, String startTime, String endT, String pickup, String arrival,
+                   String identifier, int distance, String author, String dptId)
     {
         this.name           = title;
         this.startT         = startTime;
@@ -48,15 +55,15 @@ public class Service extends RecursiveTreeObject<Service> {
         this.pickup         = pickup;
         this.arrival        = arrival;
         this.identifier     = identifier;
-        this.author         = author;
         this.distance       = distance;
-        this.clientDNI      = clientDNI;
+        this.author         = author;
+        this.dptId          = dptId;
         this.isReserve      = true;
     }
 
     public Service(String title, String startTime, String endTime, String pickup, String transit, String arrival,
-                    String driverName, String vehicleID, String identifier, String contractor, String pricing,
-                        String author, String distance, String clientDNI, int status)
+                    String driverName, String vehicleID, String identifier, String contractor, int pricing,
+                        String author, int distance, String indications, int pax, int status, String dptId)
     {
         this.name           = title;
         this.startT         = startTime;
@@ -71,7 +78,9 @@ public class Service extends RecursiveTreeObject<Service> {
         this.pricing        = pricing;
         this.author         = author;
         this.distance       = distance;
-        this.clientDNI      = clientDNI;
+        this.indications    = indications;
+        this.pax            = pax;
+        this.dptId          = dptId;
 
         switch (status) {
             case 1:
@@ -101,8 +110,7 @@ public class Service extends RecursiveTreeObject<Service> {
             observableArrival       = new SimpleStringProperty( arrival     );
             observableIdentifier    = new SimpleStringProperty( identifier  );
             observableAuthor        = new SimpleStringProperty( author      );
-            observableDistance      = new SimpleStringProperty( distance    );
-            observableDNI           = new SimpleStringProperty( clientDNI   );
+            observableDistance      = new SimpleIntegerProperty( distance    );
             return;
         }
 
@@ -116,10 +124,11 @@ public class Service extends RecursiveTreeObject<Service> {
         observableVehicleName   = new SimpleStringProperty( vehicleName );
         observableIdentifier    = new SimpleStringProperty( identifier  );
         observableContractor    = new SimpleStringProperty( contractor  );
-        observablePricing       = new SimpleStringProperty( pricing     );
         observableAuthor        = new SimpleStringProperty( author      );
-        observableDistance      = new SimpleStringProperty( distance    );
-        observableDNI           = new SimpleStringProperty( clientDNI   );
+        observableIndications   = new SimpleStringProperty( indications );
+        observableDistance      = new SimpleIntegerProperty( distance    );
+        observablePricing       = new SimpleIntegerProperty( pricing     );
+        observablePax           = new SimpleIntegerProperty( pax         );
     }
 
     public String getName() {
@@ -186,27 +195,19 @@ public class Service extends RecursiveTreeObject<Service> {
         this.vehicleName = vehicleName;
     }
 
-    public String getPricing() {
+    public int getPricing() {
         return pricing;
     }
 
-    public void setPricing(String pricing) {
+    public void setPricing(int pricing) {
         this.pricing = pricing;
     }
 
-    public String getClientDNI() {
-        return clientDNI;
-    }
-
-    public void setClientDNI(String clientDNI) {
-        this.clientDNI = clientDNI;
-    }
-
-    public String getDistance() {
+    public int getDistance() {
         return distance;
     }
 
-    public void setDistance(String distance) {
+    public void setDistance(int distance) {
         this.distance = distance;
     }
 
@@ -246,6 +247,22 @@ public class Service extends RecursiveTreeObject<Service> {
         return author;
     }
 
+    private void setStatusFromChar(char status) {
+        switch (status) {
+            case '1':
+                isReserve = true;
+                break;
+            case '2':
+                isAccepted = true;
+                break;
+            case '3':
+                isMontaje = true;
+                break;
+            default:
+                isReserve = true;
+        }
+    }
+
     @Override
     public String toString() {
         return "Service{" +
@@ -261,7 +278,35 @@ public class Service extends RecursiveTreeObject<Service> {
                 ", contractor='" + contractor + '\'' +
                 ", author='" + author + '\'' +
                 ", distance='" + distance + '\'' +
-                ", clientDNI='" + clientDNI+ '\'' +
+                ", indications='" + indications + '\'' +
+                ", pax='" + pax + '\'' +
                 '}';
+    }
+
+    public Service(JSONObject object) {
+        jsonParse(object);
+    }
+
+    @Override
+    public void jsonParse(JSONObject object) {
+        this.identifier   = (String) object.get( "service_id"     );
+        this.pickup       = (String) object.get( "pickup"         );
+        this.arrival      = (String) object.get( "arrival"        );
+        this.transit      = (String) object.get( "transit"        );
+        this.startT       = (String) object.get( "pickup_time"    );
+        this.endT         = (String) object.get( "arrival_time"   );
+        this.indications  = (String) object.get( "indications"    );
+        this.name         = (String) object.get( "title"          );
+        this.driverName   = (String) object.get( "chauffeur_name" );
+        this.vehicleName  = (String) object.get( "vehicle_id"     );
+        this.contractor   = (String) object.get( "client_name"    );
+        this.author       = (String) object.get( "author"         );
+        this.dptId        = (String) object.get( "department_id"  );
+
+        this.pax          = (int) (long) object.get( "pax"        );
+        this.pricing      = (int) (long) object.get( "pricing"    );
+        this.distance     = (int) (long) object.get( "distance"   );
+
+        setStatusFromChar( ((String) object.get("status" )).charAt(0) );
     }
 }
