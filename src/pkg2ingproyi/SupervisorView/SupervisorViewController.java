@@ -42,6 +42,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.text.SimpleDateFormat;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.concurrent.TimeUnit;
+
 public class SupervisorViewController implements Initializable {
 
     /**** MAIN CONTAINER VIEW ELEMENTS *****/
@@ -97,6 +101,14 @@ public class SupervisorViewController implements Initializable {
     public JFXTextField oldReserveTransitLbl;
     @FXML
     public JFXTextField oldReserveArrivalLbl;
+    @FXML
+    public JFXTextField oldReserveStarTLbl;
+    @FXML
+    public JFXTextField oldReserveEndTLbl;
+    @FXML
+    public JFXTextField oldReserveDistanceLbl;
+    @FXML
+    public JFXTextField oldReserveClientDNILbl;
 
     /**** SERVICES VIEW ELEMENTS ****/
     @FXML
@@ -280,7 +292,7 @@ public class SupervisorViewController implements Initializable {
             openTabs.add(tabTitle);
             selectionModel.select(tab);
             int indexTabE = openTabs.indexOf(tabTitle);
-            tab.setOnCloseRequest(event -> openTabs.remove(indexTabE));
+            tab.setOnCloseRequest(event -> openTabs.remove(tabTitle));
         }
     }
 
@@ -406,14 +418,36 @@ public class SupervisorViewController implements Initializable {
         return false;
     }
 
+    public static boolean validarNIF(String nif) {
+        boolean correcto = false;
+        Pattern pattern = Pattern.compile("(\\d{1,8})([TRWAGMYFPDXBNJZSQVHLCKEtrwagmyfpdxbnjzsqvhlcke])");
+        Matcher matcher = pattern.matcher(nif);
+        if (matcher.matches()) {
+            String letra = matcher.group(2);
+            String letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+            int index = Integer.parseInt(matcher.group(1));
+            index = index % 23;
+            String reference = letras.substring(index, index + 1);
+            if (reference.equalsIgnoreCase(letra)) {
+                correcto = true;
+            } else {
+                correcto = false;
+            }
+        } else {
+            correcto = false;
+        }
+        return correcto;
+    }
+
+
     public void handleNewReserveRequest() {
         if (newReserveNameLbl       .getText().equals("") ||
             newReserveArrivalLbl    .getText().equals("") ||
             newReserveIDLbl         .getText().equals("") ||
             newReserveStartTLbl     .getText().equals("") ||
             newReserveEndTLbl       .getText().equals("") ||
-            isValidDate(newReserveStartTLbl .getText()  ) ||
-            isValidDate(newReserveEndTLbl   .getText()  )   )
+            !isValidDate(newReserveStartTLbl .getText()  ) ||
+            !isValidDate(newReserveEndTLbl   .getText()  )   )
             Notifications.create().title("Fields Missing").text("Faltan campos obligatorios.").showError();
         else {
             Service reserve = new Service
@@ -484,13 +518,77 @@ public class SupervisorViewController implements Initializable {
         }
     }
 
+    public void cancelService(int ServiceIndex){
+        Service clickedReserve = observableServices.get(ServiceIndex);
+        clickedReserve.setReserve(true);
+        clickedReserve.setAccepted(false);
+
+        final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
+        reserveTreeTable.setRoot(root);
+
+        Notifications.create().title("Reserve Cancel Successful").text("El servicio ha sido devuelto a las reservas.").showInformation();
+    }
+
+    public void handleInvalidateServiceRequest (){
+        cancelService(reserveTreeTable.getSelectionModel().getSelectedIndex());
+    }
+
+
     public void handleAcceptReserveRequest  () {
         acceptReserveAsService(reserveTreeTable.getSelectionModel().getSelectedIndex());
     }
 
     public void handleApplyReserveEdit      () {
-        Notifications.create().title("Feature to be implemented").text("Esta característica aun no ha sido implementada.").showError();
+        if (    oldReserveNameLbl       .getText().equals("") ||
+                oldReserveArrivalLbl    .getText().equals("") ||
+                oldReserveIDLbl         .getText().equals("") ||
+                oldReserveStarTLbl     .getText().equals("") ||
+                oldReserveEndTLbl       .getText().equals("")  )
+               // !isValidDate(oldReserveStartTLbl .getText()  ) ||
+               // !isValidDate(oldReserveEndTLbl   .getText()  )   )
+        {
+                Notifications.create().title("New info invalid").text("Los nuevos datos no son válidos. Compruebe nuevamente").showError();
+        }
+        else{
+        int index = reserveTreeTable.getSelectionModel().getSelectedIndex();
+        Service updatedReserve = new Service
+                (
+                        oldReserveNameLbl       .getText(),
+                        oldReserveStarTLbl      .getText(),
+                        oldReserveEndTLbl       .getText(),
+                        oldReservePickupLbl     .getText(),
+                        oldReserveTransitLbl    .getText(),
+                        oldReserveArrivalLbl    .getText(),
+                        oldReserveIDLbl         .getText(),
+                        oldReserveDistanceLbl   .getText(),
+                        oldReserveClientDNILbl  .getText(),
+                        admin                   .getUsername()
+                );
+        observableServices.remove(index);
+        observableServices.add(updatedReserve);
 
+        final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
+        reserveTreeTable.setRoot(root);
+
+        Notifications.create().title("Reserve Edit Successful").text("La reserva se ha actualizado con éxito").showInformation();
+        }
+    }
+
+    public void handleEditReserveRequest     () {
+        int index = reserveTreeTable.getSelectionModel().getSelectedIndex();
+        Service clickedReserve = observableServices.get(index);
+        if (clickedReserve.getEndT() != null)
+        oldReserveEndTLbl.setText(clickedReserve.getEndT());
+        if (clickedReserve.getTransit() != null)
+        oldReserveTransitLbl.setText(clickedReserve.getTransit());
+        if (clickedReserve.getPickup() != null)
+        oldReservePickupLbl.setText(clickedReserve.getPickup());
+        if (clickedReserve.getArrival() != null)
+        oldReserveArrivalLbl.setText(clickedReserve.getArrival());
+        if (clickedReserve.getName() != null)
+        oldReserveNameLbl.setText(clickedReserve.getName());
+        if (clickedReserve.getStartT() != null)
+        oldReserveStarTLbl.setText(clickedReserve.getStartT());
     }
 
     public void handleRemoveReserveRequest  () {
