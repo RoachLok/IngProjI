@@ -28,16 +28,14 @@ public class NetworkPOSTRequester extends Thread {
             urlConnection.setRequestProperty( "Accept", "application/json"              );
             urlConnection.setDoOutput       ( true                                      );
 
-
-
             byte[] input = jsonString.getBytes(StandardCharsets.UTF_8);
             OutputStream outputStream = urlConnection.getOutputStream();
             outputStream.write(input, 0, input.length);
             outputStream.close();
             try(BufferedReader br = new BufferedReader(
-                    new InputStreamReader(urlConnection.getInputStream(), "utf-8"))) {
+                    new InputStreamReader(urlConnection.getInputStream(), StandardCharsets.UTF_8))) {
                 StringBuilder response = new StringBuilder();
-                String responseLine = null;
+                String responseLine;
                 while ((responseLine = br.readLine()) != null) {
                     response.append(responseLine.trim());
                 }

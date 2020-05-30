@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import org.json.simple.JSONObject;
+import pkg2ingproyi.Util.DBUtil;
 import pkg2ingproyi.Util.JSONSerializable;
 
 public class Service extends RecursiveTreeObject<Service> implements JSONSerializable {
@@ -47,7 +48,7 @@ public class Service extends RecursiveTreeObject<Service> implements JSONSeriali
     public IntegerProperty observablePax;
 
     public Service(String title, String startTime, String endT, String pickup, String arrival,
-                   String identifier, int distance, String author, String dptId)
+                   String identifier, String contractor, int distance, String author, String dptId)
     {
         this.name           = title;
         this.startT         = startTime;
@@ -55,6 +56,7 @@ public class Service extends RecursiveTreeObject<Service> implements JSONSeriali
         this.pickup         = pickup;
         this.arrival        = arrival;
         this.identifier     = identifier;
+        this.contractor     = contractor;
         this.distance       = distance;
         this.author         = author;
         this.dptId          = dptId;
@@ -109,6 +111,7 @@ public class Service extends RecursiveTreeObject<Service> implements JSONSeriali
             observableTransit       = new SimpleStringProperty( transit     );
             observableArrival       = new SimpleStringProperty( arrival     );
             observableIdentifier    = new SimpleStringProperty( identifier  );
+            observableContractor    = new SimpleStringProperty( contractor  );
             observableAuthor        = new SimpleStringProperty( author      );
             observableDistance      = new SimpleIntegerProperty( distance    );
             return;
@@ -247,6 +250,19 @@ public class Service extends RecursiveTreeObject<Service> implements JSONSeriali
         return author;
     }
 
+    public String getDptId() {
+        return dptId;
+    }
+
+    private char getStatusAsChar() {
+        if (isReserve)
+            return '1';
+        if (isAccepted)
+            return '2';
+        //isMounted
+        return '3';
+    }
+
     private void setStatusFromChar(char status) {
         switch (status) {
             case '1':
@@ -266,25 +282,51 @@ public class Service extends RecursiveTreeObject<Service> implements JSONSeriali
     @Override
     public String toString() {
         return "Service{" +
-                "name='" + name + '\'' +
-                ", startT='" + startT + '\'' +
-                ", endT='" + endT + '\'' +
-                ", pickup='" + pickup + '\'' +
-                ", transit='" + transit + '\'' +
-                ", arrival='" + arrival + '\'' +
-                ", driverName='" + driverName + '\'' +
-                ", vehicleName='" + vehicleName + '\'' +
-                ", identifier='" + identifier + '\'' +
-                ", contractor='" + contractor + '\'' +
-                ", author='" + author + '\'' +
-                ", distance='" + distance + '\'' +
-                ", indications='" + indications + '\'' +
-                ", pax='" + pax + '\'' +
+                "name='"            + name          + '\'' +
+                ", startT='"        + startT        + '\'' +
+                ", endT='"          + endT          + '\'' +
+                ", pickup='"        + pickup        + '\'' +
+                ", transit='"       + transit       + '\'' +
+                ", arrival='"       + arrival       + '\'' +
+                ", driverName='"    + driverName    + '\'' +
+                ", vehicleName='"   + vehicleName   + '\'' +
+                ", identifier='"    + identifier    + '\'' +
+                ", contractor='"    + contractor    + '\'' +
+                ", author='"        + author        + '\'' +
+                ", distance='"      + distance      + '\'' +
+                ", indications='"   + indications   + '\'' +
+                ", pax='"           + pax           + '\'' +
+                '}';
+    }
+
+
+    @Override
+    public String toJSONString() {
+        return "{\"service_id\":\""      + identifier        + '\"' +
+                ",\"pickup\":\""         + pickup            + '\"' +
+                ",\"arrival\":\""        + arrival           + '\"' +
+                ",\"transit\":\""        + transit           + '\"' +
+                ",\"pickup_time\":\""    + startT            + '\"' +
+                ",\"arrival_time\":\""   + endT              + '\"' +
+                ",\"pax\":"              + pax               +
+                ",\"indications\":\""    + indications       + '\"' +
+                ",\"status\":\""         + getStatusAsChar() + '\"' +
+                ",\"title\":\""          + name              + '\"' +
+                ",\"chauffeur_name\":\"" + driverName        + '\"' +
+                ",\"vehicle_id\":\""     + vehicleName       + '\"' +
+                ",\"client_name\":\""    + contractor        + '\"' +
+                ",\"pricing\":"          + pricing           +
+                ",\"author\":\""         + author            + '\"' +
+                ",\"distance\":"         + distance          +
+                ",\"department_id\":\""  + dptId             + '\"' +
                 '}';
     }
 
     public Service(JSONObject object) {
         jsonParse(object);
+        startT   = DBUtil.fixDateFormat(this.startT);
+        if (endT != null)
+            endT = DBUtil.fixDateFormat(this.endT  );
     }
 
     @Override
