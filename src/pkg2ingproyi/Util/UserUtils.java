@@ -102,12 +102,7 @@ public class UserUtils {
                 while (sc.hasNext())
                     rawData.append(sc.nextLine());
 
-                //Pass data to listener.
-                JSONParser jsonParser           = new JSONParser();
-                JSONObject serviceJSONObject    = (JSONObject) jsonParser.parse(rawData.toString());
-                JSONArray serviceJSONArray      = (JSONArray ) serviceJSONObject.get("items");
-
-                return new JSONCastedList<>(serviceJSONArray, Service.class);
+                return new JSONCastedList<>(rawData.toString(), Service.class);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -119,7 +114,7 @@ public class UserUtils {
     private static Driver initDriver(String line, String username) {
         Driver driver = new Driver(line.split(","), null);
         for (Service service : initServices())
-            if (service.getDriverName().equals(username))
+            if (service.getDptId().equals("TESTDPT"))
                 driver.addService(service);
 
         return driver;
