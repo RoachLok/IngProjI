@@ -85,9 +85,6 @@ public class Service extends RecursiveTreeObject<Service> implements JSONSeriali
         this.dptId          = dptId;
 
         switch (status) {
-            case 1:
-                isReserve = true;
-                break;
             case 2:
                 isAccepted = true;
                 break;
@@ -113,7 +110,9 @@ public class Service extends RecursiveTreeObject<Service> implements JSONSeriali
             observableIdentifier    = new SimpleStringProperty( identifier  );
             observableContractor    = new SimpleStringProperty( contractor  );
             observableAuthor        = new SimpleStringProperty( author      );
+            observablePax           = new SimpleIntegerProperty( pax         );
             observableDistance      = new SimpleIntegerProperty( distance    );
+            observablePricing       = new SimpleIntegerProperty( pricing     );
             return;
         }
 
@@ -212,6 +211,14 @@ public class Service extends RecursiveTreeObject<Service> implements JSONSeriali
 
     public void setDistance(int distance) {
         this.distance = distance;
+    }
+
+    public int getPax() {
+        return pax;
+    }
+
+    public void setPax(int pax) {
+        this.pax = pax;
     }
 
     public void setReserve(boolean isReserve) {
