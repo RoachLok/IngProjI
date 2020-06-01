@@ -199,6 +199,54 @@
     -fx-cell-vertical-margin: 5;
     -fx-vertical-gap        : 10;
 }
+
+.jfx-tree-table-view .table-column {
+    -fx-alignment           : CENTER;
+}
+
+.jfx-date-picker {
+    -jfx-default-color      : -fx-supermaincolor;
+}
+
+.jfx-date-picker .jfx-text-field {
+    -fx-prompt-text-fill    : WHITE;
+    -jfx-focus-color        : -fx-supermaincolor;
+    -jfx-unfocus-color      : -fx-superbuttonhover;
+}
+
+.jfx-time-picker {
+    -jfx-default-color      : -fx-supermaincolor;
+}
+
+.jfx-time-picker .jfx-text-field {
+    -fx-prompt-text-fill    : WHITE;
+    -jfx-focus-color        : -fx-supermaincolor;
+    -jfx-unfocus-color      : -fx-superbuttonhover;
+}
+
+.jfx-slider > .colored-track {
+     -fx-background-color   : -fx-supermaincolor;
+}
+
+.jfx-slider > .thumb {
+     -fx-background-color   : -fx-supermaincolor;
+}
+
+.jfx-slider .slider-value {
+     -fx-fill               : white;
+     -fx-stroke             : white;
+     -fx-background-color   : white;
+     -fx-tick-label-fill    : white;
+}
+
+.jfx-slider .slider .axis {
+    -fx-tick-label-fill     : white;
+}
+
+.jfx-slider .animated-thumb {
+     -fx-background-color   : -fx-supermaincolor;
+}
+
 .combo-box .cell {
     -fx-text-fill           :  #bfbfbf;
     -fx-font                : 16px "System";
