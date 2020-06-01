@@ -200,6 +200,23 @@ public class SupervisorViewController implements Initializable {
 
         /*** -- RESERVE VIEW -- ***/
         if (reserveTreeTable != null) {
+            //TextField auto completions.
+            String[] locationsMap = { "ATOCHA, MADRID", "MADRID", "BARCELONA", "BARAJAS, MADRID APTO.", "EL PRAT, BARCELONA APTO.", "HOTEL B&B MADRID CENTRO",
+                                      "SEVILLA", "TOLEDO", "HOTEL NOVOTEL, MADRID", "HOTEL SARDINERO, MADRID", "HOTEL ZENIT ABEBA, MADRID",
+                                      "HOTEL SB GLOW, BARCELONA", "HOTEL MURMURI, BARCELONA", "HOTEL NH BARCELONA STADIUM", "HOTEL NH BARCELONA EIXAMPLE"};
+
+            TextFields.bindAutoCompletion( newReservePickupLbl  , locationsMap );
+            TextFields.bindAutoCompletion( newReservePickupLbl  , locationsMap );
+            TextFields.bindAutoCompletion( newReserveArrivalLbl , locationsMap );
+            TextFields.bindAutoCompletion( oldReservePickupLbl  , locationsMap );
+            TextFields.bindAutoCompletion( oldReservePickupLbl  , locationsMap );
+            TextFields.bindAutoCompletion( oldReserveArrivalLbl , locationsMap );
+            
+            String[] clientsMap = {"Will Ing Topay"};
+            TextFields.bindAutoCompletion( newReserveClientLbl, clientsMap );
+            TextFields.bindAutoCompletion( oldReserveClientLbl, clientsMap );
+
+            //Service displaying.
             ArrayList<Service> displayReserves;
             displayReserves = admin.getReserves();
             initReservesTableView(displayReserves);
