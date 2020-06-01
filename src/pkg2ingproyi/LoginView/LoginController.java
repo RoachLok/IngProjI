@@ -77,6 +77,10 @@ public class LoginController implements Initializable {
             fxmlPath = "/pkg2ingproyi/DriverView/DriverView.fxml";
             windowTitle = "Safe Journey: Conductor";
         }else{                                                          //Supervisor Login
+            stageUser.setResizable(true);
+            stageUser.setMinHeight(600 );
+            stageUser.setMinWidth (1000);
+            stageUser.sizeToScene   ();
             fxmlPath = "/pkg2ingproyi/SupervisorView/SupervisorView.fxml";
             windowTitle = "Safe Journey: Supervisor";
         }
