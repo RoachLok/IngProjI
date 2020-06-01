@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXSlider?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTimePicker?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -15,23 +21,29 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="574.0" prefWidth="1109.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.SupervisorView.SupervisorViewController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="500.0" minWidth="900.0" prefHeight="574.0" prefWidth="1109.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.SupervisorView.SupervisorViewController">
    <top>
       <HBox alignment="BOTTOM_LEFT" prefHeight="32.0" prefWidth="1109.0" BorderPane.alignment="CENTER">
          <children>
             <Pane prefHeight="26.0" prefWidth="5.0" />
-            <JFXButton graphicTextGap="5.0" onAction="#handleNewServiceRequest" prefHeight="26.0" styleClass="supervisor-buttons" text="Nueva Reserva">
+            <JFXButton graphicTextGap="5.0" onAction="#handleNewReserveRequest" prefHeight="26.0" styleClass="supervisor-buttons" text="Nueva Reserva">
                <graphic>
                   <FontAwesomeIconView glyphName="CALENDAR_PLUS_ALT" size="18" />
                </graphic>
             </JFXButton>
             <Region prefHeight="32.0" prefWidth="3.0" />
-            <JFXButton graphicTextGap="5.0" onAction="#handleAcceptReserveRequest" prefHeight="26.0" styleClass="supervisor-buttons" text="Aceptar Reserva">
+            <JFXButton graphicTextGap="5.0" onAction="#handleEditReserveRequest" prefHeight="26.0" styleClass="supervisor-buttons" text="Editar Reserva">
+               <graphic>
+                  <FontAwesomeIconView glyphName="CALENDAR" size="18" />
+               </graphic>
+            </JFXButton>
+            <Region prefHeight="32.0" prefWidth="3.0" />
+            <JFXButton graphicTextGap="5.0" layoutX="136.0" layoutY="16.0" onAction="#handleAcceptReserveRequest" prefHeight="26.0" styleClass="supervisor-buttons" text="Aceptar Reserva">
                <graphic>
                   <FontAwesomeIconView glyphName="CALENDAR_CHECK_ALT" size="18" />
                </graphic>
             </JFXButton>
-            <Region prefHeight="32.0" prefWidth="3.0" />
+            <Region layoutX="133.0" layoutY="10.0" prefHeight="32.0" prefWidth="3.0" />
             <JFXButton graphicTextGap="5.0" onAction="#handleRemoveReserveRequest" prefHeight="26.0" styleClass="supervisor-buttons" text="Eliminar Reserva">
                <graphic>
                   <FontAwesomeIconView glyphName="TRASH_ALT" size="18" />
@@ -45,21 +57,28 @@
          <children>
             <SplitPane fx:id="reserveSplitPane" dividerPositions="1.0" HBox.hgrow="ALWAYS">
                <items>
-                  <JFXTreeTableView fx:id="reserveTreeTable" onMouseClicked="#handleReserveTreeViewClick" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="240.0" minWidth="240.0" prefHeight="542.0" prefWidth="622.0" />
-                  <Pane maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="541.0" prefWidth="350.0" SplitPane.resizableWithParent="false">
-                     <children>
-                        <Accordion maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="540.0" prefWidth="350.0">
-                          <panes>
-                            <TitledPane fx:id="defaultExpanded" text="Nueva Reserva">
-                              <content>
-                                    <GridPane alignment="CENTER" prefHeight="294.0" prefWidth="224.0" styleClass="root">
+                  <JFXTreeTableView fx:id="reserveTreeTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="240.0" minWidth="-Infinity" onMouseClicked="#handleReserveTreeViewClick" prefHeight="542.0" prefWidth="685.0" tableMenuButtonVisible="true" />
+                  <Accordion maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="540.0" prefWidth="575.0" SplitPane.resizableWithParent="false">
+                    <panes>
+                      <TitledPane fx:id="defaultExpanded" maxWidth="-Infinity" prefWidth="388.0" text="Nueva Reserva">
+                        <content>
+                              <ScrollPane fitToWidth="true" hbarPolicy="NEVER" maxWidth="1.7976931348623157E308">
+                                 <content>
+                                    <GridPane alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="756.0" prefWidth="405.0" styleClass="root">
                                        <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="275.0" minWidth="10.0" prefWidth="188.0000244140625" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="241.0" minWidth="10.0" prefWidth="142.3999755859375" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="194.0" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="194.0" />
                                        </columnConstraints>
                                        <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -70,44 +89,117 @@
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
-                                          <JFXTextField fx:id="newReserveNameLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="180.0" promptText="Nombre del Servicio" styleClass="supervisor-textfield" />
-                                          <JFXTextField fx:id="newReserveIDLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Identificador" styleClass="supervisor-textfield" GridPane.columnIndex="1" />
-                                          <JFXTextField fx:id="newReservePickupLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Recogida" styleClass="supervisor-textfield" GridPane.rowIndex="2" />
-                                          <JFXTextField fx:id="newReserveTransitLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Tránsito" styleClass="supervisor-textfield" GridPane.rowIndex="4" />
-                                          <JFXTextField fx:id="newReserveArrivalLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Llegada" styleClass="supervisor-textfield" GridPane.rowIndex="2" GridPane.columnIndex="1" />
-                                          <JFXTextField fx:id="newReserveDistanceLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Distancia" styleClass="supervisor-textfield" GridPane.rowIndex="4" GridPane.columnIndex="1" />
-                                          <JFXTextField fx:id="newReserveClientDNILbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="DNI Cliente" styleClass="supervisor-textfield" GridPane.rowIndex="6" />
-                                          <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER">
+                                          <JFXTextField fx:id="newReserveNameLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="155.0" promptText="Nombre del Servicio" styleClass="supervisor-textfield">
+                                             <GridPane.margin>
+                                                <Insets left="20.0" right="20.0" />
+                                             </GridPane.margin>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="newReserveIDLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="160.0" promptText="Identificador" styleClass="supervisor-textfield" GridPane.columnIndex="1">
+                                             <padding>
+                                                <Insets left="20.0" right="20.0" />
+                                             </padding>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="newReservePickupLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="155.0" promptText="Recogida" styleClass="supervisor-textfield" GridPane.rowIndex="2">
+                                             <GridPane.margin>
+                                                <Insets left="20.0" right="20.0" />
+                                             </GridPane.margin>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="newReserveArrivalLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="160.0" promptText="Llegada" styleClass="supervisor-textfield" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                             <GridPane.margin>
+                                                <Insets left="20.0" right="20.0" />
+                                             </GridPane.margin>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="newReserveTransitLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="155.0" promptText="Tránsito" styleClass="supervisor-textfield" GridPane.rowIndex="4">
+                                             <GridPane.margin>
+                                                <Insets left="20.0" right="20.0" />
+                                             </GridPane.margin>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="newReserveDistanceLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="160.0" promptText="Distancia" styleClass="supervisor-textfield" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                          <JFXTextField fx:id="newReserveClientLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="155.0" promptText="Cliente" styleClass="supervisor-textfield" GridPane.rowIndex="6">
+                                             <GridPane.margin>
+                                                <Insets left="20.0" right="20.0" />
+                                             </GridPane.margin>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="newReservePricingLbl" labelFloat="true" layoutX="207.0" layoutY="219.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="160.0" promptText="Presupuesto" styleClass="supervisor-textfield" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.halignment="CENTER" GridPane.rowIndex="9">
                                              <children>
-                                                <JFXTextField fx:id="newReserveStartTLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="50.0" promptText="H. Inicio" styleClass="supervisor-textfield" />
-                                                <Region prefHeight="48.0" prefWidth="34.0" />
-                                                <JFXTextField fx:id="newReserveEndTLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="50.0" promptText="H. Final" styleClass="supervisor-textfield" />
+                                                <JFXDatePicker fx:id="newStartDate" maxWidth="1.7976931348623157E308" minWidth="75.0" prefHeight="28.0" prefWidth="108.0" styleClass="supervisor-textfield" HBox.hgrow="ALWAYS" />
+                                                <JFXTimePicker fx:id="newStartTime" maxWidth="100.0" minWidth="30.0" prefHeight="28.0" prefWidth="76.0" HBox.hgrow="ALWAYS" />
                                              </children>
+                                             <padding>
+                                                <Insets left="25.0" right="8.0" />
+                                             </padding>
                                           </HBox>
-                                          <JFXButton contentDisplay="RIGHT" onAction="#handleNewReserveRequest" styleClass="supervisor-buttons" text="Crear" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.halignment="CENTER" GridPane.rowIndex="12">
+                                             <children>
+                                                <JFXDatePicker fx:id="newArriveDate" maxWidth="1.7976931348623157E308" minWidth="75.0" prefHeight="28.0" prefWidth="108.0" HBox.hgrow="ALWAYS" />
+                                                <JFXTimePicker fx:id="newArriveTime" maxWidth="100.0" minWidth="30.0" prefHeight="28.0" prefWidth="76.0" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                             <padding>
+                                                <Insets left="25.0" right="8.0" />
+                                             </padding>
+                                          </HBox>
+                                          <JFXButton buttonType="RAISED" contentDisplay="RIGHT" onAction="#handleNewReserveRequest" styleClass="supervisor-buttons" text="Crear" GridPane.halignment="CENTER" GridPane.rowIndex="15" GridPane.valignment="CENTER">
                                              <graphic>
                                                 <FontAwesomeIconView glyphName="CHECK" />
                                              </graphic>
                                           </JFXButton>
-                                          <JFXButton contentDisplay="RIGHT" onAction="#handleCancelReserveRequest" styleClass="supervisor-buttons" text="Cancelar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+                                          <JFXButton contentDisplay="RIGHT" onAction="#handleCancelReserveRequest" styleClass="supervisor-buttons" text="Cancelar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="15" GridPane.valignment="CENTER">
                                              <graphic>
                                                 <FontAwesomeIconView glyphName="CLOSE" />
                                              </graphic>
                                           </JFXButton>
+                                          <JFXTextField alignment="CENTER" editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" promptText="Hora Salida" styleClass="supervisor-textfield" GridPane.rowIndex="8">
+                                             <padding>
+                                                <Insets left="25.0" right="25.0" />
+                                             </padding>
+                                          </JFXTextField>
+                                          <JFXTextField alignment="CENTER" editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" promptText="Hora Llegada" styleClass="supervisor-textfield" GridPane.rowIndex="11">
+                                             <padding>
+                                                <Insets left="25.0" right="25.0" />
+                                             </padding>
+                                          </JFXTextField>
+                                          <JFXSlider fx:id="newPaxSlider" blockIncrement="1.0" maxWidth="1.7976931348623157E308" showTickLabels="true" styleClass="jfx-slider" value="1.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                                             <padding>
+                                                <Insets left="20.0" right="20.0" />
+                                             </padding>
+                                          </JFXSlider>
+                                          <JFXTextField alignment="CENTER" editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" promptText="PAX" styleClass="supervisor-textfield" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                             <padding>
+                                                <Insets left="25.0" right="25.0" />
+                                             </padding>
+                                          </JFXTextField>
                                        </children>
+                                       <padding>
+                                          <Insets top="15.0" />
+                                       </padding>
                                     </GridPane>
-                              </content>
-                            </TitledPane>
-                            <TitledPane expanded="false" text="Editar Actual">
-                              <content>
-                                    <GridPane alignment="CENTER" prefHeight="294.0" prefWidth="224.0" styleClass="root">
+                                 </content>
+                                 <effect>
+                                    <Reflection />
+                                 </effect>
+                              </ScrollPane>
+                        </content>
+                      </TitledPane>
+                      <TitledPane fx:id="editReserveTitlePane" expanded="false" maxWidth="1.7976931348623157E308" text="Editar Actual">
+                           <content>
+                              <ScrollPane fitToWidth="true" hbarPolicy="NEVER" maxWidth="1.7976931348623157E308">
+                                 <content>
+                                    <GridPane alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="756.0" prefWidth="405.0" styleClass="root">
                                        <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="275.0" minWidth="10.0" prefWidth="188.0000244140625" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="241.0" minWidth="10.0" prefWidth="142.3999755859375" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="194.0" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="194.0" />
                                        </columnConstraints>
                                        <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -118,35 +210,97 @@
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
-                                          <JFXTextField fx:id="oldReserveNameLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="180.0" promptText="Nombre del Servicio" styleClass="supervisor-textfield" />
-                                          <JFXTextField fx:id="oldReserveIDLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Identificador" styleClass="supervisor-textfield" GridPane.columnIndex="1" />
-                                          <JFXTextField fx:id="oldReservePickupLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Recogida" styleClass="supervisor-textfield" GridPane.rowIndex="2" />
-                                          <JFXTextField fx:id="oldReserveTransitLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Tránsito" styleClass="supervisor-textfield" GridPane.rowIndex="4" />
-                                          <JFXTextField fx:id="oldReserveArrivalLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Llegada" styleClass="supervisor-textfield" GridPane.rowIndex="6" />
-                                          <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                                          <JFXTextField fx:id="oldReserveNameLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="155.0" promptText="Nombre del Servicio" styleClass="supervisor-textfield">
+                                             <GridPane.margin>
+                                                <Insets left="20.0" right="20.0" />
+                                             </GridPane.margin>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="oldReserveIDLbl" editable="false" labelFloat="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="160.0" promptText="Identificador" styleClass="supervisor-textfield" GridPane.columnIndex="1">
+                                             <GridPane.margin>
+                                                <Insets left="20.0" right="20.0" />
+                                             </GridPane.margin>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="oldReservePickupLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="155.0" promptText="Recogida" styleClass="supervisor-textfield" GridPane.rowIndex="2">
+                                             <GridPane.margin>
+                                                <Insets left="20.0" right="20.0" />
+                                             </GridPane.margin>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="oldReserveArrivalLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="160.0" promptText="Llegada" styleClass="supervisor-textfield" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                             <GridPane.margin>
+                                                <Insets left="20.0" right="20.0" />
+                                             </GridPane.margin>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="oldReserveTransitLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="155.0" promptText="Tránsito" styleClass="supervisor-textfield" GridPane.rowIndex="4">
+                                             <GridPane.margin>
+                                                <Insets left="20.0" right="20.0" />
+                                             </GridPane.margin>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="oldReserveDistanceLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="160.0" promptText="Distancia" styleClass="supervisor-textfield" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                          <JFXTextField fx:id="oldReserveClientLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="155.0" promptText="Cliente" styleClass="supervisor-textfield" GridPane.rowIndex="6">
+                                             <GridPane.margin>
+                                                <Insets left="20.0" right="20.0" />
+                                             </GridPane.margin>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="oldReservePricingLbl" labelFloat="true" layoutX="207.0" layoutY="219.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="160.0" promptText="Presupuesto" styleClass="supervisor-textfield" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.halignment="CENTER" GridPane.rowIndex="9">
                                              <children>
-                                                <JFXTextField fx:id="oldReserveStarTLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="50.0" promptText="H. Inicio" styleClass="supervisor-textfield" />
-                                                <Region prefHeight="48.0" prefWidth="34.0" />
-                                                <JFXTextField fx:id="oldReserveEndTLbl" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="50.0" promptText="H. Final" styleClass="supervisor-textfield" />
+                                                <JFXDatePicker fx:id="oldStartDate" maxWidth="1.7976931348623157E308" minWidth="75.0" prefHeight="28.0" prefWidth="108.0" styleClass="supervisor-textfield" HBox.hgrow="ALWAYS" />
+                                                <JFXTimePicker fx:id="oldStartTime" maxWidth="100.0" minWidth="30.0" prefHeight="28.0" prefWidth="76.0" HBox.hgrow="ALWAYS" />
                                              </children>
+                                             <padding>
+                                                <Insets left="25.0" right="8.0" />
+                                             </padding>
                                           </HBox>
-                                          <JFXButton contentDisplay="RIGHT" onAction="#handleApplyReserveEdit" styleClass="supervisor-buttons" text="Aplicar" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.halignment="CENTER" GridPane.rowIndex="12">
+                                             <children>
+                                                <JFXDatePicker fx:id="oldArriveDate" maxWidth="1.7976931348623157E308" minWidth="75.0" prefHeight="28.0" prefWidth="108.0" HBox.hgrow="ALWAYS" />
+                                                <JFXTimePicker fx:id="oldArriveTime" maxWidth="100.0" minWidth="30.0" prefHeight="28.0" prefWidth="76.0" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                             <padding>
+                                                <Insets left="25.0" right="8.0" />
+                                             </padding>
+                                          </HBox>
+                                          <JFXButton buttonType="RAISED" contentDisplay="RIGHT" onAction="#handlePushEditedReserveRequest" styleClass="supervisor-buttons" text="Editar" GridPane.halignment="CENTER" GridPane.rowIndex="15" GridPane.valignment="CENTER">
                                              <graphic>
                                                 <FontAwesomeIconView glyphName="CHECK" />
                                              </graphic>
                                           </JFXButton>
-                                          <JFXButton contentDisplay="RIGHT" onAction="#handleCancelReserveRequest" styleClass="supervisor-buttons" text="Cancelar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+                                          <JFXButton contentDisplay="RIGHT" onAction="#handleCancelEditReserveRequest" styleClass="supervisor-buttons" text="Cancelar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="15" GridPane.valignment="CENTER">
                                              <graphic>
                                                 <FontAwesomeIconView glyphName="CLOSE" />
                                              </graphic>
                                           </JFXButton>
+                                          <JFXTextField alignment="CENTER" editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" promptText="Hora Salida" styleClass="supervisor-textfield" GridPane.rowIndex="11">
+                                             <GridPane.margin>
+                                                <Insets left="25.0" right="25.0" />
+                                             </GridPane.margin>
+                                          </JFXTextField>
+                                          <JFXTextField alignment="CENTER" editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" promptText="Hora Llegada" styleClass="supervisor-textfield" GridPane.rowIndex="8">
+                                             <GridPane.margin>
+                                                <Insets left="25.0" right="25.0" />
+                                             </GridPane.margin>
+                                          </JFXTextField>
+                                          <JFXSlider fx:id="oldPaxSlider" blockIncrement="1.0" maxWidth="1.7976931348623157E308" showTickLabels="true" styleClass="jfx-slider" value="1.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                                             <padding>
+                                                <Insets left="20.0" right="20.0" />
+                                             </padding>
+                                          </JFXSlider>
+                                          <JFXTextField alignment="CENTER" editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" promptText="PAX" styleClass="supervisor-textfield" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                             <padding>
+                                                <Insets left="25.0" right="25.0" />
+                                             </padding>
+                                          </JFXTextField>
                                        </children>
+                                       <padding>
+                                          <Insets top="15.0" />
+                                       </padding>
                                     </GridPane>
-                              </content>
-                            </TitledPane>
-                          </panes>
-                        </Accordion>
-                     </children></Pane>
+                                 </content>
+                              </ScrollPane>
+                           </content>
+                      </TitledPane>
+                    </panes>
+                  </Accordion>
                </items>
             </SplitPane>
          </children>
