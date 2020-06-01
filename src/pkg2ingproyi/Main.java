@@ -6,7 +6,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import pkg2ingproyi.Model.User;
@@ -25,7 +25,10 @@ public class Main extends Application {
 
         Scene scene = new Scene(root);
         primaryStage = new Stage();
-        primaryStage.setScene(scene);
+        primaryStage.getIcons().add(new Image("./resources/icons/icon_logo.png"));
+        primaryStage.setScene     (scene);
+        primaryStage.setResizable (false);
+        primaryStage.sizeToScene    ();
         primaryStage.show();
         primaryStage.setTitle("Safe Journey Login");
 
