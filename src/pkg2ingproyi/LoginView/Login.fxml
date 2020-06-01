@@ -8,33 +8,34 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+
 <AnchorPane fx:id="canvas" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="292.0" prefWidth="279.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.LoginView.LoginController">
    <children>
-      <JFXTextField fx:id="usernameField" labelFloat="true" layoutX="73.0" layoutY="88.0" prefHeight="30.0" prefWidth="177.0" promptText="Usuario" styleClass="login-textfields">
+      <JFXTextField fx:id="usernameField" labelFloat="true" layoutX="72.0" layoutY="90.0" prefHeight="30.0" prefWidth="177.0" promptText="Usuario" styleClass="login-textfields">
          <font>
             <Font size="13.0" />
          </font>
       </JFXTextField>
-      <JFXPasswordField fx:id="passwordField" labelFloat="true" layoutX="73.0" layoutY="159.0" prefHeight="30.0" prefWidth="177.0" promptText="Contraseña" styleClass="login-textfields">
+      <JFXPasswordField fx:id="passwordField" labelFloat="true" layoutX="72.0" layoutY="161.0" prefHeight="30.0" prefWidth="177.0" promptText="Contraseña" styleClass="login-textfields">
          <font>
             <Font size="13.0" />
          </font>
       </JFXPasswordField>
-      <JFXButton fx:id="loginButton" buttonType="RAISED" layoutX="52.0" layoutY="229.0" onAction="#handleLoginButtonAction" prefHeight="30.0" prefWidth="70.0" styleClass="login-buttons" text="Iniciar">
+      <JFXButton fx:id="loginButton" buttonType="RAISED" layoutX="51.0" layoutY="231.0" onAction="#handleLoginButtonAction" prefHeight="30.0" prefWidth="70.0" styleClass="login-buttons" text="Iniciar">
          <font>
             <Font size="13.0" />
          </font></JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="162.0" layoutY="229.0" onAction="#handleCancelButtonAction" prefHeight="30.0" prefWidth="70.0" styleClass="login-buttons" text="Cancelar">
+      <JFXButton buttonType="RAISED" layoutX="161.0" layoutY="231.0" onAction="#handleCancelButtonAction" prefHeight="30.0" prefWidth="70.0" styleClass="login-buttons" text="Cancelar">
          <font>
             <Font size="13.0" />
          </font></JFXButton>
-      <ImageView fitHeight="38.0" fitWidth="100.0" layoutX="181.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="84.0" fitWidth="109.0" layoutX="165.0" layoutY="-15.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../resources/icons/testlogo.png" />
          </image>
       </ImageView>
-      <FontAwesomeIconView glyphName="LOCK" layoutX="125.0" layoutY="66.0" size="45" />
-      <FontAwesomeIconView glyphName="USER" layoutX="27.0" layoutY="120.0" size="27" />
-      <FontAwesomeIconView glyphName="KEY" layoutX="24.0" layoutY="190.0" size="27" text="" />
+      <FontAwesomeIconView glyphName="LOCK" layoutX="124.0" layoutY="72.0" size="45" />
+      <FontAwesomeIconView glyphName="USER" layoutX="26.0" layoutY="122.0" size="27" />
+      <FontAwesomeIconView glyphName="KEY" layoutX="23.0" layoutY="192.0" size="27" text="" />
    </children>
 </AnchorPane>
