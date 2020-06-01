@@ -1,19 +1,18 @@
 package pkg2ingproyi.Util;
 
-import org.json.simple.parser.ParseException;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
+import javafx.application.Platform;
+import org.controlsfx.control.Notifications;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
 //Launches a thread for data listening.
-public class NetworkHandler extends Thread {
+public class NetworkGETRequester extends Thread {
     
     private final String strUrl;
     private final OnDataReceivedListener listener;
 
-    public NetworkHandler(String strUrl, OnDataReceivedListener listener) {
+    public NetworkGETRequester(String strUrl, OnDataReceivedListener listener) {
         this.strUrl     = strUrl;
         this.listener   = listener;
     }
@@ -27,9 +26,9 @@ public class NetworkHandler extends Thread {
             urlConnection.connect();
 
             //Check if connection was stabilised correctly.
-            if (urlConnection.getResponseCode() != 200) {
-                this.listener.onDataFail();
-            } else {
+            if (urlConnection.getResponseCode() != 200)
+                Platform.runLater(() -> Notifications.create().title("Data Receive Error").text("No se pudo conectar con la BD.").showError());
+            else {
                 //Proceed only if correct connection with url.
 
                 //Read URL and pass to String.
@@ -41,9 +40,6 @@ public class NetworkHandler extends Thread {
                 //Pass data to listener.
                 this.listener.dataReceived(rawData.toString());
             }
-
-        } catch (IOException | InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException | ParseException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }

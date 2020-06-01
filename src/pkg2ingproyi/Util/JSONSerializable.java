@@ -3,6 +3,7 @@ package pkg2ingproyi.Util;
 import org.json.simple.JSONObject;
 
 public interface JSONSerializable {
+    String toJSONString();
     void jsonParse(JSONObject object);
 }
 

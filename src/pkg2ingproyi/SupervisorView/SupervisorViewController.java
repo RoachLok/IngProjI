@@ -2,6 +2,7 @@ package pkg2ingproyi.SupervisorView;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.sun.deploy.security.SelectableSecurityManager;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.application.Platform;
@@ -18,26 +19,30 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.util.converter.LocalDateStringConverter;
+import javafx.util.converter.LocalDateTimeStringConverter;
 import org.controlsfx.control.Notifications;
+import org.controlsfx.control.action.Action;
+import org.controlsfx.control.textfield.TextFields;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import pkg2ingproyi.Main;
 import pkg2ingproyi.Model.Admin;
 import pkg2ingproyi.Model.Driver;
 import pkg2ingproyi.Model.Service;
 import pkg2ingproyi.Model.Vehicle;
 import pkg2ingproyi.Util.*;
+import sun.nio.ch.Net;
 
-import javax.management.NotificationListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.text.SimpleDateFormat;
@@ -68,25 +73,35 @@ public class SupervisorViewController implements Initializable {
     @FXML
     public SplitPane reserveSplitPane;
     @FXML
+    public TitledPane editReserveTitlePane;
+    @FXML
     public TitledPane defaultExpanded;
     @FXML
     public JFXTextField newReserveNameLbl;
     @FXML
     public JFXTextField newReserveIDLbl;
     @FXML
-    public JFXTextField newReserveTransitLbl;
-    @FXML
     public JFXTextField newReservePickupLbl;
     @FXML
     public JFXTextField newReserveArrivalLbl;
     @FXML
-    public JFXTextField newReserveStartTLbl;
-    @FXML
-    public JFXTextField newReserveEndTLbl;
+    public JFXTextField newReserveTransitLbl;
     @FXML
     public JFXTextField newReserveDistanceLbl;
     @FXML
-    public JFXTextField newReserveClientDNILbl;
+    public JFXTextField newReserveClientLbl;
+    @FXML
+    public JFXTextField newReservePricingLbl;
+    @FXML
+    public JFXDatePicker newStartDate;
+    @FXML
+    public JFXTimePicker newStartTime;
+    @FXML
+    public JFXDatePicker newArriveDate;
+    @FXML
+    public JFXTimePicker newArriveTime;
+    @FXML
+    public JFXSlider newPaxSlider;
     @FXML
     public JFXTextField oldReserveNameLbl;
     @FXML
@@ -94,9 +109,25 @@ public class SupervisorViewController implements Initializable {
     @FXML
     public JFXTextField oldReservePickupLbl;
     @FXML
+    public JFXTextField oldReserveArrivalLbl;
+    @FXML
     public JFXTextField oldReserveTransitLbl;
     @FXML
-    public JFXTextField oldReserveArrivalLbl;
+    public JFXTextField oldReserveDistanceLbl;
+    @FXML
+    public JFXTextField oldReserveClientLbl;
+    @FXML
+    public JFXTextField oldReservePricingLbl;
+    @FXML
+    public JFXDatePicker oldStartDate;
+    @FXML
+    public JFXTimePicker oldStartTime;
+    @FXML
+    public JFXDatePicker oldArriveDate;
+    @FXML
+    public JFXTimePicker oldArriveTime;
+    @FXML
+    public JFXSlider oldPaxSlider;
 
     /**** SERVICES VIEW ELEMENTS ****/
     @FXML
@@ -158,25 +189,13 @@ public class SupervisorViewController implements Initializable {
 
         /*** -- VEHICLE VIEW -- ***/
         if (vehicleList != null) {
-            NetworkHandler networkHandler = new NetworkHandler(APIRoutes.VEHICLES, new OnDataReceivedListener() {
-                @Override
-                public void dataReceived(String rawData) throws Exception {
-                    JSONParser jsonParser           = new JSONParser();
-                    JSONObject vehicleJSONObject    = (JSONObject) jsonParser.parse(rawData);
-                    JSONArray vehicleJSONArray      = (JSONArray ) vehicleJSONObject.get("items");
-
-                    ArrayList<Vehicle> parsedVehicles = new JSONCastedList<>(vehicleJSONArray, Vehicle.class);
+            NetworkGETRequester vehicleGETRequest = new NetworkGETRequester(APIRoutes.VEHICLES,
+                rawData -> {
                     Platform.runLater(() -> Notifications.create().title("Data Loaded").text("Archivos cargados desde la base de datos.").showInformation());
+                    drawVehicles(new JSONCastedList<>(rawData, Vehicle.class));
+                });
 
-                    drawVehicles(parsedVehicles);
-                }
-
-                @Override
-                public void onDataFail() {
-                    Platform.runLater(() -> Notifications.create().title("Data Receive Error").text("¿Hay conexión con la BD?").showError());
-                }
-            });
-            networkHandler.start();
+            vehicleGETRequest.start();
         }
 
         /*** -- RESERVE VIEW -- ***/
@@ -185,6 +204,7 @@ public class SupervisorViewController implements Initializable {
             displayReserves = admin.getReserves();
             initReservesTableView(displayReserves);
             reserveTreeTable.getSelectionModel().select(0);
+            updateOldFields(0);
         }
 
         /*** -- SERVICES VIEW -- ***/
@@ -381,120 +401,291 @@ public class SupervisorViewController implements Initializable {
 
     /*********  ------------ RESERVES VIEW METHODS IMPLEMENTATION ------------  *********/
 
-    public void handleNewServiceRequest() {
+    public void handleNewReserveRequest() {
         defaultExpanded.setExpanded(true);
 
         if (reserveSplitPane.getDividerPositions()[0] > 0.8) {
-            reserveSplitPane.setDividerPositions(0.1f, 0.6f, 0.9f);
+            reserveSplitPane.setDividerPositions(0.1f, 0.5f, 0.9f);
         } else {
             reserveSplitPane.setDividerPositions(1f, 1f, 1f);
-            handleNewReserveRequest();
+            defaultExpanded.setExpanded(false);
+            collectAndPushReserve();
         }
     }
 
-    public boolean isValidDate(String fecha){
-        SimpleDateFormat sdfrmt = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-        sdfrmt.setLenient(false);
-
-        try {
-            Date javaDate = sdfrmt.parse(fecha);
-        } catch (java.text.ParseException e) {
-            Notifications.create().title("Invalid date hour").text("Fecha hora inválida").showError();
+    public boolean isValidDate(String startDateStr, String arriveDateStr) {
+        if (arriveDateStr.equals(""))
             return true;
-        }
-        /* Return true if date format is valid */
-        return false;
+
+        return arriveDateStr.compareTo(startDateStr) > 0;
     }
 
-    public void handleNewReserveRequest() {
+    public void collectAndPushReserve() {
+        //Check if no-null fields are null.
         if (newReserveNameLbl       .getText().equals("") ||
             newReserveArrivalLbl    .getText().equals("") ||
             newReserveIDLbl         .getText().equals("") ||
-            newReserveStartTLbl     .getText().equals("") ||
-            newReserveEndTLbl       .getText().equals("") ||
-            isValidDate(newReserveStartTLbl .getText()  ) ||
-            isValidDate(newReserveEndTLbl   .getText()  )   )
+            newReservePickupLbl     .getText().equals("") ||
+            newReserveClientLbl     .getText().equals("") ||
+            newReservePricingLbl    .getText().equals("") ||
+            newStartDate            .getValue() == null   ||
+            newStartTime            .getValue() == null     )
             Notifications.create().title("Fields Missing").text("Faltan campos obligatorios.").showError();
+
         else {
+            //Format dates from DatePicker and TimePicker
+            String startDateStr  = DBUtil.fixDateFormat(newStartDate.getValue().toString() + ' ' + newStartTime.getValue().toString() + ":00");
+            String arriveDateStr = "";
+            if (newArriveDate.getValue() != null && newArriveTime.getValue() != null)
+                DBUtil.fixDateFormat(newArriveDate.getValue().toString() + ' ' + newArriveTime.getValue().toString() + ":00");
+            if (!isValidDate(startDateStr, arriveDateStr)) {
+                Notifications.create().title("Bad Time Given").text("La hora de llegada no puede ser mayor a la de comienzo.").showError();
+                return;
+            }
+
+            //Grab distance from field.
+            int newDistance = 0;
+            if (!newReserveDistanceLbl.getText().equals(""))
+                newDistance = Integer.parseInt(newReserveDistanceLbl.getText());
+
             Service reserve = new Service
                     (
-                        newReserveNameLbl       .getText(),
-                        newReserveStartTLbl     .getText(),
-                        newReserveEndTLbl       .getText(),
+                        newReserveNameLbl       .getText(), startDateStr, arriveDateStr,
                         newReservePickupLbl     .getText(),
                         newReserveArrivalLbl    .getText(),
                         newReserveIDLbl         .getText(),
-       Integer.parseInt(newReserveDistanceLbl   .getText()),
+                        newReserveClientLbl     .getText(),
+                        newDistance                       ,
                         admin                   .getUsername(),
                         admin                   .getDptId()
                     );
+            reserve.setTransit  ( newReserveTransitLbl.getText());
+            reserve.setPax      ( (int) newPaxSlider.getValue() );
+
             reserve.setObservable();
+
+            NetworkPOSTRequester networkPOSTRequester = new NetworkPOSTRequester(APIRoutes.RESERVES, reserve.toJSONString(),
+                    () -> Platform.runLater(() -> Notifications.create().title("Wrong DB Connection").text("Hubo un error al intentar subir los datos.").showInformation()));
+            networkPOSTRequester.start();
 
             observableServices.add(reserve);
             final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
             reserveTreeTable.setRoot(root);
 
+            //Notify success and clean fields for next Reserve.
             Notifications.create().title("Reserve Successful").text("La reserva ha sido creada con éxito.").showInformation();
             handleCancelReserveRequest();
         }
     }
 
+    //Cleans fields from "New Reserve" panel.
     public void handleCancelReserveRequest() {
         newReserveNameLbl       .setText("");
-        newReserveStartTLbl     .setText("");
-        newReserveEndTLbl       .setText("");
         newReservePickupLbl     .setText("");
         newReserveTransitLbl    .setText("");
         newReserveArrivalLbl    .setText("");
         newReserveIDLbl         .setText("");
         newReserveDistanceLbl   .setText("");
-        newReserveClientDNILbl  .setText("");
+        newReserveClientLbl     .setText("");
+        newReservePricingLbl    .setText("");
+        newStartDate         .setValue(null);
+        newStartTime         .setValue(null);
+        newArriveDate        .setValue(null);
+        newArriveTime        .setValue(null);
+    }
+
+    public void handleEditReserveRequest() {
+        editReserveTitlePane.setExpanded(true);
+
+        if (reserveSplitPane.getDividerPositions()[0] > 0.8) {
+            reserveSplitPane.setDividerPositions(0.1f, 0.5f, 0.9f);
+        } else {
+            reserveSplitPane.setDividerPositions(1f, 1f, 1f);
+            editReserveTitlePane.setExpanded(false);
+        }
     }
 
     private void updateOldFields(int reserveIndex) {
         Service clickedReserve = observableServices.get(reserveIndex);
 
-        // TODO update old fields
+        oldReserveNameLbl       .setText( clickedReserve .getName()         );
+        oldReservePickupLbl     .setText( clickedReserve .getPickup()       );
+        oldReserveTransitLbl    .setText( clickedReserve .getTransit()      );
+        oldReserveArrivalLbl    .setText( clickedReserve .getArrival()      );
+        oldReserveIDLbl         .setText( clickedReserve .getIdentifier()   );
+        oldReserveClientLbl     .setText( clickedReserve .getContractor()   );
+        oldReserveDistanceLbl   .setText( String.valueOf( clickedReserve.getDistance()) );
+        oldReservePricingLbl    .setText( String.valueOf( clickedReserve.getPricing() ) );
+
+        oldPaxSlider.setValue(clickedReserve.getPax());
+
+        String startStr = clickedReserve.getStartT().replace('/', '-');
+
+        oldStartDate.setValue(LocalDate.parse(startStr.substring(0, 10), DateTimeFormatter.ISO_LOCAL_DATE));
+        oldStartTime.setValue(LocalTime.parse(startStr.substring(11), DateTimeFormatter.ISO_LOCAL_TIME));
+
+
+        if (clickedReserve.getEndT() != null) {
+            String endStr = clickedReserve.getEndT().replace('/', '-');
+            oldArriveDate.setValue(LocalDate.parse(endStr.substring(0, 10), DateTimeFormatter.ISO_LOCAL_DATE));
+            oldArriveTime.setValue(LocalTime.parse(endStr.substring(11), DateTimeFormatter.ISO_LOCAL_TIME));
+        }
     }
 
+    public void handlePushEditedReserveRequest() throws InterruptedException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Editara Reserva");
+        alert.setHeaderText("¿Está seguro de que desea editar la reserva?");
+        alert.setContentText("Los cambios serán permanentes en la BD.");
+
+        Optional<ButtonType> confirmButton = alert.showAndWait();
+        if (confirmButton.isPresent() && confirmButton.get() == ButtonType.OK) {
+            handleApplyReserveEdit(reserveTreeTable.getSelectionModel().getSelectedIndex());
+        }
+    }
+
+    public void handleCancelEditReserveRequest() {
+        editReserveTitlePane.setExpanded(false);
+
+        reserveSplitPane.setDividerPositions(1f, 1f, 1f);
+    }
+
+    //int prevSelectIndex;
     public void handleReserveTreeViewClick() {
+      /* ENABLE DOUBLE CLICK DISPLAYS RESERVE EDIT
+        if (prevSelectIndex == reserveTreeTable.getSelectionModel().getSelectedIndex())
+            handleEditReserveRequest(); //If the same reserve is clicked twice, opens the editing window.
+
+        prevSelectIndex = reserveTreeTable.getSelectionModel().getSelectedIndex();*/
+
         updateOldFields(reserveTreeTable.getSelectionModel().getSelectedIndex());
     }
 
     public void acceptReserveAsService(int reserveIndex) {
-        if (newReserveNameLbl       .getText().equals("") ||
-            newReserveArrivalLbl    .getText().equals("") ||
-            newReserveIDLbl         .getText().equals("") ||
-            newReserveStartTLbl     .getText().equals("") ||
-            newReservePickupLbl     .getText().equals("") ||
-            newReserveTransitLbl    .getText().equals("") ||
-            newReserveDistanceLbl   .getText().equals("") ||
-            newReserveClientDNILbl  .getText().equals("")  )
-            Notifications.create().title("Cannot accept reserve").text("Faltan campos obligatorios o no se cumplen ciertas condiciones.").showError();
-        else {
-            Service clickedReserve = observableServices.get(reserveIndex);
-            observableServices.remove(reserveIndex);
-
-            final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
-            reserveTreeTable.setRoot(root);
-
-            clickedReserve.setReserve(false);
-            clickedReserve.setAccepted(true);
-            Notifications.create().title("Reserve Accept Successful").text("La reserva ha sido aceptada como servicio.").showInformation();
+        Service clickedReserve = observableServices.get(reserveIndex);
+        if (clickedReserve.getEndT().equals("")) {
+            Notifications.create().title("Reserve Missing Fields").text("").showError();
+            return;
         }
+
+        NetworkPUTRequester networkPUTRequester = new NetworkPUTRequester(APIRoutes.SERVICES, clickedReserve.getIdentifier(), "{\"STATUS\":\"2\"}",
+                () -> Notifications.create().title("DB Connection Error.").text("Error al aceptar la reserva en la BD.").showError());
+        networkPUTRequester.start();
+
+        //Update TreeTable
+        observableServices.remove(reserveIndex);
+
+        final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
+        reserveTreeTable.setRoot(root);
+
+        clickedReserve.setReserve(false);
+        clickedReserve.setAccepted(true);
+        Notifications.create().title("Reserve Accept Successful").text("La reserva ha sido aceptada como servicio.").showConfirm();
     }
 
     public void handleAcceptReserveRequest  () {
-        acceptReserveAsService(reserveTreeTable.getSelectionModel().getSelectedIndex());
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Aceptar Reserva");
+        alert.setHeaderText("¿Está seguro de que desea aceptar la reserva?");
+        alert.setContentText("La Reserva se confirmará y pasará a la ventana de Servicios.");
+
+        Optional<ButtonType> confirmButton = alert.showAndWait();
+        if (confirmButton.isPresent() && confirmButton.get() == ButtonType.OK) {
+            acceptReserveAsService(reserveTreeTable.getSelectionModel().getSelectedIndex());
+        }
     }
 
-    public void handleApplyReserveEdit      () {
-        Notifications.create().title("Feature to be implemented").text("Esta característica aun no ha sido implementada.").showError();
+    public void handleApplyReserveEdit      (int reserveIndex) throws InterruptedException {
+        //Check if no-null fields are null.
+        if (oldReserveNameLbl       .getText().equals("") ||
+            oldReserveArrivalLbl    .getText().equals("") ||
+            oldReservePickupLbl     .getText().equals("") ||
+            oldReserveClientLbl     .getText().equals("") ||
+            oldReservePricingLbl    .getText().equals("") ||
+            oldStartDate            .getValue() == null   ||
+            oldStartTime            .getValue() == null     ) {
+            Notifications.create().title("Fields Missing").text("Faltan campos obligatorios.").showError();
+            return;
+        }
 
+        //Format dates from DatePicker and TimePicker
+        String startDateStr  = DBUtil.fixDateFormat(oldStartDate.getValue().toString() + ' ' + oldStartTime.getValue().toString() + ":00");
+        String arriveDateStr = "";
+        if (oldArriveDate.getValue() != null && oldArriveTime.getValue() != null)
+            DBUtil.fixDateFormat(oldArriveDate.getValue().toString() + ' ' + oldArriveTime.getValue().toString() + ":00");
+        if (!isValidDate(startDateStr, arriveDateStr)) {
+            Notifications.create().title("Bad Time Given").text("La hora de llegada no puede ser mayor a la de comienzo.").showError();
+            return;
+        }
+
+        int newDistance;
+        if (oldReserveDistanceLbl.getText().equals(""))
+            newDistance = 0;
+        else
+            newDistance = Integer.parseInt(oldReserveDistanceLbl.getText());
+
+        Service editReserve = new Service
+                (
+                    oldReserveNameLbl       .getText(), startDateStr, arriveDateStr,
+                    oldReservePickupLbl     .getText(),
+                    oldReserveArrivalLbl    .getText(),
+                    oldReserveIDLbl         .getText(),
+                    oldReserveClientLbl     .getText(),
+                    newDistance                       ,
+                    admin                   .getUsername(),
+                    admin                   .getDptId()
+                );
+        editReserve.setTransit( oldReserveTransitLbl.getText ());
+        editReserve.setPax    ( (int) oldPaxSlider  .getValue());
+
+        //Delete old reserve from DB.
+        NetworkDELETERequester networkDELETERequester = new NetworkDELETERequester(APIRoutes.SERVICES, editReserve.getIdentifier(), false,
+                () -> Notifications.create().title("Wrong connection to DB").text("El elemento a editar no es accesible en la BD."));
+
+        networkDELETERequester.start();
+        networkDELETERequester.join();
+
+        //Replace with new reserve.
+        NetworkPOSTRequester networkPOSTRequester = new NetworkPOSTRequester(APIRoutes.RESERVES, editReserve.toJSONString(),
+                () -> Notifications.create().title("Wrong connection to DB").text("El elemento se eliminó de la BD pero hubo un problema al reemplazarlo."));
+
+        networkPOSTRequester.start();
+
+        //Update TreeTable
+        editReserve.setObservable();
+        observableServices.set(reserveIndex, editReserve);
+
+        final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
+        reserveTreeTable.setRoot(root);
+
+        Notifications.create().title("Data updated in DB").text("La reserva ha sido actualizada en la BD.").showConfirm();
+    }
+
+    private void deleteReserve(int selectedIndex) {
+        Service selectedReserve = observableServices.get(selectedIndex);
+
+        NetworkDELETERequester networkDELETERequester = new NetworkDELETERequester(APIRoutes.SERVICES, selectedReserve.getIdentifier(), true,
+                () -> Notifications.create().title("Wrong connection to DB").text("El elemento a editar no es accesible en la BD."));
+
+        networkDELETERequester.start();
+
+        //Update TreeTable
+        observableServices.remove(selectedIndex);
+
+        final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
+        reserveTreeTable.setRoot(root);
     }
 
     public void handleRemoveReserveRequest  () {
-        Notifications.create().title("Feature to be implemented").text("Esta característica aun no ha sido implementada.").showError();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Eliminar Reserva");
+        alert.setHeaderText("¿Está seguro de que desea borrar la reserva?");
+        alert.setContentText("Se eliminará permanentemente de la BD.");
+
+        Optional<ButtonType> confirmButton = alert.showAndWait();
+        if (confirmButton.isPresent() && confirmButton.get() == ButtonType.OK) {
+            deleteReserve(reserveTreeTable.getSelectionModel().getSelectedIndex());
+        }
     }
 
     /*********  ------------ SERVICES VIEW METHODS IMPLEMENTATION ------------  *********/
@@ -522,7 +713,7 @@ public class SupervisorViewController implements Initializable {
     private void updateMontajeTreeTable() {
         observableServices.remove(0, observableServices.size()); //Empty current treeTable.
         for (Service aceptado : admin.getMontajes())
-            if (aceptado.getStartT().substring(1, 11).equals(chosenDate)) { //Take only date matching services.
+            if (aceptado.getStartT().substring(0, 10).equals(chosenDate.replace('-', '/'))) { //Take only date matching services.
                 aceptado.setObservable();
                 observableServices.add(aceptado);
             }
@@ -530,7 +721,7 @@ public class SupervisorViewController implements Initializable {
             montajeTreeTable.setPlaceholder(new Label("No hay servicios montados para esta fecha."));
 
         loadIntoInfoScrollPane(chosenDate.equals(todayDate));
-    }
+    } /**commit change to date**/
 
     public void datePickerUpdate() {
         chosenDate =  datePicker.getValue().toString();
@@ -552,47 +743,66 @@ public class SupervisorViewController implements Initializable {
         identifier.setPrefWidth(75);
 
         identifier.setCellValueFactory(param -> param.getValue().getValue().observableIdentifier);
+
         //NAME
         JFXTreeTableColumn<Service, String> name = new JFXTreeTableColumn<>("Servicio");
         name.setPrefWidth(300);
 
         name.setCellValueFactory(param -> param.getValue().getValue().observableName);
+
         //PICKUP
         JFXTreeTableColumn<Service, String> pickup = new JFXTreeTableColumn<>("Salida");
         pickup.setPrefWidth(250);
 
         pickup.setCellValueFactory(param -> param.getValue().getValue().observablePickup);
+
         //ARRIVAL
         JFXTreeTableColumn<Service, String> arrival = new JFXTreeTableColumn<>("Llegada");
         arrival.setPrefWidth(250);
 
         arrival.setCellValueFactory(param -> param.getValue().getValue().observableArrival);
+
         //START
         JFXTreeTableColumn<Service, String> startT = new JFXTreeTableColumn<>("H. Inicio");
-        startT.setPrefWidth(250);
+        startT.setPrefWidth(150);
 
         startT.setCellValueFactory(param -> param.getValue().getValue().observableStartT);
+
         //ENDT
         JFXTreeTableColumn<Service, String> endT = new JFXTreeTableColumn<>("H. Final");
-        endT.setPrefWidth(250);
+        endT.setPrefWidth(150);
 
         endT.setCellValueFactory(param -> param.getValue().getValue().observableEndT);
+
         //TRANSIT
         JFXTreeTableColumn<Service, String> transit = new JFXTreeTableColumn<>("Tránsito");
         transit.setPrefWidth(250);
 
         transit.setCellValueFactory(param -> param.getValue().getValue().observableTransit);
 
+        //PRICING
+        JFXTreeTableColumn<Service, Number> pricing = new JFXTreeTableColumn<>("Precio");
+        pricing.setPrefWidth(150);
+
+        pricing.setCellValueFactory(param -> param.getValue().getValue().observablePricing);
+
         //DISTANCE
         JFXTreeTableColumn<Service, Number> distance = new JFXTreeTableColumn<>("Distancia");
-        distance.setPrefWidth(250);
+        distance.setPrefWidth(150);
 
         distance.setCellValueFactory(param -> param.getValue().getValue().observableDistance);
 
         //CLIENT DNI
-        JFXTreeTableColumn<Service, String> clientDNI = new JFXTreeTableColumn<>("DNI Cliente");
-        clientDNI.setPrefWidth(250);
+        JFXTreeTableColumn<Service, String> client = new JFXTreeTableColumn<>("Cliente");
+        client.setPrefWidth(250);
 
+        client.setCellValueFactory(param -> param.getValue().getValue().observableContractor);
+
+        //PAX
+        JFXTreeTableColumn<Service, Number> pax = new JFXTreeTableColumn<>("PAX");
+        pax.setPrefWidth(80);
+
+        pax.setCellValueFactory(param -> param.getValue().getValue().observablePax);
 
         for (Service reserve : displayReserves) {
             reserve.setObservable();
@@ -600,7 +810,7 @@ public class SupervisorViewController implements Initializable {
         }
 
         final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
-        reserveTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, distance);
+        reserveTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, pax, client, pricing, distance, transit);
         reserveTreeTable.setRoot(root);
         reserveTreeTable.setShowRoot(false);
     }

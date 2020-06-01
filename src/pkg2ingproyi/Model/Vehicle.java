@@ -1,6 +1,7 @@
 package pkg2ingproyi.Model;
 
 import org.json.simple.JSONObject;
+import pkg2ingproyi.Util.DBUtil;
 import pkg2ingproyi.Util.JSONSerializable;
 
 public class Vehicle implements JSONSerializable {
@@ -241,8 +242,35 @@ public class Vehicle implements JSONSerializable {
 		return currentKm - initialKm;
 	}
 
+	@Override
+	public String toJSONString() {
+		char adblueChar;
+		if (adblue)
+			adblueChar = 'T';
+		else
+			adblueChar = 'F';
+
+		return "{\"license_plate\":\""   + id        		 + '\"' +
+				",\"axis_count\":\""     + axisCount         + '\"' +
+				",\"wheel_count\":\""    + wheel_count       + '\"' +
+				",\"build_date\":\""     + buildDate         + '\"' +
+				",\"acquire_date\":\""   + acquireDate       + '\"' +
+				",\"frame\":\""   		 + frame             + '\"' +
+				",\"bodywork\":\""       + bodywork          + '\"' +
+				",\"distance\":"         + fuelTank          +
+				",\"vehicle_name\":\""   + nick		         + '\"' +
+				",\"vehicle_type\":\""   + vehicleType       + '\"' +
+				",\"fuel_type\":\""      + fuelType		     + '\"' +
+				",\"adblue\":\""         + adblueChar        + '\"' +
+				",\"pax_capacity\":\""   + paxCapacity       + '\"' +
+				",\"department_id\":\""  + departmentId      + '\"' +
+				'}';
+	}
+
 	public Vehicle(JSONObject object) {
 		jsonParse(object);
+		buildDate 	= DBUtil.fixDateFormat(buildDate);
+		acquireDate = DBUtil.fixDateFormat(acquireDate);
 	}
 
 	@Override
