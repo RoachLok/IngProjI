@@ -67,7 +67,6 @@ public class SupervisorViewController implements Initializable {
 
     /****** ----- TREEVIEWS COMMON ----- ******/
     private ObservableList<Service> observableServices;
-    private ArrayList<Service> serviceListHolder; //Temp until treetable updating gets fixed.
 
     /**** RESERVES VIEW ELEMENTS *****/
     @FXML
@@ -217,8 +216,7 @@ public class SupervisorViewController implements Initializable {
                     rawData -> Platform.runLater(() -> {
                         Notifications.create().title("Reserves Loaded").text("Reservas cargadas desde la base de datos.").showInformation();
                         try { //TODO Investigate treetable updating.
-                            serviceListHolder = (new JSONCastedList<>(rawData, Service.class));
-                            initReservesTableView(serviceListHolder);
+                            initReservesTableView(new JSONCastedList<>(rawData, Service.class));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -252,8 +250,7 @@ public class SupervisorViewController implements Initializable {
                     rawData -> Platform.runLater(() -> {
                         Notifications.create().title("Services Loaded").text("Servicios cargados desde la base de datos.").showInformation();
                         try {
-                            serviceListHolder = new JSONCastedList<>(rawData, Service.class);
-                            initServicesTableView(serviceListHolder);
+                            initServicesTableView(new JSONCastedList<>(rawData, Service.class));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -362,12 +359,13 @@ public class SupervisorViewController implements Initializable {
 
     /*****  ------------ MAIN CONTAINER METHODS IMPLEMENTATION ------------  *****/
     private void addTab(Pane pane, String tabTitle) {
-        if (openTabs.contains(tabTitle)){
+        if (openTabs.contains(tabTitle)) { //If tab exists, creates replacement tab and replaces old with new.
             int indexTab = openTabs.indexOf(tabTitle);
-            Tab tabExists = tabPane.getTabs().get(indexTab+1);
-            selectionModel.select(tabExists);
-        }
-        else {
+            Tab replacementTab = new Tab(tabTitle);
+            replacementTab.setContent(pane);
+            tabPane.getTabs().set(indexTab + 1, replacementTab);
+            selectionModel.select(indexTab + 1);
+        } else {
             Tab tab = new Tab(tabTitle);
             tab.setContent(pane);
             tabPane.getTabs().add(tab);
@@ -418,9 +416,9 @@ public class SupervisorViewController implements Initializable {
     }
 
     //Manually updates a TreeTable for given Services. //TODO Temporary?
-    private void updateTreeTable() {
+    private void updateTreeTable(ArrayList<Service> displayServices) {
         observableServices.remove(0, observableServices.size()); //Empty current treeTable.
-        for (Service service : serviceListHolder) {
+        for (Service service : displayServices) {
             service.setObservable();
             observableServices.add(service);
         }
@@ -973,7 +971,7 @@ public class SupervisorViewController implements Initializable {
 
         pax.setCellValueFactory(param -> param.getValue().getValue().observablePax);
 
-        updateTreeTable();
+        updateTreeTable(displayReserves);
 
         final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
         reserveTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, pax, client, pricing, distance, transit);
@@ -1051,7 +1049,7 @@ public class SupervisorViewController implements Initializable {
 
         pax.setCellValueFactory(param -> param.getValue().getValue().observablePax);
 
-        updateTreeTable();
+        updateTreeTable(displayServices);
 
         final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
         servicesTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, pax, client, pricing, distance, transit);
