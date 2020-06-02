@@ -38,7 +38,7 @@ public class NetworkPUTRequester extends Thread {
             if (urlConnection.getResponseCode() != 200)
                 conChecker.onDataFail();
             else {
-                Platform.runLater(() -> Notifications.create().title("Reserve Accepted").text("La reserva con ID: '" + objectId + "' fue aceptada correctamente.").showConfirm());
+                Platform.runLater(() -> Notifications.create().title("Reserve Accepted").text("El servicio con ID: '" + objectId + "' fue modificado correctamente.").showConfirm());
             }
         } catch (Exception e) {
             e.printStackTrace();
