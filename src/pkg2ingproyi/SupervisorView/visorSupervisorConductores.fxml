@@ -72,7 +72,7 @@
                                                 <Blend />
                                              </effect>
                                           </Label>
-                                          <Label alignment="BOTTOM_RIGHT" prefHeight="42.0" prefWidth="82.0" text="Teléfono:" textAlignment="CENTER" textFill="#4b4b4b">
+                                          <Label alignment="BOTTOM_RIGHT" prefHeight="42.0" prefWidth="82.0" text="Usuario:" textAlignment="CENTER" textFill="#4b4b4b">
                                              <font>
                                                 <Font size="15.0" />
                                              </font>

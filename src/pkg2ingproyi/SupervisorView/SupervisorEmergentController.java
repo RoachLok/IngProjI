@@ -8,7 +8,11 @@ import javafx.fxml.Initializable;
 import javafx.stage.Stage;
 import org.controlsfx.control.Notifications;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+
+import pkg2ingproyi.Main;
+import pkg2ingproyi.Model.Driver;
 import pkg2ingproyi.Model.Vehicle;
 import pkg2ingproyi.Util.*;
 
@@ -67,7 +71,16 @@ public class SupervisorEmergentController implements Initializable {
     }
 
     public void handleUserRegistration(javafx.event.ActionEvent actionEvent) {
-        Notifications.create().title("Feature to be implemented").text("Esta característica aun no ha sido implementada.").showError();
+            Driver newDriver = new Driver (
+                usernameField.getText(),
+                passwordField.getText(),
+                nameField.getText(),
+                surnameField.getText(),
+                dniField.getText(),
+                adminField.getText(),
+                new ArrayList<>()
+            );
+
     }
 
     public void cancelUserRegistration(javafx.event.ActionEvent actionEvent) {
@@ -76,25 +89,43 @@ public class SupervisorEmergentController implements Initializable {
     }
 
     public void handleVehicleRegistration(javafx.event.ActionEvent actionEvent) {
+        int newaxis = 0;
+        int newwheel = 0;
+        int newpax = 0;
+        int newpermission = 0;
+        int newdeposit = 0;
+        double newconsumo = 0;
+        double newinitialKm = 0;
+        double newkilometers = 0;
+        if (axis.getText() != null){ newaxis = Integer.parseInt(axis.getText());}
+        if (wheel.getText() != null){newwheel = Integer.parseInt(wheel.getText());}
+        if (pax.getText() != null){newpax = Integer.parseInt(pax.getText());}
+        if (pax.getText() != null){newpermission = Integer.parseInt(permission.getText());}
+        if (pax.getText() != null){newdeposit = Integer.parseInt(deposit.getText());}
+        if (pax.getText() != null){newconsumo = Double.parseDouble(consumo.getText());}
+        if (pax.getText() != null){newinitialKm = Double.parseDouble(initialKm.getText());}
+        if (pax.getText() != null){newkilometers= Double.parseDouble(kilometers.getText());}
+
+
         Vehicle nuevoVehiculo = new Vehicle(
                 id.getText(),
                 chasis.getText(),
                 brand.getText(),
-                Integer.parseInt(axis.getText()),
-                Integer.parseInt(wheel.getText()),
-                Integer.parseInt(pax.getText()),
+                newaxis,
+                newwheel,
+                newpax,
                 builtDate.getText(),
                 AcquiredDate.getText(),
-                Integer.parseInt(permission.getText()),
+                newpermission,
                 model.getText(),
                 vehicleType.getText(),
                 fuelType.getText(),
                 false,
-                Integer.parseInt(deposit.getText()),
-                Double.parseDouble(consumo.getText()),
-                Double.parseDouble(initialKm.getText()),
-                Double.parseDouble(kilometers.getText()),
-                null
+                newdeposit,
+                newconsumo,
+                newinitialKm,
+                newkilometers,
+                Main.appUser.getDptId()
         );
         NetworkPOSTRequester networkPOSTRequester = new NetworkPOSTRequester(APIRoutes.VEHICLES, nuevoVehiculo.toJSONString(), () -> Platform.runLater(() -> Notifications.create().title("").text("").showInformation()));
         networkPOSTRequester.start();
