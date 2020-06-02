@@ -140,7 +140,10 @@
                         </Lighting>
                      </effect>
                   </GridPane>
-               </content></TitledPane>
+               </content>
+               <StackPane.margin>
+                  <Insets bottom="10.0" />
+               </StackPane.margin></TitledPane>
          </children>
       </StackPane>
    </center>
