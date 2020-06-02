@@ -24,6 +24,7 @@ import javafx.util.converter.LocalDateTimeStringConverter;
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.control.textfield.TextFields;
+import org.fxmisc.wellbehaved.event.EventHandlerHelper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -66,6 +67,7 @@ public class SupervisorViewController implements Initializable {
 
     /****** ----- TREEVIEWS COMMON ----- ******/
     private ObservableList<Service> observableServices;
+    private ArrayList<Service> serviceListHolder; //Temp until treetable updating gets fixed.
 
     /**** RESERVES VIEW ELEMENTS *****/
     @FXML
@@ -131,7 +133,16 @@ public class SupervisorViewController implements Initializable {
 
     /**** SERVICES VIEW ELEMENTS ****/
     @FXML
-    public JFXTreeTableView<Service> serviceTreeTable;
+    public JFXTreeTableView<Service> servicesTreeTable;
+    @FXML
+    public TitledPane mountingPane;
+    @FXML
+    public JFXComboBox<String> mountServiceChauffCombo;
+    @FXML
+    public JFXComboBox<String> mountServiceVehicleCombo;
+    @FXML
+    public JFXTextArea mountServiceIndicationsArea;
+
 
     /**** MONTAJES VIEW ELEMENTS ****/
     @FXML
@@ -141,6 +152,7 @@ public class SupervisorViewController implements Initializable {
     @FXML
     public AnchorPane montajeInfoPanel;
 
+    private ArrayList<Service> globalMounted;
     private String chosenDate, todayDate;
 
     /***** CORE CODE ELEMENTS *****/
@@ -191,7 +203,7 @@ public class SupervisorViewController implements Initializable {
         if (vehicleList != null) {
             NetworkGETRequester vehicleGETRequest = new NetworkGETRequester(APIRoutes.VEHICLES,
                 rawData -> {
-                    Platform.runLater(() -> Notifications.create().title("Data Loaded").text("Archivos cargados desde la base de datos.").showInformation());
+                    Platform.runLater(() -> Notifications.create().title("Vehicles Loaded").text("Vehículos cargados desde la base de datos.").showInformation());
                     drawVehicles(new JSONCastedList<>(rawData, Vehicle.class));
                 });
 
@@ -200,6 +212,23 @@ public class SupervisorViewController implements Initializable {
 
         /*** -- RESERVE VIEW -- ***/
         if (reserveTreeTable != null) {
+            //Service queering and displaying. //TODO This can be optimized a lot.
+            NetworkGETRequester reservesGETRequest = new NetworkGETRequester(APIRoutes.RESERVES,
+                    rawData -> Platform.runLater(() -> {
+                        Notifications.create().title("Reserves Loaded").text("Reservas cargadas desde la base de datos.").showInformation();
+                        try { //TODO Investigate treetable updating.
+                            serviceListHolder = (new JSONCastedList<>(rawData, Service.class));
+                            initReservesTableView(serviceListHolder);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        reserveTreeTable.getSelectionModel().select(0);
+                        updateOldFields(0);
+                        progressBar.setVisible(false);
+                    }));
+
+            reservesGETRequest.start();
+
             //TextField auto completions.
             String[] locationsMap = { "ATOCHA, MADRID", "MADRID", "BARCELONA", "BARAJAS, MADRID APTO.", "EL PRAT, BARCELONA APTO.", "HOTEL B&B MADRID CENTRO",
                                       "SEVILLA", "TOLEDO", "HOTEL NOVOTEL, MADRID", "HOTEL SARDINERO, MADRID", "HOTEL ZENIT ABEBA, MADRID",
@@ -215,25 +244,55 @@ public class SupervisorViewController implements Initializable {
             String[] clientsMap = {"Will Ing Topay"};
             TextFields.bindAutoCompletion( newReserveClientLbl, clientsMap );
             TextFields.bindAutoCompletion( oldReserveClientLbl, clientsMap );
-
-            //Service displaying.
-            ArrayList<Service> displayReserves;
-            displayReserves = admin.getReserves();
-            initReservesTableView(displayReserves);
-            reserveTreeTable.getSelectionModel().select(0);
-            updateOldFields(0);
         }
 
         /*** -- SERVICES VIEW -- ***/
-        if (serviceTreeTable != null) {
-            ArrayList<Service> displayServices;
-            displayServices = admin.getReserves();
-            initServicesTableView(displayServices);
-            reserveTreeTable.getSelectionModel().select(0);
+        if (servicesTreeTable != null) {
+            NetworkGETRequester servicesGETRequest = new NetworkGETRequester(APIRoutes.SERVICES,
+                    rawData -> Platform.runLater(() -> {
+                        Notifications.create().title("Services Loaded").text("Servicios cargados desde la base de datos.").showInformation();
+                        try {
+                            serviceListHolder = new JSONCastedList<>(rawData, Service.class);
+                            initServicesTableView(serviceListHolder);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        servicesTreeTable.getSelectionModel().select(0);
+                        progressBar.setVisible(false);
+                    }));
+
+            servicesGETRequest.start();
+
+            NetworkGETRequester networkGETRequester = new NetworkGETRequester(APIRoutes.VEHICLES,
+                    rawData -> {
+                            ArrayList<String> plates = new ArrayList<>();
+                            for (Vehicle vehicle :  new JSONCastedList<>(rawData, Vehicle.class))
+                                plates.add(vehicle.getId());
+                            mountServiceVehicleCombo.setItems(FXCollections.observableArrayList(plates));
+                    });
+            networkGETRequester.start();
+
+            ArrayList<String> drivers = new ArrayList<>();
+
+            drivers.add(admin.getDriver(0).getName());
+            drivers.add(admin.getDriver(1).getName());
+
+            mountServiceChauffCombo.setItems(FXCollections.observableArrayList(drivers));
         }
 
         /*** -- MONTAJE VIEW -- ***/
         if (montajeTreeTable != null) {
+            NetworkGETRequester networkGETRequester = new NetworkGETRequester(APIRoutes.MONTAJES,
+                    rawData -> Platform.runLater(() -> {
+                        try {
+                            globalMounted = new JSONCastedList<>(rawData, Service.class);
+                            updateMontajeTreeTable(globalMounted);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }));
+            networkGETRequester.run();
+
             //DatePicker init with current date.
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
             LocalDateTime now = LocalDateTime.now();
@@ -297,8 +356,6 @@ public class SupervisorViewController implements Initializable {
             montajeTreeTable.setRoot(root);
             montajeTreeTable.setShowRoot(false);
 
-            updateMontajeTreeTable();
-
             montajeTreeTable.getSelectionModel().select(0);
         }
     }
@@ -316,8 +373,7 @@ public class SupervisorViewController implements Initializable {
             tabPane.getTabs().add(tab);
             openTabs.add(tabTitle);
             selectionModel.select(tab);
-            int indexTabE = openTabs.indexOf(tabTitle);
-            tab.setOnCloseRequest(event -> openTabs.remove(indexTabE));
+            tab.setOnCloseRequest(event -> openTabs.remove(tabTitle));
         }
     }
 
@@ -359,6 +415,25 @@ public class SupervisorViewController implements Initializable {
         stage.setTitle(stageTitle);
         stage.setScene(scene);
         stage.show();
+    }
+
+    //Manually updates a TreeTable for given Services. //TODO Temporary?
+    private void updateTreeTable() {
+        observableServices.remove(0, observableServices.size()); //Empty current treeTable.
+        for (Service service : serviceListHolder) {
+            service.setObservable();
+            observableServices.add(service);
+        }
+        if (reserveTreeTable != null) {
+            final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
+            reserveTreeTable.setRoot(root);
+            reserveTreeTable.refresh();
+        }
+        if (servicesTreeTable != null) {
+            final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
+            servicesTreeTable.setRoot(root);
+            servicesTreeTable.refresh();
+        }
     }
 
     /*********  ------------ DRIVER VIEW METHODS IMPLEMENTATION ------------  *********/
@@ -431,7 +506,7 @@ public class SupervisorViewController implements Initializable {
     }
 
     public boolean isValidDate(String startDateStr, String arriveDateStr) {
-        if (arriveDateStr.equals(""))
+        if (arriveDateStr == null)
             return true;
 
         return arriveDateStr.compareTo(startDateStr) > 0;
@@ -452,11 +527,11 @@ public class SupervisorViewController implements Initializable {
         else {
             //Format dates from DatePicker and TimePicker
             String startDateStr  = DBUtil.fixDateFormat(newStartDate.getValue().toString() + ' ' + newStartTime.getValue().toString() + ":00");
-            String arriveDateStr = "";
+            String arriveDateStr = null;
             if (newArriveDate.getValue() != null && newArriveTime.getValue() != null)
-                DBUtil.fixDateFormat(newArriveDate.getValue().toString() + ' ' + newArriveTime.getValue().toString() + ":00");
+                arriveDateStr = DBUtil.fixDateFormat(newArriveDate.getValue().toString() + ' ' + newArriveTime.getValue().toString() + ":00");
             if (!isValidDate(startDateStr, arriveDateStr)) {
-                Notifications.create().title("Bad Time Given").text("La hora de llegada no puede ser mayor a la de comienzo.").showError();
+                Notifications.create().title("Bad Time Given").text("La hora de llegada no puede ser anterior a la de comienzo.").showError();
                 return;
             }
 
@@ -541,8 +616,9 @@ public class SupervisorViewController implements Initializable {
         oldStartDate.setValue(LocalDate.parse(startStr.substring(0, 10), DateTimeFormatter.ISO_LOCAL_DATE));
         oldStartTime.setValue(LocalTime.parse(startStr.substring(11), DateTimeFormatter.ISO_LOCAL_TIME));
 
-
         if (clickedReserve.getEndT() != null) {
+            if (clickedReserve.getEndT().equals(""))
+                return;
             String endStr = clickedReserve.getEndT().replace('/', '-');
             oldArriveDate.setValue(LocalDate.parse(endStr.substring(0, 10), DateTimeFormatter.ISO_LOCAL_DATE));
             oldArriveTime.setValue(LocalTime.parse(endStr.substring(11), DateTimeFormatter.ISO_LOCAL_TIME));
@@ -581,7 +657,7 @@ public class SupervisorViewController implements Initializable {
     public void acceptReserveAsService(int reserveIndex) {
         Service clickedReserve = observableServices.get(reserveIndex);
         if (clickedReserve.getEndT().equals("")) {
-            Notifications.create().title("Reserve Missing Fields").text("").showError();
+            Notifications.create().title("Reserve Missing Fields").text("Falta la hora de llegada en la reserva.").showError();
             return;
         }
 
@@ -597,7 +673,6 @@ public class SupervisorViewController implements Initializable {
 
         clickedReserve.setReserve(false);
         clickedReserve.setAccepted(true);
-        Notifications.create().title("Reserve Accept Successful").text("La reserva ha sido aceptada como servicio.").showConfirm();
     }
 
     public void handleAcceptReserveRequest  () {
@@ -629,7 +704,7 @@ public class SupervisorViewController implements Initializable {
         String startDateStr  = DBUtil.fixDateFormat(oldStartDate.getValue().toString() + ' ' + oldStartTime.getValue().toString() + ":00");
         String arriveDateStr = "";
         if (oldArriveDate.getValue() != null && oldArriveTime.getValue() != null)
-            DBUtil.fixDateFormat(oldArriveDate.getValue().toString() + ' ' + oldArriveTime.getValue().toString() + ":00");
+            arriveDateStr = DBUtil.fixDateFormat(oldArriveDate.getValue().toString() + ' ' + oldArriveTime.getValue().toString() + ":00");
         if (!isValidDate(startDateStr, arriveDateStr)) {
             Notifications.create().title("Bad Time Given").text("La hora de llegada no puede ser mayor a la de comienzo.").showError();
             return;
@@ -706,8 +781,85 @@ public class SupervisorViewController implements Initializable {
     }
 
     /*********  ------------ SERVICES VIEW METHODS IMPLEMENTATION ------------  *********/
-    public void updateServiceInfoPane() {
-        admin.getDriver(0).servicesCount();
+    public void handleMountServiceRequest() {
+        if (!mountingPane.isExpanded())
+            mountingPane.setExpanded(true);
+    }
+
+    private void revertService(int serviceIndex) {
+        Service selectedService = observableServices.get(serviceIndex);
+
+        NetworkPUTRequester networkPUTRequester = new NetworkPUTRequester(APIRoutes.SERVICES, selectedService.getIdentifier(), "{\"STATUS\":\"1\"}",
+                () -> Notifications.create().title("DB Connection Error.").text("Error al revertir el servicio en la BD.").showError());
+        networkPUTRequester.start();
+
+        //Update TreeTable
+        observableServices.remove(serviceIndex);
+
+        final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
+        servicesTreeTable.setRoot(root);
+
+        selectedService.setReserve (true );
+        selectedService.setAccepted(false);
+    }
+
+    public void handleRevertServiceRequest() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Revertir Servicio");
+        alert.setHeaderText("¿Está seguro de que desea revertir el Servicio?");
+        alert.setContentText("Se eliminará de Servicios y aparecerá en Reserva");
+
+        Optional<ButtonType> confirmButton = alert.showAndWait();
+        if (confirmButton.isPresent() && confirmButton.get() == ButtonType.OK) {
+            revertService(servicesTreeTable.getSelectionModel().getSelectedIndex());
+        }
+    }
+
+    private void mountService(int selectedService) throws InterruptedException {
+        Service mountService = observableServices.get(selectedService);
+
+        mountService.setDriverName  ( mountServiceChauffCombo     .getValue() );
+        mountService.setVehicleName ( mountServiceVehicleCombo    .getValue() );
+        mountService.setIndications ( mountServiceIndicationsArea .getText()  );
+        mountService.setReserve     (false);
+        mountService.setAccepted    (false);
+        mountService.setMontaje     (true);
+
+        NetworkDELETERequester networkDELETERequester = new NetworkDELETERequester(APIRoutes.SERVICES, mountService.getIdentifier(), false,
+                () -> Notifications.create().title("Wrong connection to DB").text("El elemento a editar no es accesible en la BD."));
+
+        networkDELETERequester.start();
+        networkDELETERequester.join();
+
+        //Replace with new reserve.
+        NetworkPOSTRequester networkPOSTRequester = new NetworkPOSTRequester(APIRoutes.RESERVES, mountService.toJSONString(),
+                () -> Notifications.create().title("Wrong connection to DB").text("El elemento se eliminó de la BD pero hubo un problema al reemplazarlo."));
+
+        networkPOSTRequester.start();
+
+        //Update TreeTable
+        observableServices.remove(selectedService);
+
+        final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
+        servicesTreeTable.setRoot(root);
+
+        Notifications.create().title("Service Mounted").text("El servicio ha sido montado con éxito.").showConfirm();
+    }
+
+    public void handleConfirmMountRequest() throws InterruptedException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Montar Servicio");
+        alert.setHeaderText("¿Está seguro de que desea montar el Servicio?");
+        alert.setContentText("El conductor será notificado del servicio.");
+
+        Optional<ButtonType> confirmButton = alert.showAndWait();
+        if (confirmButton.isPresent() && confirmButton.get() == ButtonType.OK) {
+            mountService(servicesTreeTable.getSelectionModel().getSelectedIndex());
+        }
+    }
+
+    public void handleCancelServiceMountRequest() {
+        mountingPane.setExpanded(false);
     }
 
     /*********  ------------ MONTAJE VIEW METHODS IMPLEMENTATION ------------  *********/
@@ -727,9 +879,9 @@ public class SupervisorViewController implements Initializable {
         montajeInfoPanel.getChildren().setAll(newLoadedPane);
     }
 
-    private void updateMontajeTreeTable() {
+    private void updateMontajeTreeTable(List<Service> services) {
         observableServices.remove(0, observableServices.size()); //Empty current treeTable.
-        for (Service aceptado : admin.getMontajes())
+        for (Service aceptado : services)
             if (aceptado.getStartT().substring(0, 10).equals(chosenDate.replace('-', '/'))) { //Take only date matching services.
                 aceptado.setObservable();
                 observableServices.add(aceptado);
@@ -742,7 +894,7 @@ public class SupervisorViewController implements Initializable {
 
     public void datePickerUpdate() {
         chosenDate =  datePicker.getValue().toString();
-        updateMontajeTreeTable();
+        updateMontajeTreeTable(globalMounted);
     }
 
     public void handleMontajeTableClick() {
@@ -821,10 +973,7 @@ public class SupervisorViewController implements Initializable {
 
         pax.setCellValueFactory(param -> param.getValue().getValue().observablePax);
 
-        for (Service reserve : displayReserves) {
-            reserve.setObservable();
-            observableServices.add(reserve);
-        }
+        updateTreeTable();
 
         final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
         reserveTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, pax, client, pricing, distance, transit);
@@ -862,13 +1011,13 @@ public class SupervisorViewController implements Initializable {
 
         //START
         JFXTreeTableColumn<Service, String> startT = new JFXTreeTableColumn<>("H. Inicio");
-        startT.setPrefWidth(250);
+        startT.setPrefWidth(150);
 
         startT.setCellValueFactory(param -> param.getValue().getValue().observableStartT);
 
         //ENDT
         JFXTreeTableColumn<Service, String> endT = new JFXTreeTableColumn<>("H. Final");
-        endT.setPrefWidth(250);
+        endT.setPrefWidth(150);
 
         endT.setCellValueFactory(param -> param.getValue().getValue().observableEndT);
 
@@ -878,25 +1027,35 @@ public class SupervisorViewController implements Initializable {
 
         transit.setCellValueFactory(param -> param.getValue().getValue().observableTransit);
 
+        //PRICING
+        JFXTreeTableColumn<Service, Number> pricing = new JFXTreeTableColumn<>("Precio");
+        pricing.setPrefWidth(150);
+
+        pricing.setCellValueFactory(param -> param.getValue().getValue().observablePricing);
+
         //DISTANCE
         JFXTreeTableColumn<Service, Number> distance = new JFXTreeTableColumn<>("Distancia");
-        distance.setPrefWidth(250);
+        distance.setPrefWidth(150);
 
         distance.setCellValueFactory(param -> param.getValue().getValue().observableDistance);
 
         //CLIENT DNI
-        JFXTreeTableColumn<Service, String> clientDNI = new JFXTreeTableColumn<>("DNI Cliente");
-        clientDNI.setPrefWidth(250);
+        JFXTreeTableColumn<Service, String> client = new JFXTreeTableColumn<>("Cliente");
+        client.setPrefWidth(250);
 
+        client.setCellValueFactory(param -> param.getValue().getValue().observableContractor);
 
-        for (Service reserve : displayServices) {
-            reserve.setObservable();
-            observableServices.add(reserve);
-        }
+        //PAX
+        JFXTreeTableColumn<Service, Number> pax = new JFXTreeTableColumn<>("PAX");
+        pax.setPrefWidth(80);
 
-        final TreeItem<Service> root = new RecursiveTreeItem<Service>(observableServices, RecursiveTreeObject::getChildren);
-        reserveTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, distance);
-        reserveTreeTable.setRoot(root);
-        reserveTreeTable.setShowRoot(false);
+        pax.setCellValueFactory(param -> param.getValue().getValue().observablePax);
+
+        updateTreeTable();
+
+        final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
+        servicesTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, pax, client, pricing, distance, transit);
+        servicesTreeTable.setRoot(root);
+        servicesTreeTable.setShowRoot(false);
     }
 }
