@@ -10,17 +10,14 @@ public class APIRoutes {
     public final static String CHAUFFEUR    = baseUrl + "chauffeur" + dptQuery;
     public final static String DIET         = baseUrl + "diet"      + dptQuery;
     public final static String VEHICLES     = baseUrl + "vehicle"   + dptQuery;
+    public final static String ALL_SERVICES = baseUrl + "service"   + dptQuery;
     public final static String ACCOUNTANT   = baseUrl + "accountant"+ dptQuery;
     public final static String CLIENT       = baseUrl + "client"    + dptQuery;
     public final static String INVOICE      = baseUrl + "invoice"   + dptQuery;
 
 
-    //Service-Type MultiQueries
-    private final static String reserveQuery    = "/?q={\"$and\":[{\"department_id\":\""+ Main.appUser.getDptId() + "\"},{\"status\":\"1\"}]}";
-    private final static String serviceQuery    = "/?q={\"$and\":[{\"department_id\":\""+ Main.appUser.getDptId() + "\"},{\"status\":\"2\"}]}";
-    private final static String montajeQuery    = "/?q={\"$and\":[{\"department_id\":\""+ Main.appUser.getDptId() + "\"},{\"status\":\"3\"}]}";
-
-    public final static String RESERVES         = baseUrl + "service"   + dptQuery + reserveQuery;
-    public final static String SERVICES         = baseUrl + "service"   + dptQuery + serviceQuery;
-    public final static String MONTAJES         = baseUrl + "service"   + dptQuery + montajeQuery;
+    //Module Queries
+    public final static String RESERVES     = baseUrl + "demo/reserve" ; //Supports POST requests.
+    public final static String SERVICES     = baseUrl + "demo/service" ;
+    public final static String MONTAJES     = baseUrl + "demo/mounted" ;
 }

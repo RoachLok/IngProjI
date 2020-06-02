@@ -11,16 +11,11 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="574.0" prefWidth="1109.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.SupervisorView.SupervisorViewController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="500.0" minWidth="900.0" prefHeight="574.0" prefWidth="1109.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/8.0.181" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.SupervisorView.SupervisorViewController">
    <top>
       <HBox alignment="BOTTOM_LEFT" prefHeight="32.0" prefWidth="1109.0" BorderPane.alignment="CENTER">
          <children>
             <Pane prefHeight="26.0" prefWidth="5.0" />
-            <JFXButton graphicTextGap="5.0" onAction="#handleNewUserRequest" prefHeight="26.0" styleClass="supervisor-buttons" text="Montar Servicio">
-               <graphic>
-                  <FontAwesomeIconView glyphName="ADDRESS_BOOK_ALT" size="18" />
-               </graphic>
-            </JFXButton>
             <Region prefHeight="200.0" prefWidth="3.0" />
             <JFXButton graphicTextGap="5.0" onAction="#handleRemoveUserRequest" prefHeight="26.0" styleClass="supervisor-buttons" text="Eliminar Servicio">
                <graphic>
@@ -34,15 +29,15 @@
                </graphic>
             </JFXButton>
             <Region prefHeight="32.0" prefWidth="32.0" />
-            <JFXDatePicker fx:id="datePicker" onAction="#datePickerUpdate" editable="false" nodeOrientation="LEFT_TO_RIGHT" promptText="Selector de Fecha" />
+            <JFXDatePicker fx:id="datePicker" editable="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#datePickerUpdate" promptText="Selector de Fecha" />
          </children>
       </HBox>
    </top>
    <center>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <JFXTreeTableView fx:id="montajeTreeTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="240.0" minWidth="240.0" onMouseClicked="#handleMontajeTableClick" prefHeight="542.0" prefWidth="622.0" HBox.hgrow="ALWAYS" />
-            <ScrollPane hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="542.0" prefWidth="494.0" HBox.hgrow="NEVER">
+            <JFXTreeTableView fx:id="montajeTreeTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="240.0" minWidth="240.0" onMouseClicked="#handleMontajeTableClick" prefHeight="542.0" prefWidth="622.0" tableMenuButtonVisible="true" HBox.hgrow="ALWAYS" />
+            <ScrollPane hbarPolicy="NEVER" HBox.hgrow="NEVER">
                <content>
                   <AnchorPane fx:id="montajeInfoPanel" />
                </content>

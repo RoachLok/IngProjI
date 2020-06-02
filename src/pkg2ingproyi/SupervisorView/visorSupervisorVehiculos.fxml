@@ -45,9 +45,9 @@
             <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="584.0" prefWidth="484.0">
                <children>
                   <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="308.0" prefWidth="484.0" style="-fx-background-color: #ff7000;">
-                      <children>
-                          <FontAwesomeIconView glyphName="BUS" layoutX="170.0" layoutY="139.0" size="150" styleClass="black-glyph" wrappingWidth="145.0" />
-                      </children>
+                     <children>
+                        <FontAwesomeIconView glyphName="BUS" layoutX="170.0" layoutY="139.0" size="150" styleClass="black-glyph" wrappingWidth="145.0" />
+                     </children>
                   </Pane>
                   <HBox prefHeight="36.0" prefWidth="484.0">
                      <!--  style="-fx-background-color: #ff7000;"-->

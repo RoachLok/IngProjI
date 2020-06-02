@@ -12,7 +12,6 @@ import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.ResourceBundle;
 
-
 public class SupervisorInfoPanesController implements Initializable, Runnable {
     @FXML
     public Label pressure1, pressure2, pressure3, pressure4;
@@ -120,7 +119,6 @@ public class SupervisorInfoPanesController implements Initializable, Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
         }
     }
 }

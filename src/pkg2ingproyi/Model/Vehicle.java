@@ -1,11 +1,10 @@
 package pkg2ingproyi.Model;
 
-import javafx.beans.property.*;
 import org.json.simple.JSONObject;
+import pkg2ingproyi.Util.DBUtil;
 import pkg2ingproyi.Util.JSONSerializable;
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
-public class Vehicle extends RecursiveTreeObject<Vehicle> implements JSONSerializable {
+public class Vehicle implements JSONSerializable {
 	private String 	id;
 	private String 	bodywork;
 	private String 	frame;
@@ -25,24 +24,6 @@ public class Vehicle extends RecursiveTreeObject<Vehicle> implements JSONSeriali
 	private double	currentKm;
 	private String  departmentId;
 
-	public StringProperty observableID;
-	public StringProperty observablebody;
-	public StringProperty observableframe;
-	public IntegerProperty observableaxis;
-	public IntegerProperty observablewheel;
-	public IntegerProperty observablepax;
-	public StringProperty observablebuild;
-	public StringProperty observableacquired;
-	public StringProperty observablenick;
-	public StringProperty observabletype;
-	public BooleanProperty observableadblue;
-	public StringProperty observablefueltype;
-	public IntegerProperty observablepermission;
-	public IntegerProperty observablefuel;
-	public DoubleProperty observableconsume;
-	public DoubleProperty observableinitialKm;
-	public DoubleProperty observablecurrentKm;
-	public StringProperty observabledepartment;
 
 	public Vehicle(String id, int paxCapacity, int permission, String bodywork, String frame) {
 		this.id 			= id;
@@ -74,30 +55,6 @@ public class Vehicle extends RecursiveTreeObject<Vehicle> implements JSONSeriali
 		this.initialKm		= initialKm;
 		this.currentKm		= currentKm;
 		this.departmentId	= departmentId;
-	}
-
-	public void setObservable() {
-		if (id == null)
-			return;
-
-		observableID = new SimpleStringProperty(id);
-		observablebody = new SimpleStringProperty(bodywork);
-		observableframe  = new SimpleStringProperty(frame);
-		observableaxis = new SimpleIntegerProperty(axisCount);
-		observablewheel = new SimpleIntegerProperty(wheel_count);
-		observablepax = new SimpleIntegerProperty(paxCapacity);
-		observablebuild = new SimpleStringProperty(buildDate);
-		observableacquired = new SimpleStringProperty(acquireDate);
-		observablenick = new SimpleStringProperty(nick);
-		observabletype = new SimpleStringProperty(vehicleType);
-		observableadblue = new SimpleBooleanProperty(adblue);
-		observablefueltype = new SimpleStringProperty(fuelType);
-		observablepermission = new SimpleIntegerProperty(permission);
-		observablefuel = new SimpleIntegerProperty(fuelTank);
-		observableconsume = new SimpleDoubleProperty(literPerKm);
-		observableinitialKm = new SimpleDoubleProperty(initialKm);
-		observablecurrentKm = new SimpleDoubleProperty(currentKm);
-		observabledepartment = new SimpleStringProperty(departmentId);
 	}
 
 	public String getId() {
@@ -285,8 +242,35 @@ public class Vehicle extends RecursiveTreeObject<Vehicle> implements JSONSeriali
 		return currentKm - initialKm;
 	}
 
+	@Override
+	public String toJSONString() {
+		char adblueChar;
+		if (adblue)
+			adblueChar = 'T';
+		else
+			adblueChar = 'F';
+
+		return "{\"license_plate\":\""   + id        		 + '\"' +
+				",\"axis_count\":\""     + axisCount         + '\"' +
+				",\"wheel_count\":\""    + wheel_count       + '\"' +
+				",\"build_date\":\""     + buildDate         + '\"' +
+				",\"acquire_date\":\""   + acquireDate       + '\"' +
+				",\"frame\":\""   		 + frame             + '\"' +
+				",\"bodywork\":\""       + bodywork          + '\"' +
+				",\"distance\":"         + fuelTank          +
+				",\"vehicle_name\":\""   + nick		         + '\"' +
+				",\"vehicle_type\":\""   + vehicleType       + '\"' +
+				",\"fuel_type\":\""      + fuelType		     + '\"' +
+				",\"adblue\":\""         + adblueChar        + '\"' +
+				",\"pax_capacity\":\""   + paxCapacity       + '\"' +
+				",\"department_id\":\""  + departmentId      + '\"' +
+				'}';
+	}
+
 	public Vehicle(JSONObject object) {
 		jsonParse(object);
+		buildDate 	= DBUtil.fixDateFormat(buildDate);
+		acquireDate = DBUtil.fixDateFormat(acquireDate);
 	}
 
 	@Override

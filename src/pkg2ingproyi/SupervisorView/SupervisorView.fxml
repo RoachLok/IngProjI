@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.effect.Light.Distant?>
@@ -15,9 +16,9 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1109.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.SupervisorView.SupervisorViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="450.0" minWidth="700.0" prefHeight="650.0" prefWidth="1110.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/8.0.181" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.SupervisorView.SupervisorViewController">
    <top>
-      <BorderPane BorderPane.alignment="CENTER">
+      <BorderPane minWidth="700.0" BorderPane.alignment="CENTER">
          <center>
             <HBox prefHeight="28.0" prefWidth="600.0">
                <children>
@@ -52,6 +53,9 @@
                      </graphic>
                   </JFXButton>
                </children>
+               <padding>
+                  <Insets left="18.0" top="2.0" />
+               </padding>
             </HBox>
          </center>
          <right>
@@ -64,16 +68,6 @@
          <bottom>
             <Line endX="330.0" startX="-700.0" stroke="#ff5b13" BorderPane.alignment="CENTER" />
          </bottom>
-         <left>
-            <Label text="       " BorderPane.alignment="CENTER" />
-         </left>
-         <top>
-            <Label prefHeight="0.0" prefWidth="28.0" text=" " BorderPane.alignment="CENTER">
-               <font>
-                  <Font size="1.0" />
-               </font>
-            </Label>
-         </top>
       </BorderPane>
    </top>
    <center>

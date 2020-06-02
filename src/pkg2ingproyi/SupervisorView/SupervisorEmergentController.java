@@ -105,3 +105,4 @@ public class SupervisorEmergentController implements Initializable {
         stage.close();
     }
 }
+
