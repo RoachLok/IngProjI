@@ -897,24 +897,22 @@ public class SupervisorViewController implements Initializable {
 
     /*********  ------------ MONTAJE VIEW METHODS IMPLEMENTATION ------------  *********/
     private void loadIntoInfoScrollPane(int realTime) { //Loads a view into the montajeView infoPane.
-        if (observableServices.isEmpty())
+        if (observableServices.isEmpty() || realTime > 0) {
+            montajeInfoPanel.getChildren().setAll(new AnchorPane());
             return;
+        }
 
         String pane;
         if (realTime == 0)
             pane = "supervisorMontajeRealtime.fxml";
-        else if (realTime > 0)
-            return;
         else
             pane = "supervisorMontajeRegisters.fxml";
 
-        Node newLoadedPane =  null;
         try {
-            newLoadedPane = FXMLLoader.load(getClass().getResource(pane));
+            montajeInfoPanel.getChildren().setAll((Node) FXMLLoader.load(getClass().getResource(pane)));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        montajeInfoPanel.getChildren().setAll(newLoadedPane);
     }
 
     private void updateMontajeTreeTable(List<Service> services) {
