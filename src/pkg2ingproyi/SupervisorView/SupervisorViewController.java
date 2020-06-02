@@ -48,6 +48,8 @@ public class SupervisorViewController implements Initializable {
     /**** DRIVER MENU VIEW ELEMENTS *****/
     @FXML
     private JFXListView<HBox> driverList;
+    @FXML
+    public JFXTextField DriverNameID;
 
     /**** DRIVER MENU VIEW ELEMENTS *****/
     @FXML
@@ -142,11 +144,43 @@ public class SupervisorViewController implements Initializable {
     private ArrayList<Service> globalMounted;
     private String chosenDate, todayDate;
 
+    /***** VEHICLE VIEW ELEMENTS *****/
+    @FXML
+    public JFXTextField CarFrameID;
+    @FXML
+    public JFXTextField CarBrand;
+    @FXML
+    public JFXTextField CarModelID;
+    @FXML
+    public JFXTextField CarEnrollmentID;
+    @FXML
+    public JFXTextField CarEmissionsID;
+    @FXML
+    public JFXTextField CarConsumePerKilometerID;
+    @FXML
+    public JFXTextField CarKilometerID;
+    @FXML
+    public JFXTextField CarChairsID;
+    @FXML
+    public JFXTextField CarDepositID;
+    @FXML
+    public JFXTextField CarBuilt;
+    @FXML
+    public JFXTextField CarAdquired;
+
     /***** CORE CODE ELEMENTS *****/
     private final Admin admin = (Admin) Main.appUser;
 
     /***** TAB MANAGEMENT *****/
     private final List<String> openTabs = new ArrayList<>();
+
+    /***** VEHICLE REMOVAL MANAGEMENT *****/
+    private String vehiculoMarcado = null;
+
+    /***** DRIVER REMOVAL MANAGEMENT *****/
+    private String[] conductorMarcado = new String[2];
+    private String userMarcado = null;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -168,20 +202,32 @@ public class SupervisorViewController implements Initializable {
 
         /*** -- DRIVER VIEW -- ***/
         if (driverList != null) {
-            for (int z = 0; z < 10; z++) {
-                for (int i = 0; i < admin.driversCount(); i++) {
-                    Driver driver = admin.getDriver(i);
-                    Label label = new Label("   Conductor " + (i + 1) + "   --   Nombre: " + driver.getName() + "   --   Apellido: " + driver.getSurname() + "");
-                    FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.USER_SECRET);
-                    icon.setGlyphSize(20);
-                    CheckBox chckbox = new CheckBox();
-                    Region region1 = new Region();
-                    HBox.setHgrow(region1, Priority.ALWAYS);
+            // for (int z = 0; z < 10; z++) {
+            for (int i = 0; i < admin.driversCount(); i++) {
+                Driver driver = admin.getDriver(i);
+                Label label = new Label("   DNI: " + driver.getDni());
+                Label label2 = new Label("    Nombre:   "+ driver.getName());
+                Label label3 = new Label("     Apellidos    "+driver.getSurname());
+                label.setMinWidth(150);
+                label2.setMinWidth(150);
+                label3.setMinWidth(150);
+                FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.USER_SECRET);
+                icon.setGlyphSize(20);
+                // CheckBox chckbox = new CheckBox();
+                Region region1 = new Region();
+                HBox.setHgrow(region1, Priority.ALWAYS);
 
-                    HBox listItem = new HBox(icon, label, region1, chckbox);
-                    driverList.getItems().add(listItem);
-                }
+                HBox listItem = new HBox(icon, label, label2, label3, region1);
+                driverList.getItems().add(listItem);
+                listItem.setOnMouseClicked(e ->{
+                    DriverNameID.setText(driver.getName());
+
+                    conductorMarcado[0] = driver.getName();
+                    conductorMarcado[1] = driver.getSurname();
+                    userMarcado = driver.getDni();
+                });
             }
+            // }
             driverList.getSelectionModel().select(0);
             updateDriverInfoPane(0);
         }
@@ -496,6 +542,25 @@ public class SupervisorViewController implements Initializable {
     }
 
     /*********  ------------ VEHICLE VIEW METHODS IMPLEMENTATION ------------  *********/
+
+    public void handleNewVehicleRequest    () throws IOException {
+        launchStage("SupervisorNuevoVehiculo.fxml", "Registro de Vehiculo");
+    }
+
+    public void handleRemoveVehicleRequest () throws InterruptedException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Eliminación vehículo");
+        alert.setHeaderText("¿Está seguro de que desea eliminar el vehículo con matrícula:" + vehiculoMarcado +"?");
+        alert.setContentText("El vehículo no podrá ser recuperado");
+        Optional<ButtonType> confirmButton = alert.showAndWait();
+        if (confirmButton.isPresent() && confirmButton.get() == ButtonType.OK) {
+            NetworkDELETERequester networkDELETERequester = new NetworkDELETERequester(APIRoutes.VEHICLES, vehiculoMarcado, false,
+                    () -> Notifications.create().title("Wrong connection to DB").text("El elemento a editar no es accesible en la BD."));
+
+            networkDELETERequester.start();
+            networkDELETERequester.join();
+        }
+    }
 
     public void handleVehicleListClick   () {
         updateVehicleInfoPane(vehicleList.getSelectionModel().getSelectedIndex());
