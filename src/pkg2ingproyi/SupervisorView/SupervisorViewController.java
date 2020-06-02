@@ -302,54 +302,99 @@ public class SupervisorViewController implements Initializable {
             //TreeTableView init
             observableServices = FXCollections.observableArrayList();
 
+            //ID
             JFXTreeTableColumn<Service, String> identifier = new JFXTreeTableColumn<>("ID");
             identifier.setPrefWidth(75);
 
             identifier.setCellValueFactory(param -> param.getValue().getValue().observableIdentifier);
 
-            JFXTreeTableColumn<Service, String> name = new JFXTreeTableColumn<>("Servicio");
-            name.setPrefWidth(300);
-
-            name.setCellValueFactory(param -> param.getValue().getValue().observableName);
-
+            //PICKUP
             JFXTreeTableColumn<Service, String> pickup = new JFXTreeTableColumn<>("Salida");
-            pickup.setPrefWidth(90);
+            pickup.setPrefWidth(250);
 
             pickup.setCellValueFactory(param -> param.getValue().getValue().observablePickup);
 
+            //ARRIVAL
             JFXTreeTableColumn<Service, String> arrival = new JFXTreeTableColumn<>("Llegada");
-            arrival.setPrefWidth(90);
+            arrival.setPrefWidth(250);
 
             arrival.setCellValueFactory(param -> param.getValue().getValue().observableArrival);
 
+            //START
             JFXTreeTableColumn<Service, String> startT = new JFXTreeTableColumn<>("H. Inicio");
-            startT.setPrefWidth(90);
+            startT.setPrefWidth(100);
 
             startT.setCellValueFactory(param -> param.getValue().getValue().observableStartT);
 
+            //ENDT
             JFXTreeTableColumn<Service, String> endT = new JFXTreeTableColumn<>("H. Final");
-            endT.setPrefWidth(90);
+            endT.setPrefWidth(100);
 
             endT.setCellValueFactory(param -> param.getValue().getValue().observableEndT);
 
-            JFXTreeTableColumn<Service, String> chauffeur = new JFXTreeTableColumn<>("Conductor");
-            chauffeur.setPrefWidth(100);
-
-            chauffeur.setCellValueFactory(param -> param.getValue().getValue().observableDriverName);
-
+            //TRANSIT
             JFXTreeTableColumn<Service, String> transit = new JFXTreeTableColumn<>("Tránsito");
-            transit.setPrefWidth(90);
+            transit.setPrefWidth(200);
 
             transit.setCellValueFactory(param -> param.getValue().getValue().observableTransit);
 
-            JFXTreeTableColumn<Service, String> vehicleName = new JFXTreeTableColumn<>("Vehículo");
-            vehicleName.setPrefWidth(100);
+            //PRICING
+            JFXTreeTableColumn<Service, Number> pricing = new JFXTreeTableColumn<>("Precio");
+            pricing.setPrefWidth(80);
 
-            vehicleName.setCellValueFactory(param -> param.getValue().getValue().observableVehicleName);
+            pricing.setCellValueFactory(param -> param.getValue().getValue().observablePricing);
 
+            //DISTANCE
+            JFXTreeTableColumn<Service, Number> distance = new JFXTreeTableColumn<>("Distancia");
+            distance.setPrefWidth(80);
+
+            distance.setCellValueFactory(param -> param.getValue().getValue().observableDistance);
+
+            //CLIENT DNI
+            JFXTreeTableColumn<Service, String> client = new JFXTreeTableColumn<>("Cliente");
+            client.setPrefWidth(100);
+
+            client.setCellValueFactory(param -> param.getValue().getValue().observableContractor);
+
+            //PAX
+            JFXTreeTableColumn<Service, Number> pax = new JFXTreeTableColumn<>("PAX");
+            pax.setPrefWidth(80);
+
+            pax.setCellValueFactory(param -> param.getValue().getValue().observablePax);
+
+            //INDICATIONS
+            JFXTreeTableColumn<Service, String> indications = new JFXTreeTableColumn<>("Indicaciones");
+            client.setPrefWidth(350);
+
+            indications.setCellValueFactory(param -> param.getValue().getValue().observableIndications);
+
+            //DRIVER
+            JFXTreeTableColumn<Service, String> driverName = new JFXTreeTableColumn<>("Conductor");
+            driverName.setPrefWidth(100);
+
+            driverName.setCellValueFactory(param -> param.getValue().getValue().observableDriverName);
+
+            //AUTHOR
+            JFXTreeTableColumn<Service, String> author = new JFXTreeTableColumn<>("Autor");
+            author.setPrefWidth(100);
+
+            author.setCellValueFactory(param -> param.getValue().getValue().observableAuthor);
+
+            //VEHICLE_ID
+            JFXTreeTableColumn<Service, String> vehicle = new JFXTreeTableColumn<>("Matrícula");
+            vehicle.setPrefWidth(100);
+
+            vehicle.setCellValueFactory(param -> param.getValue().getValue().observableVehicleName);
+
+            //DESC
+            JFXTreeTableColumn<Service, String> description = new JFXTreeTableColumn<>("Descripción");
+            description.setPrefWidth(250);
+
+            description.setCellValueFactory(param -> param.getValue().getValue().observableName);
 
             final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
-            montajeTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, chauffeur, vehicleName, transit);
+            montajeTreeTable.getColumns().setAll(identifier, description, driverName, vehicle, pickup, arrival, startT, endT,
+                                                    pax, client, indications, pricing, distance, transit, author);
             montajeTreeTable.setRoot(root);
             montajeTreeTable.setShowRoot(false);
 
@@ -365,7 +410,7 @@ public class SupervisorViewController implements Initializable {
             replacementTab.setContent(pane);
             tabPane.getTabs().set(indexTab + 1, replacementTab);
             selectionModel.select(indexTab + 1);
-        } else {
+        } else { //If tab is new, creates new tab and sets on close event.
             Tab tab = new Tab(tabTitle);
             tab.setContent(pane);
             tabPane.getTabs().add(tab);
@@ -861,10 +906,15 @@ public class SupervisorViewController implements Initializable {
     }
 
     /*********  ------------ MONTAJE VIEW METHODS IMPLEMENTATION ------------  *********/
-    private void loadIntoInfoScrollPane(boolean realTime) { //Loads a view into the montajeView infoPane.
+    private void loadIntoInfoScrollPane(int realTime) { //Loads a view into the montajeView infoPane.
+        if (observableServices.isEmpty())
+            return;
+
         String pane;
-        if (realTime)
+        if (realTime == 0)
             pane = "supervisorMontajeRealtime.fxml";
+        else if (realTime > 0)
+            return;
         else
             pane = "supervisorMontajeRegisters.fxml";
 
@@ -887,7 +937,7 @@ public class SupervisorViewController implements Initializable {
         if (observableServices.isEmpty())
             montajeTreeTable.setPlaceholder(new Label("No hay servicios montados para esta fecha."));
 
-        loadIntoInfoScrollPane(chosenDate.equals(todayDate));
+        loadIntoInfoScrollPane(chosenDate.compareTo(todayDate));
     } /**commit change to date**/
 
     public void datePickerUpdate() {
@@ -896,7 +946,7 @@ public class SupervisorViewController implements Initializable {
     }
 
     public void handleMontajeTableClick() {
-        loadIntoInfoScrollPane(chosenDate.equals(todayDate));
+        loadIntoInfoScrollPane(chosenDate.compareTo(todayDate));
     }
 
     /******************************************************************************************/
@@ -971,10 +1021,16 @@ public class SupervisorViewController implements Initializable {
 
         pax.setCellValueFactory(param -> param.getValue().getValue().observablePax);
 
+        //AUTHOR
+        JFXTreeTableColumn<Service, String> author = new JFXTreeTableColumn<>("Autor");
+        author.setPrefWidth(150);
+
+        author.setCellValueFactory(param -> param.getValue().getValue().observableAuthor);
+
         updateTreeTable(displayReserves);
 
         final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
-        reserveTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, pax, client, pricing, distance, transit);
+        reserveTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, pax, client, pricing, distance, transit, author);
         reserveTreeTable.setRoot(root);
         reserveTreeTable.setShowRoot(false);
     }
@@ -1049,10 +1105,16 @@ public class SupervisorViewController implements Initializable {
 
         pax.setCellValueFactory(param -> param.getValue().getValue().observablePax);
 
+        //AUTHOR
+        JFXTreeTableColumn<Service, String> author = new JFXTreeTableColumn<>("Autor");
+        author.setPrefWidth(150);
+
+        author.setCellValueFactory(param -> param.getValue().getValue().observableAuthor);
+
         updateTreeTable(displayServices);
 
         final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
-        servicesTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, pax, client, pricing, distance, transit);
+        servicesTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, pax, client, pricing, distance, transit, author);
         servicesTreeTable.setRoot(root);
         servicesTreeTable.setShowRoot(false);
     }
