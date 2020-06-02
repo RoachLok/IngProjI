@@ -2,7 +2,6 @@ package pkg2ingproyi.SupervisorView;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import com.sun.deploy.security.SelectableSecurityManager;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.application.Platform;
@@ -19,34 +18,23 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.util.converter.LocalDateStringConverter;
-import javafx.util.converter.LocalDateTimeStringConverter;
 import org.controlsfx.control.Notifications;
-import org.controlsfx.control.action.Action;
 import org.controlsfx.control.textfield.TextFields;
-import org.fxmisc.wellbehaved.event.EventHandlerHelper;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import pkg2ingproyi.Main;
 import pkg2ingproyi.Model.Admin;
 import pkg2ingproyi.Model.Driver;
 import pkg2ingproyi.Model.Service;
 import pkg2ingproyi.Model.Vehicle;
 import pkg2ingproyi.Util.*;
-import sun.nio.ch.Net;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.text.SimpleDateFormat;
 
 public class SupervisorViewController implements Initializable {
 
@@ -288,7 +276,7 @@ public class SupervisorViewController implements Initializable {
                             e.printStackTrace();
                         }
                     }));
-            networkGETRequester.run();
+            networkGETRequester.start();
 
             //DatePicker init with current date.
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
@@ -407,12 +395,14 @@ public class SupervisorViewController implements Initializable {
         if (openTabs.contains(tabTitle)) { //If tab exists, creates replacement tab and replaces old with new.
             int indexTab = openTabs.indexOf(tabTitle);
             Tab replacementTab = new Tab(tabTitle);
+
             replacementTab.setContent(pane);
             tabPane.getTabs().set(indexTab + 1, replacementTab);
             selectionModel.select(indexTab + 1);
         } else { //If tab is new, creates new tab and sets on close event.
             Tab tab = new Tab(tabTitle);
             tab.setContent(pane);
+
             tabPane.getTabs().add(tab);
             openTabs.add(tabTitle);
             selectionModel.select(tab);
@@ -444,7 +434,7 @@ public class SupervisorViewController implements Initializable {
         addTab(FXMLLoader.load( getClass().getResource("visorSupervisorChat.fxml")       ), "Chat");
     }
 
-    public void handleSettingsButton    () throws IOException {
+    public void handleSettingsButton    () {
 
     }
 

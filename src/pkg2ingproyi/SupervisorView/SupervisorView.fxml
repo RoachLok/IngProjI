@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="450.0" minWidth="700.0" prefHeight="650.0" prefWidth="1110.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.SupervisorView.SupervisorViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="450.0" minWidth="700.0" prefHeight="650.0" prefWidth="1110.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/8.0.181" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.SupervisorView.SupervisorViewController">
    <top>
       <BorderPane minWidth="700.0" BorderPane.alignment="CENTER">
          <center>
