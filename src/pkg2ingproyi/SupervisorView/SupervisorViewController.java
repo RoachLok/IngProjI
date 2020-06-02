@@ -328,13 +328,13 @@ public class SupervisorViewController implements Initializable {
 
             //PRICING
             JFXTreeTableColumn<Service, Number> pricing = new JFXTreeTableColumn<>("Precio");
-            pricing.setPrefWidth(80);
+            pricing.setPrefWidth(110);
 
             pricing.setCellValueFactory(param -> param.getValue().getValue().observablePricing);
 
             //DISTANCE
             JFXTreeTableColumn<Service, Number> distance = new JFXTreeTableColumn<>("Distancia");
-            distance.setPrefWidth(80);
+            distance.setPrefWidth(110);
 
             distance.setCellValueFactory(param -> param.getValue().getValue().observableDistance);
 
