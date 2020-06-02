@@ -16,43 +16,44 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="574.0" prefWidth="1109.0" stylesheets="@../../resources/main-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkg2ingproyi.SupervisorView.SupervisorViewController">
-    <top>
-        <HBox alignment="BOTTOM_LEFT" prefHeight="32.0" prefWidth="996.0" BorderPane.alignment="CENTER">
-            <children>
-                <Pane prefHeight="26.0" prefWidth="5.0" />
-                <JFXButton graphicTextGap="5.0" onAction="#handleNewUserRequest" prefHeight="26.0" prefWidth="144.0" styleClass="supervisor-buttons" text="Nuevo Vehiculo">
-                    <graphic>
-                        <FontAwesomeIconView glyphName="USER_PLUS" size="18" text="" />
-                    </graphic>
-                </JFXButton>
-                <JFXButton graphicTextGap="5.0" onAction="#handleRemoveUserRequest" prefHeight="26.0" prefWidth="144.0" styleClass="supervisor-buttons" text="Eliminar Vehiculo">
-                    <graphic>
-                        <FontAwesomeIconView glyphName="TRASH_ALT" size="18" />
-                    </graphic>
-                </JFXButton>
-            </children>
-        </HBox>
-    </top>
-    <center>
-        <HBox alignment="CENTER" prefHeight="593.0" prefWidth="1109.0" BorderPane.alignment="CENTER">
-            <children>
+   <top>
+      <HBox alignment="BOTTOM_LEFT" prefHeight="32.0" prefWidth="996.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="26.0" prefWidth="5.0" />
+            <JFXButton graphicTextGap="5.0" onAction="#handleNewVehicleRequest" prefHeight="26.0" prefWidth="144.0" styleClass="supervisor-buttons" text="Nuevo Vehiculo">
+               <graphic>
+                  <FontAwesomeIconView glyphName="USER_PLUS" size="18" text="" />
+               </graphic>
+            </JFXButton>
+            <JFXButton graphicTextGap="5.0" onAction="#handleRemoveVehicleRequest" prefHeight="26.0" prefWidth="144.0" styleClass="supervisor-buttons" text="Eliminar Vehiculo">
+               <graphic>
+                  <FontAwesomeIconView glyphName="TRASH_ALT" size="18" />
+               </graphic>
+            </JFXButton>
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <HBox alignment="CENTER" prefHeight="593.0" prefWidth="1109.0" BorderPane.alignment="CENTER">
+         <children>
             <StackPane HBox.hgrow="ALWAYS">
                <children>
-                      <JFXListView fx:id="vehicleList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleVehicleListClick" prefHeight="542.0" prefWidth="619.0" styleClass="supervisor-driver-cell" stylesheets="@../../resources/main-theme.css" />
+                  <JFXListView fx:id="vehicleList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleVehicleListClick" prefHeight="542.0" prefWidth="619.0" styleClass="supervisor-driver-cell" stylesheets="@../../resources/main-theme.css" />
                   <JFXProgressBar fx:id="progressBar" prefHeight="7.0" prefWidth="406.0" />
                </children>
             </StackPane>
-                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="584.0" prefWidth="484.0">
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="584.0" prefWidth="484.0">
+               <children>
+                  <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="308.0" prefWidth="484.0" style="-fx-background-color: #ff7000;">
                       <children>
-                          <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="308.0" prefWidth="484.0" style="-fx-background-color: #ff7000;">
-                              <children>
-                                  <FontAwesomeIconView glyphName="USER_CIRCLE_ALT" layoutX="170.0" layoutY="139.0" size="150" styleClass="black-glyph" text="" wrappingWidth="145.0" />
-                              </children>
-                          </Pane>
-                  <HBox prefHeight="36.0" prefWidth="484.0" style="-fx-background-color: #ff7000;">
+                          <FontAwesomeIconView glyphName="BUS" layoutX="170.0" layoutY="139.0" size="150" styleClass="black-glyph" wrappingWidth="145.0" />
+                      </children>
+                  </Pane>
+                  <HBox prefHeight="36.0" prefWidth="484.0">
+                     <!--  style="-fx-background-color: #ff7000;"-->
                      <children>
                         <Pane prefHeight="25.0" prefWidth="20.0" />
-                        <JFXButton fx:id="DatosPrincipalesConductorAdminButton" buttonType="RAISED" prefHeight="25.0" prefWidth="470.0" ripplerFill="BLACK" style="-fx-background-color: #5a5755;" text="DATOS PRINCIPALES" />
+                        <JFXButton fx:id="DatosPrincipalesConductorAdminButton" buttonType="RAISED" prefHeight="25.0" prefWidth="470.0" ripplerFill="BLACK" style="-fx-background-color: #ff7000; -fx-font-size: 15;" text="DATOS PRINCIPALES" />
                         <Pane prefHeight="25.0" prefWidth="20.0" />
                      </children>
                   </HBox>
@@ -63,7 +64,7 @@
                               <VBox prefHeight="344.0" prefWidth="30.0" style="-fx-background-color: #dfe3e2;" />
                               <VBox prefHeight="310.0" prefWidth="100.0" style="-fx-background-color: #dfe3e2;">
                                  <children>
-                                    <Label alignment="BOTTOM_RIGHT" prefHeight="30.0" prefWidth="100.0" text="Bastidor:" textFill="#4b4b4b">
+                                    <Label alignment="BOTTOM_LEFT" prefHeight="30.0" prefWidth="100.0" text="Bastidor:" textFill="#4b4b4b">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
@@ -71,7 +72,7 @@
                                           <Blend />
                                        </effect>
                                     </Label>
-                                    <Label alignment="BOTTOM_RIGHT" prefHeight="50.0" prefWidth="100.0" text="Marca:" textAlignment="CENTER" textFill="#4b4b4b">
+                                    <Label alignment="BOTTOM_LEFT" prefHeight="50.0" prefWidth="100.0" text="Marca:" textAlignment="CENTER" textFill="#4b4b4b">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
@@ -79,7 +80,7 @@
                                           <Blend />
                                        </effect>
                                     </Label>
-                                    <Label alignment="BOTTOM_RIGHT" prefHeight="50.0" prefWidth="100.0" text="Modelo:" textAlignment="RIGHT" textFill="#4b4b4b" wrapText="true">
+                                    <Label alignment="BOTTOM_LEFT" prefHeight="50.0" prefWidth="100.0" text="Modelo:" textAlignment="CENTER" textFill="#4b4b4b" wrapText="true">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
@@ -87,7 +88,7 @@
                                           <Blend />
                                        </effect>
                                     </Label>
-                                    <Label alignment="BOTTOM_RIGHT" prefHeight="50.0" prefWidth="100.0" text="Matricula:" textFill="#4b4b4b" wrapText="true">
+                                    <Label alignment="BOTTOM_LEFT" prefHeight="50.0" prefWidth="100.0" text="Matricula:" textFill="#4b4b4b" wrapText="true">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
@@ -95,15 +96,7 @@
                                           <Blend />
                                        </effect>
                                     </Label>
-                                    <Label alignment="BOTTOM_RIGHT" prefHeight="50.0" prefWidth="100.0" text="Emisiones:" textAlignment="RIGHT" textFill="#4b4b4b" wrapText="true">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
-                                       <effect>
-                                          <Blend />
-                                       </effect>
-                                    </Label>
-                                    <Label alignment="BOTTOM_RIGHT" prefHeight="80.0" prefWidth="100.0" text="Consumo por Kilometro:" textAlignment="RIGHT" textFill="#4b4b4b" wrapText="true">
+                                    <Label alignment="BOTTOM_LEFT" prefHeight="50.0" prefWidth="100.0" text="Consumo:" textAlignment="CENTER" textFill="#4b4b4b" wrapText="true">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
@@ -148,15 +141,7 @@
                                           <Font size="15.0" />
                                        </font>
                                     </JFXTextField>
-                                    <JFXTextField fx:id="CarEmissionsID" alignment="BOTTOM_CENTER" depthTest="ENABLE" focusColor="#ff7700aa" prefHeight="50.0" prefWidth="150.0" style="-fx-text-fill: #504f4f;" unFocusColor="#dfe3e2">
-                                       <cursor>
-                                          <Cursor fx:constant="TEXT" />
-                                       </cursor>
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
-                                    </JFXTextField>
-                                    <JFXTextField fx:id="CarConsumexKilometerID" alignment="BOTTOM_CENTER" depthTest="DISABLE" focusColor="#ff7700aa" prefHeight="80.0" prefWidth="150.0" style="-fx-text-fill: #504f4f;" unFocusColor="#dfe3e2">
+                                    <JFXTextField fx:id="CarConsumePerKilometerID" alignment="BOTTOM_CENTER" depthTest="DISABLE" focusColor="#ff7700aa" prefHeight="50.0" prefWidth="150.0" style="-fx-text-fill: #504f4f;" unFocusColor="#dfe3e2">
                                        <cursor>
                                           <Cursor fx:constant="TEXT" />
                                        </cursor>
@@ -170,7 +155,7 @@
                               <VBox prefHeight="200.0" prefWidth="30.0" style="-fx-background-color: #dfe3e2;" />
                               <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #dfe3e2;">
                                  <children>
-                                    <Label alignment="BOTTOM_RIGHT" prefHeight="30.0" prefWidth="100.0" text="Kilometros:" textFill="#4b4b4b">
+                                    <Label alignment="BOTTOM_LEFT" prefHeight="30.0" prefWidth="100.0" text="Kilometros:" textFill="#4b4b4b">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
@@ -178,7 +163,7 @@
                                           <Blend />
                                        </effect>
                                     </Label>
-                                    <Label alignment="BOTTOM_RIGHT" prefHeight="50.0" prefWidth="100.0" text="Capacidad:" textAlignment="RIGHT" textFill="#4b4b4b" wrapText="true">
+                                    <Label alignment="BOTTOM_LEFT" prefHeight="50.0" prefWidth="100.0" text="Depósito:" textAlignment="CENTER" textFill="#4b4b4b" wrapText="true">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
@@ -186,7 +171,7 @@
                                           <Blend />
                                        </effect>
                                     </Label>
-                                    <Label alignment="BOTTOM_RIGHT" prefHeight="50.0" prefWidth="100.0" text="Plazas:" textAlignment="RIGHT" textFill="#4b4b4b" wrapText="true">
+                                    <Label alignment="BOTTOM_LEFT" prefHeight="50.0" prefWidth="100.0" text="Plazas:" textAlignment="CENTER" textFill="#4b4b4b" wrapText="true">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
@@ -194,7 +179,15 @@
                                           <Blend />
                                        </effect>
                                     </Label>
-                                    <Label alignment="BOTTOM_RIGHT" prefHeight="50.0" prefWidth="100.0" text="Depósito:" textAlignment="RIGHT" textFill="#4b4b4b" wrapText="true">
+                                    <Label alignment="BOTTOM_LEFT" prefHeight="50.0" prefWidth="100.0" text="Fecha montado:" textAlignment="LEFT" textFill="#4b4b4b" wrapText="true">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                       <effect>
+                                          <Blend />
+                                       </effect>
+                                    </Label>
+                                    <Label alignment="BOTTOM_LEFT" prefHeight="50.0" prefWidth="100.0" text="Fecha adquisición:" textAlignment="LEFT" textFill="#4b4b4b" wrapText="true">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
@@ -207,7 +200,7 @@
                               <VBox prefHeight="200.0" prefWidth="25.0" style="-fx-background-color: #dfe3e2;" />
                               <VBox prefHeight="344.0" prefWidth="150.0" style="-fx-background-color: #dfe3e2;">
                                  <children>
-                                    <JFXTextField fx:id="CarKilometerID" alignment="BOTTOM_CENTER" depthTest="DISABLE" focusColor="#ff7700aa" prefHeight="30.0" prefWidth="150.0" style="-fx-text-fill: #504f4f;" unFocusColor="#dfe3e2">
+                                    <JFXTextField fx:id="CarKilometerID" alignment="BOTTOM_LEFT" depthTest="DISABLE" focusColor="#ff7700aa" prefHeight="30.0" prefWidth="150.0" style="-fx-text-fill: #504f4f;" unFocusColor="#dfe3e2">
                                        <cursor>
                                           <Cursor fx:constant="TEXT" />
                                        </cursor>
@@ -215,7 +208,7 @@
                                           <Font size="15.0" />
                                        </font>
                                     </JFXTextField>
-                                    <JFXTextField fx:id="CarCapacityID" alignment="BOTTOM_CENTER" depthTest="ENABLE" focusColor="#ff7700aa" prefHeight="50.0" prefWidth="150.0" style="-fx-text-fill: #504f4f;" unFocusColor="#dfe3e2">
+                                    <JFXTextField fx:id="CarDepositID" alignment="BOTTOM_LEFT" depthTest="ENABLE" focusColor="#ff7700aa" prefHeight="50.0" prefWidth="150.0" style="-fx-text-fill: #504f4f;" unFocusColor="#dfe3e2">
                                        <cursor>
                                           <Cursor fx:constant="TEXT" />
                                        </cursor>
@@ -223,7 +216,7 @@
                                           <Font size="15.0" />
                                        </font>
                                     </JFXTextField>
-                                    <JFXTextField fx:id="CarChairsID" alignment="BOTTOM_CENTER" depthTest="ENABLE" focusColor="#ff7700aa" prefHeight="50.0" prefWidth="150.0" style="-fx-text-fill: #504f4f;" unFocusColor="#dfe3e2">
+                                    <JFXTextField fx:id="CarChairsID" alignment="BOTTOM_LEFT" depthTest="ENABLE" focusColor="#ff7700aa" prefHeight="50.0" prefWidth="150.0" style="-fx-text-fill: #504f4f;" unFocusColor="#dfe3e2">
                                        <cursor>
                                           <Cursor fx:constant="TEXT" />
                                        </cursor>
@@ -231,7 +224,15 @@
                                           <Font size="15.0" />
                                        </font>
                                     </JFXTextField>
-                                    <JFXTextField fx:id="CarDepositID" alignment="BOTTOM_CENTER" depthTest="ENABLE" focusColor="#ff7700aa" prefHeight="50.0" prefWidth="150.0" style="-fx-text-fill: #504f4f;" unFocusColor="#dfe3e2">
+                                    <JFXTextField fx:id="CarBuilt" alignment="BOTTOM_LEFT" depthTest="ENABLE" focusColor="#ff7700aa" prefHeight="50.0" prefWidth="150.0" style="-fx-text-fill: #504f4f;" unFocusColor="#dfe3e2">
+                                       <cursor>
+                                          <Cursor fx:constant="TEXT" />
+                                       </cursor>
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="CarAdquired" alignment="BOTTOM_LEFT" depthTest="ENABLE" focusColor="#ff7700aa" prefHeight="50.0" prefWidth="150.0" style="-fx-text-fill: #504f4f;" unFocusColor="#dfe3e2">
                                        <cursor>
                                           <Cursor fx:constant="TEXT" />
                                        </cursor>
@@ -247,9 +248,9 @@
                         <HBox prefHeight="16.0" prefWidth="484.0" style="-fx-background-color: #dfe3e2;" />
                      </children>
                   </VBox>
-                      </children>
-                  </VBox>
-            </children>
-        </HBox>
-    </center>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </center>
 </BorderPane>

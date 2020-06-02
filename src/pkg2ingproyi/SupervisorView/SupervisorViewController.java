@@ -65,6 +65,7 @@ public class SupervisorViewController implements Initializable {
 
     /****** ----- TREEVIEWS COMMON ----- ******/
     private ObservableList<Service> observableServices;
+    private ObservableList<Vehicle> observableVehicles;
 
     /**** RESERVES VIEW ELEMENTS *****/
     @FXML
@@ -122,6 +123,32 @@ public class SupervisorViewController implements Initializable {
     @FXML
     public AnchorPane montajeInfoPanel;
 
+    /**** VEHICULOS VIEW ELEMENTS ****/
+    @FXML
+    private JFXTreeTableView<Vehicle> vehicleTreeTable;
+    @FXML
+    public JFXTextField CarFrameID;
+    @FXML
+    public JFXTextField CarBrand;
+    @FXML
+    public JFXTextField CarModelID;
+    @FXML
+    public JFXTextField CarEnrollmentID;
+    @FXML
+    public JFXTextField CarEmissionsID;
+    @FXML
+    public JFXTextField CarConsumePerKilometerID;
+    @FXML
+    public JFXTextField CarKilometerID;
+    @FXML
+    public JFXTextField CarChairsID;
+    @FXML
+    public JFXTextField CarDepositID;
+    @FXML
+    public JFXTextField CarBuilt;
+    @FXML
+    public JFXTextField CarAdquired;
+
     private String chosenDate, todayDate;
 
     /***** CORE CODE ELEMENTS *****/
@@ -129,6 +156,9 @@ public class SupervisorViewController implements Initializable {
 
     /***** TAB MANAGEMENT *****/
     private final List<String> openTabs = new ArrayList<>();
+
+    /***** VEHICLE REMOVE MANAGEMENT *****/
+    private String vehiculoMarcado = null;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -180,6 +210,7 @@ public class SupervisorViewController implements Initializable {
                     ArrayList<Vehicle> parsedVehicles = new JSONCastedList<>(vehicleJSONArray, Vehicle.class);
                     Platform.runLater(() -> Notifications.create().title("Data Loaded").text("Archivos cargados desde la base de datos.").showInformation());
 
+<<<<<<< Updated upstream
                     drawVehicles(parsedVehicles);
                 }
 
@@ -189,6 +220,54 @@ public class SupervisorViewController implements Initializable {
                 }
             });
             networkHandler.start();
+=======
+            vehicleGETRequest.start();
+
+            // Código para las columnas, no utilizado
+
+           /* observableVehicles = FXCollections.observableArrayList();
+
+            JFXTreeTableColumn<Vehicle, String> idmatricula = new JFXTreeTableColumn<>("Matricula");
+            idmatricula.setPrefWidth(75);
+
+            idmatricula.setCellValueFactory(param -> param.getValue().getValue().observableID);
+
+            JFXTreeTableColumn<Vehicle, String> frame = new JFXTreeTableColumn<>("Marca frame");
+            frame.setPrefWidth(75);
+
+            frame.setCellValueFactory(param -> param.getValue().getValue().observableframe);
+
+            JFXTreeTableColumn<Vehicle, String> body = new JFXTreeTableColumn<>("Marca chasis");
+            body.setPrefWidth(75);
+
+            body.setCellValueFactory(param -> param.getValue().getValue().observablebody);
+
+
+            JFXTreeTableColumn<Vehicle, Integer> pax = new JFXTreeTableColumn<>("Capacidad");
+            pax.setPrefWidth(75);
+
+            pax.setCellValueFactory(param -> param.getValue().getValue().observablewheel.asObject());
+
+            JFXTreeTableColumn<Vehicle, String> nick = new JFXTreeTableColumn<>("Modelo");
+            nick.setPrefWidth(75);
+
+            nick.setCellValueFactory(param -> param.getValue().getValue().observablenick);
+
+            JFXTreeTableColumn<Vehicle, Integer> permiso = new JFXTreeTableColumn<>("Permiso");
+            permiso.setPrefWidth(75);
+
+            permiso.setCellValueFactory(param -> param.getValue().getValue().observablepermission.asObject());
+
+            JFXTreeTableColumn<Vehicle, Double> consumo = new JFXTreeTableColumn<>("Consumo");
+            consumo.setPrefWidth(75);
+
+            consumo.setCellValueFactory(param -> param.getValue().getValue().observableconsume.asObject());
+
+
+            final TreeItem<Vehicle> root2 = new RecursiveTreeItem<>(observableVehicles, RecursiveTreeObject::getChildren);
+            vehicleTreeTable.getColumns().setAll(idmatricula, frame, body, pax, nick, permiso, consumo);
+            vehicleTreeTable.setRoot(root2);*/
+>>>>>>> Stashed changes
         }
 
         /*** -- RESERVE VIEW -- ***/
@@ -276,6 +355,8 @@ public class SupervisorViewController implements Initializable {
 
             montajeTreeTable.getSelectionModel().select(0);
         }
+
+
     }
 
     /*****  ------------ MAIN CONTAINER METHODS IMPLEMENTATION ------------  *****/
@@ -364,26 +445,69 @@ public class SupervisorViewController implements Initializable {
 
     /*********  ------------ VEHICLE VIEW METHODS IMPLEMENTATION ------------  *********/
 
+    public void handleNewVehicleRequest    () throws IOException {
+        launchStage("SupervisorNuevoVehiculo.fxml", "Registro de Vehiculo");
+    }
+
+    public void handleRemoveVehicleRequest () throws InterruptedException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Eliminación vehículo");
+        alert.setHeaderText("¿Está seguro de que desea eliminar el vehículo con matrícula:" + vehiculoMarcado +"?");
+        alert.setContentText("El vehículo no podrá ser recuperado");
+        Optional<ButtonType> confirmButton = alert.showAndWait();
+        if (confirmButton.isPresent() && confirmButton.get() == ButtonType.OK) {
+            NetworkDELETERequester networkDELETERequester = new NetworkDELETERequester(APIRoutes.VEHICLES, vehiculoMarcado, false,
+                    () -> Notifications.create().title("Wrong connection to DB").text("El elemento a editar no es accesible en la BD."));
+
+            networkDELETERequester.start();
+            networkDELETERequester.join();
+        }
+    }
+
     public void handleVehicleListClick   () {
         updateVehicleInfoPane(vehicleList.getSelectionModel().getSelectedIndex());
     }
 
     private void updateVehicleInfoPane(int selectedVehicleIndex) {
         System.out.println(selectedVehicleIndex);
+        System.out.println(vehiculoMarcado);
     }
 
     private void drawVehicles(List<Vehicle> vehicles) {
         for (Vehicle vehicle : vehicles) {
-            Label label = new Label("   Matrícula " + vehicle.getId() + "   --   Referencia: " + vehicle.getNick()
-                        + "   --   Permiso: " + vehicle.getPermissionName() + "   --   PAX: " + vehicle.getPax() + ".");
+            Label label = new Label("   Matrícula: " + vehicle.getId());
+            Label label2 = new Label( "     Modelo: " + vehicle.getNick());
+            Label label3 = new Label( "     Permiso: " + vehicle.getPermissionName());
+            Label label4 = new Label( "    Capacidad: " + vehicle.getPax());
+
+            label.setMinWidth(100);
+            label2.setMinWidth(150);
+            label3.setMinWidth(100);
+            label4.setMinWidth(100);
+
             FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.BUS);
             icon.setGlyphSize(20);
-            CheckBox checkBox = new CheckBox();
+            // CheckBox checkBox = new CheckBox();
             Region region1 = new Region();
             HBox.setHgrow(region1, Priority.ALWAYS);
 
-            HBox listItem = new HBox(icon, label, region1, checkBox);
+            HBox listItem = new HBox(icon, label, label2, label3, label4,region1);
             vehicleList.getItems().add(listItem);
+            listItem.setOnMouseClicked(e ->{
+                CarBrand.setText(vehicle.getChassis());
+                CarFrameID.setText(vehicle.getId());
+                CarModelID.setText(vehicle.getNick());
+                CarEnrollmentID.setText(vehicle.getId());
+                CarConsumePerKilometerID.setText(Double.toString(vehicle.getLiterPerKm()));
+                CarKilometerID.setText(Double.toString(vehicle.getCurrentKm()));
+                CarDepositID.setText(Integer.toString(vehicle.getFuelTank()));
+                CarChairsID.setText(Integer.toString(vehicle.getPax()));
+                CarBuilt.setText(vehicle.getBuildDate());
+                CarAdquired.setText(vehicle.getAcquireDate());
+
+                vehiculoMarcado = vehicle.getId();
+
+            });
         }
         progressBar.setVisible(false);
 
@@ -600,6 +724,14 @@ public class SupervisorViewController implements Initializable {
         admin.getDriver(0).servicesCount();
     }
 
+    public void handleNewServiceRequest(){
+
+    }
+
+    public void handleApplyReserveEdit(){
+
+    }
+
     /*********  ------------ MONTAJE VIEW METHODS IMPLEMENTATION ------------  *********/
     private void loadIntoInfoScrollPane(boolean realTime) { //Loads a view into the montajeView infoPane.
         String pane;
@@ -704,7 +836,7 @@ public class SupervisorViewController implements Initializable {
     }
 
     //INIT SERVICES TABLE
-    void initServicesTableView(ArrayList<Service> displayServices) {
+    void initServicesTableView(ArrayList<Service> displayReserves) {
         observableServices = FXCollections.observableArrayList();
 
         //ID
@@ -733,13 +865,13 @@ public class SupervisorViewController implements Initializable {
 
         //START
         JFXTreeTableColumn<Service, String> startT = new JFXTreeTableColumn<>("H. Inicio");
-        startT.setPrefWidth(250);
+        startT.setPrefWidth(150);
 
         startT.setCellValueFactory(param -> param.getValue().getValue().observableStartT);
 
         //ENDT
         JFXTreeTableColumn<Service, String> endT = new JFXTreeTableColumn<>("H. Final");
-        endT.setPrefWidth(250);
+        endT.setPrefWidth(150);
 
         endT.setCellValueFactory(param -> param.getValue().getValue().observableEndT);
 
@@ -749,24 +881,37 @@ public class SupervisorViewController implements Initializable {
 
         transit.setCellValueFactory(param -> param.getValue().getValue().observableTransit);
 
+        //PRICING
+        JFXTreeTableColumn<Service, Number> pricing = new JFXTreeTableColumn<>("Precio");
+        pricing.setPrefWidth(150);
+
+        pricing.setCellValueFactory(param -> param.getValue().getValue().observablePricing);
+
         //DISTANCE
         JFXTreeTableColumn<Service, Number> distance = new JFXTreeTableColumn<>("Distancia");
-        distance.setPrefWidth(250);
+        distance.setPrefWidth(150);
 
         distance.setCellValueFactory(param -> param.getValue().getValue().observableDistance);
 
         //CLIENT DNI
-        JFXTreeTableColumn<Service, String> clientDNI = new JFXTreeTableColumn<>("DNI Cliente");
-        clientDNI.setPrefWidth(250);
+        JFXTreeTableColumn<Service, String> client = new JFXTreeTableColumn<>("Cliente");
+        client.setPrefWidth(250);
 
+        client.setCellValueFactory(param -> param.getValue().getValue().observableContractor);
 
-        for (Service reserve : displayServices) {
+        //PAX
+        JFXTreeTableColumn<Service, Number> pax = new JFXTreeTableColumn<>("PAX");
+        pax.setPrefWidth(80);
+
+        pax.setCellValueFactory(param -> param.getValue().getValue().observablePax);
+
+        for (Service reserve : displayReserves) {
             reserve.setObservable();
             observableServices.add(reserve);
         }
 
-        final TreeItem<Service> root = new RecursiveTreeItem<Service>(observableServices, RecursiveTreeObject::getChildren);
-        reserveTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, distance);
+        final TreeItem<Service> root = new RecursiveTreeItem<>(observableServices, RecursiveTreeObject::getChildren);
+        reserveTreeTable.getColumns().setAll(identifier, name, pickup, arrival, startT, endT, pax, client, pricing, distance, transit);
         reserveTreeTable.setRoot(root);
         reserveTreeTable.setShowRoot(false);
     }
