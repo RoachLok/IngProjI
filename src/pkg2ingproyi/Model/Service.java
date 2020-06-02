@@ -197,6 +197,14 @@ public class Service extends RecursiveTreeObject<Service> implements JSONSeriali
         this.vehicleName = vehicleName;
     }
 
+    public String getIndications() {
+        return indications;
+    }
+
+    public void setIndications(String indications) {
+        this.indications = indications;
+    }
+
     public int getPricing() {
         return pricing;
     }
@@ -309,6 +317,9 @@ public class Service extends RecursiveTreeObject<Service> implements JSONSeriali
 
     @Override
     public String toJSONString() {
+        if (endT == null)
+            endT = "";
+
         return "{\"service_id\":\""      + identifier        + '\"' +
                 ",\"pickup\":\""         + pickup            + '\"' +
                 ",\"arrival\":\""        + arrival           + '\"' +
