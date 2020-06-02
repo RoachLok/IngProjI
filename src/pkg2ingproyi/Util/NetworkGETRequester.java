@@ -32,7 +32,7 @@ public class NetworkGETRequester extends Thread {
                 //Proceed only if correct connection with url.
 
                 //Read URL and pass to String.
-                Scanner sc = new Scanner(url.openStream());
+                Scanner sc = new Scanner(url.openStream(), "utf-8");
                 StringBuilder rawData = new StringBuilder();
                 while (sc.hasNext())
                     rawData.append(sc.nextLine());
